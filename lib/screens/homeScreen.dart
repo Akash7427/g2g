@@ -320,132 +320,130 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                   !_isLarge
                       ? Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Overdue',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                  textAlign: TextAlign.start,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '\$${account.balanceOverdue == null
-                                          ? 0.00
-                                          : account.balanceOverdue}',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: account.balanceOverdue !=
-                                              null
-                                              ? (account.balanceOverdue >
-                                              0
-                                              ? Colors.red
-                                              : kPrimaryColor)
-                                              : kSecondaryColor),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                    IconButton(
-                                        icon: Icon(
-                                          Icons.info_outline_rounded,
-                                          color: account.balanceOverdue !=
-                                              null
-                                              ? (account.balanceOverdue >
-                                              0
-                                              ? Colors.red
-                                              : kPrimaryColor)
-                                              : kSecondaryColor,
-                                        ),
-                                        onPressed: () {}),
-                                  ],
-                                ),
-                              ],
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                            ),
-                            Divider(
-                              color: Colors.black54,
-                            ),
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Balance',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                  textAlign: TextAlign.start,
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '\$${account.balance}',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                    IconButton(
-                                        icon: Icon(
-                                            Icons.account_balance_wallet),
-                                        onPressed: () {}),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: Row(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  Text('How to make a payment? ',
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Overdue',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '\$${account.balanceOverdue == null ? 0.00 : account.balanceOverdue}',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: account.balanceOverdue !=
+                                                        null
+                                                    ? (account.balanceOverdue >
+                                                            0
+                                                        ? Colors.red
+                                                        : kPrimaryColor)
+                                                    : kSecondaryColor),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                          IconButton(
+                                              icon: Icon(
+                                                Icons.info_outline_rounded,
+                                                color: account.balanceOverdue !=
+                                                        null
+                                                    ? (account.balanceOverdue >
+                                                            0
+                                                        ? Colors.red
+                                                        : kPrimaryColor)
+                                                    : kSecondaryColor,
+                                              ),
+                                              onPressed: () {}),
+                                        ],
+                                      ),
+                                    ],
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                  ),
+                                  Divider(
+                                    color: Colors.black54,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Balance',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                        textAlign: TextAlign.start,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '\$${account.balance}',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                          IconButton(
+                                              icon: Icon(
+                                                  Icons.account_balance_wallet),
+                                              onPressed: () {}),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Row(
+                                      children: [
+                                        Text('How to make a payment? ',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: kSecondaryColor)),
+                                        Icon(
+                                          Icons.arrow_forward,
+                                          color: kSecondaryColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  FlatButton(
+                                    color: kPrimaryColor,
+                                    height: 40,
+                                    onPressed: () {},
+                                    child: Text(
+                                      'Pay ' +
+                                          '\$' +
+                                          '${account.balance.toString()}',
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: kSecondaryColor)),
-                                  Icon(
-                                    Icons.arrow_forward,
-                                    color: kSecondaryColor,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        fontFamily: 'Montserrat',
+                                      ),
+                                    ),
                                   ),
                                 ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            FlatButton(
-                              color: kPrimaryColor,
-                              height: 40,
-                              onPressed: () {},
-                              child: Text(
-                                'Pay ' +
-                                    '\$' +
-                                    '${account.balance.toString()}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  fontFamily: 'Montserrat',
-                                ),
-                              ),
-                            ),
-                          ],
+                              )
+                            ],
+                          ),
                         )
-                      ],
-                    ),
-                  )
                       : Row(
                     children: [
                       Expanded(
@@ -465,16 +463,16 @@ class _HomeScreenState extends State<HomeScreen>
                                     child: Text(
                                       'Next Repayment',
                                       style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                          child: Text(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Text(
                                             '\$300',
                                             style: TextStyle(
                                                 fontSize: 28,
