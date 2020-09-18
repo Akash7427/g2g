@@ -90,10 +90,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [kSecondaryColor, kPrimaryColor],
-                      begin: Alignment.center,
-                      end: Alignment.bottomCenter,
-                    )),
+                  colors: [kSecondaryColor, kPrimaryColor],
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                )),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [

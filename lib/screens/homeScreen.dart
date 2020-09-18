@@ -107,17 +107,9 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    _pixelRatio = MediaQuery
-        .of(context)
-        .devicePixelRatio;
-    _width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    _height = MediaQuery.of(context).size.height;
+    _pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
 
     return Scaffold(
@@ -463,16 +455,16 @@ class _HomeScreenState extends State<HomeScreen>
                             color: Colors.grey[200],
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 10.0),
-                                          child: Text(
-                                            'Next Repayment',
-                                            style: TextStyle(
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceAround,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10.0),
+                                    child: Text(
+                                      'Next Repayment',
+                                      style: TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.black),

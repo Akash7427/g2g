@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen>
                 image: AssetImage('images/bg.jpg'), fit: BoxFit.cover)),
         child: SafeArea(
             child: GestureDetector(
-              onPanDown: (_) {
+          onPanDown: (_) {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: ListView(
@@ -264,15 +264,15 @@ class _LoginScreenState extends State<LoginScreen>
         inputFormatters: obscureText
             ? null
             : [
-          UpperCaseTextFormatter(),
-        ],
+                UpperCaseTextFormatter(),
+              ],
         validator: (value) {
           if (value.isEmpty)
             return obscureText ? 'Password Required' : 'Email ID Required';
           return null;
         },
         textInputAction:
-        nextNode != null ? TextInputAction.next : TextInputAction.done,
+            nextNode != null ? TextInputAction.next : TextInputAction.done,
         textCapitalization: obscureText
             ? TextCapitalization.sentences
             : TextCapitalization.characters,
@@ -292,10 +292,10 @@ class _LoginScreenState extends State<LoginScreen>
               borderSide: BorderSide(color: Colors.black),
             ),
             prefixIcon:
-            Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
+                Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
             hintText: labelText,
             hintStyle:
-            TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
+                TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
         style: TextStyle(
           fontSize: _isLarge ? 24 : 18,
           color: Colors.black,
