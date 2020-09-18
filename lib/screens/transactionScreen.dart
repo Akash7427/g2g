@@ -5,6 +5,7 @@ import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/loginScreen.dart';
+import 'package:g2g/widgets/custom_trans_item.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,79 +35,36 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       drawer: NavigationDrawer(),
       appBar: AppBar(
         actions: [
-          InkWell(
+        InkWell(
               onTap: () {
                 launch("tel://1300197727");
               },
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Icon(
-                  Icons.call,
-                  size: _isLarge ? 35 : 30,
-                ),
-              )),
-              InkWell(
-              onTap: () {
-               Alert(
-                    context: context,
-                    title: 'Are you sure you want to Logout?',
-                    style: AlertStyle(isCloseButton: false,titleStyle: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                              fontSize: _isLarge ? 26 : 20)),
-                    buttons: [
-                      DialogButton(
-                        child: Text(
-                          "Close",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: _isLarge ? 24 : 18),
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                        color: kSecondaryColor,
-                        radius: BorderRadius.circular(10.0),
-                      ),
-                      DialogButton(
-                        child: Text(
-                          "Logout",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: _isLarge ? 24 : 18),
-                        ),
-                        onPressed: (){
-                           SharedPreferences.getInstance().then((prefs) {
-                  prefs.remove('isLoggedIn');
-                  Navigator.of(context).pushAndRemoveUntil(
-                      new MaterialPageRoute(
-                          builder: (BuildContext context) => LoginScreen()),
-                      (r) => false);
-                });
-                        },
-                        color: Colors.grey[600],
-                        radius: BorderRadius.circular(10.0),
-                      ),
-                    ]).show();
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Icon(
-                  Icons.exit_to_app,
-                  size: _isLarge ? 35 : 30,
-                ),
-              )),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: RawMaterialButton(
+                    fillColor: Colors.blue[50],
+                    child: Icon(Icons.call, color: kSecondaryColor, size: 30),
+                    onPressed: () {
+                      _transactionScaffoldKey.currentState.openDrawer();
+                    },
+                    padding: EdgeInsets.all(15.0),
+                    shape: CircleBorder(),
+                  )
+                  )
+                  )
+              
         ],
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: kSecondaryColor, size: 30),
-        title: Text('Transactions',
-            style: TextStyle(
-                fontSize: _isLarge ? 28 : 24,
-                fontWeight: FontWeight.bold,
-                color: kSecondaryColor)),
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: kSecondaryColor, size: 30),
+      
+        leading: RawMaterialButton(
+          fillColor: Colors.blue[50],
+          child: Icon(Icons.menu, color: kSecondaryColor, size: 30),
           onPressed: () {
             _transactionScaffoldKey.currentState.openDrawer();
           },
+          padding: EdgeInsets.all(15.0),
+          shape: CircleBorder(),
         ),
       ),
       body: SafeArea(
@@ -123,7 +81,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children:[
-                        buildHeader(widget.account),
+                        buildHeader(),
+                        buildListHeader(),
                         Expanded(
                                                   child: SingleChildScrollView(
                               child: Column(
@@ -139,25 +98,22 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                         ),
                       
                     SizedBox(height:20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:25.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          FlatButton(
-                            color: kSecondaryColor,
-                            onPressed: (){
-                            Navigator.pop(context);
-                          }, child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text('BACK',
-                                style: TextStyle(
-                                    fontSize: _isLarge ? 25 : 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white)),
-                          )),SizedBox(height:15),
-                        ],
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        FlatButton(
+                          color: kSecondaryColor,
+                          onPressed: (){
+                          Navigator.pop(context);
+                        }, child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Text('BACK',
+                              style: TextStyle(
+                                  fontSize: _isLarge ? 25 : 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        )),
+                      ],
                     ),
                   ]),
                 ),
@@ -168,74 +124,105 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     );
   }
 
-  Column buildHeader(Account account) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Card(
-                color: account.status.toUpperCase()=='OPEN'?kPrimaryColor:(account.status.toUpperCase()=='QUOTE'?Colors.amber[300]:Colors.red),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical:10.0,horizontal: 15),
-                  child: Text(account.status.toUpperCase(),
-                      style: TextStyle(
-                          fontSize: _isLarge ? 25 : 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white)),
-                )),
-            SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(account.accountTypeDescription,
+  Container buildListHeader() {
+    return Container(
+      margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Text('DATE',
                     style: TextStyle(
-                        fontSize: _isLarge ? 25 : 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54)),
-                Text(
-                  account.accountID,
+                        fontSize: _isLarge ? 14 : 12, fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                flex: 4,
+                child: Text('REFERENCE',
+                    style: TextStyle(
+                        fontSize: _isLarge ? 14 : 12, fontWeight: FontWeight.bold)),
+              ),
+              Text('BALANCE',
                   style: TextStyle(
-                      fontSize: _isLarge ? 25 : 15,
-                      fontWeight: FontWeight.bold,
-                      color: kSecondaryColor),
-                  textAlign: TextAlign.start,
-                ),
-              ],
-            ),
-          ],
-        ),
-        Divider(
+                      fontSize: _isLarge ? 14 : 12, fontWeight: FontWeight.bold))
+            ,
+             ],
+          ),
+          Divider(
           color: Colors.black54,
-        ),
-      ],
+        )
+        ],
+      ),
     );
   }
 
-  Widget buildTransactionCard(Transaction transaction) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Card(
-        child: ListTile(
-          
-          trailing: Text(
-            '\$${transaction.balance.toStringAsFixed(2)}',
-            style: TextStyle(
-                fontSize: _isLarge ? 22 : 14,
-                fontWeight: FontWeight.bold,
-                color: kSecondaryColor),
-            textAlign: TextAlign.start,
+  Container buildHeader() {
+    return Container(
+      margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                widget.account.accountID,
+                style: TextStyle(
+                    fontSize: _isLarge ? 25 : 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                textAlign: TextAlign.start,
+              ),
+              Text(
+                " - Transactions",
+                style: TextStyle(
+                    fontSize: _isLarge ? 25 : 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                textAlign: TextAlign.start,
+              ),
+            ],
           ),
-          title: Text('${transaction.reference}',
-              style: TextStyle(
-                fontSize: _isLarge ? 22 : 14,
-                fontWeight: FontWeight.w600,
-              )),
-          leading: Text('${transaction.transactionDate.day}/'+'${transaction.transactionDate.month}/'+'${transaction.transactionDate.year}',
-              style: TextStyle(
-                fontSize: _isLarge ? 22 : 14,
-              )),
-        ),
+          SizedBox(
+            height: 8.0,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Text(widget.account.accountTypeDescription,
+                    style: TextStyle(
+                        fontSize: _isLarge ? 30 : 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+              ),
+              SizedBox(width: 10),
+              Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  color: widget.account.status.toUpperCase() == 'OPEN'
+                      ? kPrimaryColor
+                      : (widget.account.status.toUpperCase() == 'QUOTE'
+                          ? Colors.amber[300]
+                          : Colors.red),
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                    child: Text(widget.account.status.toUpperCase(),
+                        style: TextStyle(
+                            fontSize: _isLarge ? 16 : 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                  )),
+            ],
+          ),
+        ],
       ),
     );
+  }
+
+
+  Widget buildTransactionCard(Transaction transaction) {
+    return CustomTransItem(transaction, _isLarge);
   }
 }
