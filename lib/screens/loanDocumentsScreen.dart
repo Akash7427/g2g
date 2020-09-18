@@ -115,6 +115,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
         ),
       ),
       extendBodyBehindAppBar: true,
+      key: _documentScaffoldKey,
       body: SafeArea(
           child: Container(
         decoration: BoxDecoration(

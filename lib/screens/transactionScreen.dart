@@ -54,7 +54,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   )
               
         ],
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        key: _transactionScaffoldKey,
         iconTheme: IconThemeData(color: kSecondaryColor, size: 30),
       
         leading: RawMaterialButton(
