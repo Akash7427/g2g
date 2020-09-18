@@ -14,7 +14,8 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final _loginFormKey = GlobalKey<FormState>();
   final clientID = TextEditingController();
   final password = TextEditingController();
@@ -60,262 +61,137 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                 image: AssetImage('images/bg.jpg'), fit: BoxFit.cover)),
         child: SafeArea(
             child: GestureDetector(
-          onPanDown: (_) {
+              onPanDown: (_) {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Container(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(0.0),
-                      child: Container(
-                        child: Container(
-                          child: SingleChildScrollView(
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 60, bottom: 10, left: 20, right: 20.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  color: Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.asset(
+                        'images/logo2.png',
+                        height: _isLarge ? 400 : 150,
+                      ),
+                      Text(
+                        'Log in to your account',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 40),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Form(
+                          autovalidate: _autoValidate,
+                          key: _loginFormKey,
+                          child: Card(
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.all(_isLarge ? 50 : 8.0),
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(35)),
-                                    child: Column(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Image.asset(
-                                              'images/logo.png',
-                                              width: _width * 0.9,
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 28.0),
-                                              child: Divider(
-                                                color: Colors.black54,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 0),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Column(children: [
-                                              Padding(
-                                                padding: EdgeInsets.all(10.0),
-                                                child: Form(
-                                                  autovalidate: _autoValidate,
-                                                  key: _loginFormKey,
-                                                  child: Padding(
-                                                    padding: EdgeInsets.all(
-                                                        _isLarge ? 45 : 8.0),
-                                                    child: Card(
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          25)),
-                                                      color: kPrimaryColor,
-                                                      child: Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 10.0,
-                                                                horizontal:
-                                                                    _isLarge
-                                                                        ? 40
-                                                                        : 15),
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .stretch,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
-                                                          children: [
-                                                            Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      vertical:
-                                                                          0.0),
-                                                              child: Padding(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        vertical:
-                                                                            20.0),
-                                                                child: Text(
-                                                                  'EXISTING CUSTOMER',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          _isLarge
-                                                                              ? 28
-                                                                              : 22,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: Colors
-                                                                          .white),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            buildFormField(
-                                                                Icons
-                                                                    .account_circle,
-                                                                clientID,
-                                                                'Client ID',
-                                                                userIDNode,
-                                                                pwdNode),
-                                                            buildFormField(
-                                                                Icons.vpn_key,
-                                                                password,
-                                                                'Password',
-                                                                pwdNode,
-                                                                null,
-                                                                obscureText:
-                                                                    true),
-                                                            SizedBox(
-                                                                height: 10),
-                                                            Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                      horizontal:
-                                                                          _isLarge
-                                                                              ? 40
-                                                                              : 20),
-                                                              child:
-                                                                  RaisedButton(
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10)),
-                                                                onPressed:
-                                                                    () async {
-                                                                  if (_loginFormKey
-                                                                      .currentState
-                                                                      .validate()) {
-                                                                    final pr = ProgressDialog(
-                                                                        context,
-                                                                        isLogin:
-                                                                            true);
-                                                                    setState(
-                                                                        () {
-                                                                      pr.show();
-                                                                    });
-
-                                                                    clientController
-                                                                        .authenticateClient(
-                                                                            clientID
-                                                                                .text,
-                                                                            password
-                                                                                .text)
-                                                                        .then(
-                                                                            (user) async {
-                                                                      if (user ==
-                                                                          null) {
-                                                                        pr.hide();
-                                                                        Alert(
-                                                                            context:
-                                                                                context,
-                                                                            title:
-                                                                                'Invalid Credentials',
-                                                                            type:
-                                                                                AlertType.error,
-                                                                            buttons: [
-                                                                              DialogButton(
-                                                                                child: Text(
-                                                                                  "Close",
-                                                                                  style: TextStyle(color: Colors.white, fontSize: _isLarge ? 24 : 18),
-                                                                                ),
-                                                                                onPressed: () => Navigator.pop(context),
-                                                                                color: kPrimaryColor,
-                                                                                radius: BorderRadius.circular(0.0),
-                                                                              ),
-                                                                            ],
-                                                                            style: AlertStyle(
-                                                                              animationType: AnimationType.fromTop,
-                                                                              isCloseButton: false,
-                                                                              isOverlayTapDismiss: false,
-                                                                              titleStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: _isLarge ? 24 : 18),
-                                                                            )).show();
-                                                                      } else {
-                                                                        accountsController
-                                                                            .getAccounts(clientID.text,
-                                                                                user.sessionToken)
-                                                                            .then((accounts) {
-                                                                          pr.hide();
-                                                                          Navigator.pushAndRemoveUntil(
-                                                                              context,
-                                                                              MaterialPageRoute(builder: (context) => HomeScreen(user, accounts)),
-                                                                              (route) => false);
-                                                                        });
-                                                                      }
-                                                                    });
-                                                                  } else {
-                                                                    setState(
-                                                                        () {
-                                                                      _autoValidate =
-                                                                          true;
-                                                                    });
-                                                                  }
-                                                                },
-                                                                child: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                              .all(
-                                                                          10.0),
-                                                                  child: Text(
-                                                                    'Login'
-                                                                        .toUpperCase(),
-                                                                    style: TextStyle(
-                                                                        fontSize: _isLarge
-                                                                            ? 26
-                                                                            : 20,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color:
-                                                                            kPrimaryColor),
-                                                                  ),
-                                                                ),
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                                height: 10),
-                                                            Text(
-                                                              'Forgot Password?',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize:
-                                                                    _isLarge
-                                                                        ? 24
-                                                                        : 16,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                                height: 10),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ]),
-                                          ),
-                                        ),
-                                      ],
+                                buildFormField(Icons.person_outline, clientID,
+                                    'Email', userIDNode, pwdNode),
+                                SizedBox(height: 15),
+                                buildFormField(Icons.lock, password, 'Password',
+                                    pwdNode, null,
+                                    obscureText: true),
+                                SizedBox(height: 10),
+                                Container(
+                                  child: RaisedButton(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      'Login'.toUpperCase(),
+                                      style: TextStyle(
+                                          fontSize: _isLarge ? 26 : 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
                                     ),
+                                    color: kPrimaryColor,
+                                    // padding: EdgeInsets.only(
+                                    //     top: 15, bottom: 15, left: 15, right: 15),
+                                    onPressed: () async {
+                                      if (_loginFormKey.currentState
+                                          .validate()) {
+                                        final pr = ProgressDialog(context,
+                                            isLogin: true);
+                                        setState(() {
+                                          pr.show();
+                                        });
+
+                                        clientController
+                                            .authenticateClient(
+                                                clientID.text, password.text)
+                                            .then(
+                                          (user) async {
+                                            if (user == null) {
+                                              pr.hide();
+                                              Alert(
+                                                  context: context,
+                                                  title: 'Invalid Credentials',
+                                                  type: AlertType.error,
+                                                  buttons: [
+                                                    DialogButton(
+                                                      child: Text(
+                                                        "Close",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: _isLarge
+                                                                ? 24
+                                                                : 18),
+                                                      ),
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      color: kPrimaryColor,
+                                                      radius:
+                                                          BorderRadius.circular(
+                                                              0.0),
+                                                    ),
+                                                  ],
+                                                  style: AlertStyle(
+                                                    animationType:
+                                                        AnimationType.fromTop,
+                                                    isCloseButton: false,
+                                                    isOverlayTapDismiss: false,
+                                                    titleStyle: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize:
+                                                            _isLarge ? 24 : 18),
+                                                  )).show();
+                                            } else {
+                                              accountsController
+                                                  .getAccounts(clientID.text,
+                                                      user.sessionToken)
+                                                  .then((accounts) {
+                                                pr.hide();
+                                                Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            HomeScreen(user,
+                                                                accounts)),
+                                                    (route) => false);
+                                              });
+                                            }
+                                          },
+                                        );
+                                      } else {
+                                        setState(() {
+                                          _autoValidate = true;
+                                        });
+                                      }
+                                    },
                                   ),
                                 ),
                               ],
@@ -323,11 +199,56 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                           ),
                         ),
                       ),
-                    ),
+                      SizedBox(height: 10),
+                      FlatButton(
+                        child: Text(
+                          'Forget Password?',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        text: 'Don’t have an account? ',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'Create',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: Colors.white,
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 40,
+              )
+            ],
           ),
         )),
       ),
@@ -337,54 +258,52 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   Widget buildFormField(IconData icon, TextEditingController controller,
       String labelText, FocusNode fNode, FocusNode nextNode,
       {bool obscureText = false}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
-        child: TextFormField(
-          cursorColor: kPrimaryColor,
-          inputFormatters: obscureText
-              ? null
-              : [
-                  UpperCaseTextFormatter(),
-                ],
-          validator: (value) {
-            if (value.isEmpty)
-              return obscureText ? 'Password Required' : 'Client ID Required';
-            return null;
-          },
-          textInputAction:
-              nextNode != null ? TextInputAction.next : TextInputAction.done,
-          textCapitalization: obscureText
-              ? TextCapitalization.sentences
-              : TextCapitalization.characters,
-          obscureText: obscureText,
-          focusNode: fNode,
-          decoration: InputDecoration(
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black54),
-                  borderRadius: BorderRadius.circular(10)),
-              focusedErrorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.redAccent),
-                  borderRadius: BorderRadius.circular(10)),
-              errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.redAccent),
-                  borderRadius: BorderRadius.circular(10)),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black),
-                  borderRadius: BorderRadius.circular(10)),
-              prefixIcon:
-                  Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
-              hintText: labelText,
-              hintStyle: TextStyle(
-                  fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
-          style: TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black),
-          onFieldSubmitted: (value) {
-            if (nextNode != null) nextNode.requestFocus();
-          },
-          controller: controller,
+    return Container(
+      child: TextFormField(
+        cursorColor: kPrimaryColor,
+        inputFormatters: obscureText
+            ? null
+            : [
+          UpperCaseTextFormatter(),
+        ],
+        validator: (value) {
+          if (value.isEmpty)
+            return obscureText ? 'Password Required' : 'Email ID Required';
+          return null;
+        },
+        textInputAction:
+        nextNode != null ? TextInputAction.next : TextInputAction.done,
+        textCapitalization: obscureText
+            ? TextCapitalization.sentences
+            : TextCapitalization.characters,
+        obscureText: obscureText,
+        focusNode: fNode,
+        decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.redAccent),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.redAccent),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+            ),
+            prefixIcon:
+            Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
+            hintText: labelText,
+            hintStyle:
+            TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
+        style: TextStyle(
+          fontSize: _isLarge ? 24 : 18,
+          color: Colors.black,
         ),
+        onFieldSubmitted: (value) {
+          if (nextNode != null) nextNode.requestFocus();
+        },
+        controller: controller,
       ),
     );
   }
