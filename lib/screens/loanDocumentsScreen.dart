@@ -31,98 +31,69 @@ class _LoanDocumentsState extends State<LoanDocuments> {
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     return Scaffold(
       drawer: NavigationDrawer(),
-      appBar: AppBar(
-        actions: [
-          InkWell(
-              onTap: () {
-                launch("tel://1300197727");
-              },
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: RawMaterialButton(
-                    fillColor: Colors.blue[50],
-                    child: Icon(Icons.call, color: kSecondaryColor, size: 30),
-                    onPressed: () {
-                      _documentScaffoldKey.currentState.openDrawer();
-                    },
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
-                  )
-                  )
+      key: _documentScaffoldKey,
+      body: Stack(
+        children: <Widget>[
+          new Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: const AssetImage('images/bg.jpg'),
+                    fit: BoxFit.cover)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 10.0,
+              left: 10.0
+            ),
+            child: AppBar(
+              leading: CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color(0xffccebf2),
+                    child: IconButton(
+                      onPressed: () {
+                        _documentScaffoldKey.currentState.openDrawer();
+                      },
+                      icon: Icon(
+                        Icons.menu,
+                        color: kSecondaryColor,
+                        size: _isLarge ? 35 : 30,
+                      ),
+                    ),
                   ),
-          // InkWell(
-          //     onTap: () {
-          //       Alert(
-          //           context: context,
-          //           title: 'Are you sure you want to Logout?',
-          //           style: AlertStyle(isCloseButton: false,titleStyle: TextStyle(
-          //             color: Colors.black,
-          //             fontWeight: FontWeight.bold,
-          //                     fontSize: _isLarge ? 26 : 20)),
-          //           buttons: [
-          //             DialogButton(
-          //               child: Text(
-          //                 "Close",
-          //                 style: TextStyle(
-          //                     color: Colors.white,
-          //                     fontSize: _isLarge ? 24 : 18),
-          //               ),
-          //               onPressed: () => Navigator.pop(context),
-          //               color: kSecondaryColor,
-          //               radius: BorderRadius.circular(10.0),
-          //             ),
-          //             DialogButton(
-          //               child: Text(
-          //                 "Logout",
-          //                 style: TextStyle(
-          //                     color: Colors.white,
-          //                     fontSize: _isLarge ? 24 : 18),
-          //               ),
-          //               onPressed: (){
-          //                  SharedPreferences.getInstance().then((prefs) {
-          //         prefs.remove('isLoggedIn');
-          //         Navigator.of(context).pushAndRemoveUntil(
-          //             new MaterialPageRoute(
-          //                 builder: (BuildContext context) => LoginScreen()),
-          //             (r) => false);
-          //       });
-          //               },
-          //               color: Colors.grey[600],
-          //               radius: BorderRadius.circular(10.0),
-          //             ),
-          //           ]).show();
 
-          //     },
-          //     child: Padding(
-          //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          //       child: Icon(
-          //         Icons.exit_to_app,
-          //         size: _isLarge ? 35 : 30,
-          //       ),
-          //     )),
-        ],
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: kSecondaryColor, size: 30),
-        leading: RawMaterialButton(
-          fillColor: Colors.blue[50],
-          child: Icon(Icons.menu, color: kSecondaryColor, size: 30),
-          onPressed: () {
-            _documentScaffoldKey.currentState.openDrawer();
-          },
-          padding: EdgeInsets.all(15.0),
-          shape: CircleBorder(),
-        ),
-      ),
-      extendBodyBehindAppBar: true,
-      body: SafeArea(
-          child: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('images/bg.jpg'), fit: BoxFit.cover)),
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Card(
+      
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+               SizedBox(),
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color(0xffccebf2),
+                    child: IconButton(
+                      onPressed: () {
+                        launch("tel://1300197727");
+                      },
+                      icon: Icon(
+                        Icons.call,
+                        color: kSecondaryColor,
+                        size: _isLarge ? 35 : 30,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+            ),
+          ),
+          new Positioned(
+            top: 100.0,
+            left: 0.0,
+            bottom: 0.0,
+            right: 0.0,
+            //here the body
+            child:Card(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -165,8 +136,9 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                   ),
                 ]),
           ),
-        ),
-      )),
+        ),  
+        ],
+      ),
     );
   }
 
