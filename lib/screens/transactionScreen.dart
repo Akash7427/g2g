@@ -33,50 +33,69 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     return Scaffold(
       drawer: NavigationDrawer(),
-      appBar: AppBar(
-        actions: [
-        InkWell(
-              onTap: () {
-                launch("tel://1300197727");
-              },
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: RawMaterialButton(
-                    fillColor: Colors.blue[50],
-                    child: Icon(Icons.call, color: kSecondaryColor, size: 30),
-                    onPressed: () {
-                      _transactionScaffoldKey.currentState.openDrawer();
-                    },
-                    padding: EdgeInsets.all(15.0),
-                    shape: CircleBorder(),
-                  )
-                  )
-                  )
-              
-        ],
-        backgroundColor: Colors.transparent,
-        key: _transactionScaffoldKey,
-        iconTheme: IconThemeData(color: kSecondaryColor, size: 30),
-      
-        leading: RawMaterialButton(
-          fillColor: Colors.blue[50],
-          child: Icon(Icons.menu, color: kSecondaryColor, size: 30),
-          onPressed: () {
-            _transactionScaffoldKey.currentState.openDrawer();
-          },
-          padding: EdgeInsets.all(15.0),
-          shape: CircleBorder(),
-        ),
-      ),
-      body: SafeArea(
-          child: Container(
+      key: _transactionScaffoldKey,
+      body: Stack(
+        children: <Widget>[
+          new Container(
             decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage('images/bg.jpg'),fit: BoxFit.cover)
+                image: DecorationImage(
+                    image: const AssetImage('images/bg.jpg'),
+                    fit: BoxFit.cover)),
           ),
-            child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: 
-              Card(
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 10.0,
+              left: 10.0
+            ),
+            child: AppBar(
+              leading: CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color(0xffccebf2),
+                    child: IconButton(
+                      onPressed: () {
+                        _transactionScaffoldKey.currentState.openDrawer();
+                      },
+                      icon: Icon(
+                        Icons.menu,
+                        color: kSecondaryColor,
+                        size: _isLarge ? 35 : 30,
+                      ),
+                    ),
+                  ),
+
+      
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+               SizedBox(),
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color(0xffccebf2),
+                    child: IconButton(
+                      onPressed: () {
+                        launch("tel://1300197727");
+                      },
+                      icon: Icon(
+                        Icons.call,
+                        color: kSecondaryColor,
+                        size: _isLarge ? 35 : 30,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+            ),
+          ),
+          new Positioned(
+            top: 100.0,
+            left: 0.0,
+            bottom: 0.0,
+            right: 0.0,
+            //here the body
+            child:Card(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -121,7 +140,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               ),
            
       ),
-          )),
+        ],
+      ),
     );
   }
 

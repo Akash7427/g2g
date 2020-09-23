@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/clientController.dart';
+import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/editProfile.dart';
-import 'package:g2g/screens/homeScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NavigationDrawer extends StatefulWidget {
   @override
@@ -14,10 +13,12 @@ class NavigationDrawer extends StatefulWidget {
 }
 
 class _NavigationDrawerState extends State<NavigationDrawer> {
-   double _height;
+  Client client;
+  double _height;
   double _width;
   double _pixelRatio;
   bool _isLarge;
+
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
@@ -27,79 +28,210 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     return Drawer(
       child: Container(
         color: Colors.white,
-        child: ListView(
-    // Important: Remove any padding from the ListView.
-    padding: EdgeInsets.zero,
-    children: <Widget>[
-        DrawerHeader(
-          child: Container(),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            image: DecorationImage(image: AssetImage('images/logo.png'),alignment: Alignment.center)
-          ),
+        child: Column(
+          // Important: Remove any padding from the ListView.
+          // padding: EdgeInsets.zero,
+          children: <Widget>[
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
+                  child: DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      image: DecorationImage(
+                        image: AssetImage('images/logo2.png'),
+                        alignment: Alignment.bottomCenter,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Mark Thomas',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Logout ',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: kSecondaryColor),
+                            ),
+                            Icon(Icons.arrow_forward, color: kSecondaryColor)
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                  colors: [kSecondaryColor, kPrimaryColor],
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                )),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ListTile(
+                            leading: Icon(Icons.settings,
+                                size: _isLarge ? 28 : 24, color: kWhiteColor),
+                            title: Text(
+                              'Edit Profile',
+                              style: TextStyle(
+                                  fontSize: _isLarge ? 22 : 18,
+                                  color: kWhiteColor),
+                            ),
+                            onTap: () async {
+                              final pr = ProgressDialog(context);
+                              pr.show();
+                              ClientController()
+                                  .getClientBasic()
+                                  .then((clientData) {
+                                pr.hide();
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditProfile(clientData)),
+                                    (r) => r.isFirst);
+                              });
+                            },
+                          ),
+                          ListTile(
+                            leading: ImageIcon(
+                                AssetImage('images/documents.png'),
+                                size: _isLarge ? 28 : 24,
+                                color: kWhiteColor),
+                            title: Text(
+                              'Documents',
+                              style: TextStyle(
+                                  fontSize: _isLarge ? 22 : 18,
+                                  color: kWhiteColor),
+                            ),
+                            onTap: () {
+                              // Update the state of the app.
+                              // ...
+                            },
+                          ),
+                          ListTile(
+                            leading: ImageIcon(AssetImage('images/loan.png'),
+                                size: _isLarge ? 28 : 24, color: kWhiteColor),
+                            title: Text(
+                              'My Loans',
+                              style: TextStyle(
+                                  fontSize: _isLarge ? 22 : 18,
+                                  color: kWhiteColor),
+                            ),
+                            onTap: () {
+                              Navigator.popUntil(
+                                  context, (route) => route.isFirst);
+                              // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                              // Update the state of the app.
+                              // ...
+                            },
+                          ),
+                          ListTile(
+                            leading: ImageIcon(AssetImage('images/connect.png'),
+                                size: _isLarge ? 28 : 24, color: kWhiteColor),
+                            title: Text(
+                              'Connect',
+                              style: TextStyle(
+                                  fontSize: _isLarge ? 22 : 18,
+                                  color: kWhiteColor),
+                            ),
+                            onTap: () async {
+                              // launch('https://tawk.to/chat/5f3278b420942006f46a9dc2/default',forceSafariVC: true,forceWebView: true);
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TawkToScreen()),
+                                      (r) => r.isFirst);
+                              // Update the state of the app.
+                              // ...
+                            },
+                          ),
+                          // ListTile(
+                          //   leading: Icon(Icons.pin_drop),
+                          //   title: Text('Reset PIN',style: TextStyle(fontSize:18),),
+                          //   onTap: () {
+                          //     // Update the state of the app.
+                          //     // ...
+                          //   },
+                          // ),
+                          ListTile(
+                            leading: ImageIcon(AssetImage('images/lock.png'),
+                                size: _isLarge ? 28 : 24, color: kWhiteColor),
+                            title: Text(
+                              'Reset Password',
+                              style: TextStyle(
+                                  fontSize: _isLarge ? 22 : 18,
+                                  color: kWhiteColor),
+                            ),
+                            onTap: () {
+                              // Update the state of the app.
+                              // ...
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        padding: EdgeInsets.only(
+                            right: 20, left: 20, top: 10, bottom: 30),
+                        height: 100,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Text(
+                            'Apply Now',
+                            style: TextStyle(
+                                fontSize: _isLarge ? 24 : 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          color: kPrimaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-        ListTile(
-          leading: Icon(Icons.account_box,size: _isLarge?28:24,),
-          title: Text('Edit Profile',style: TextStyle(fontSize:_isLarge?22:18),),
-          onTap: () async{
-            final pr =ProgressDialog(context);
-            pr.show();
-            ClientController().getClientBasic().then((clientData) {pr.hide();Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>EditProfile(clientData)),(r)=>r.isFirst);});
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.folder,size: _isLarge?28:24,),
-          title: Text('Documents',style: TextStyle(fontSize:_isLarge?22:18),),
-          onTap: () {
-            // Update the state of the app.
-            // ...
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.local_atm,size: _isLarge?28:24,),
-          title: Text('My Loans',style: TextStyle(fontSize:_isLarge?22:18),),
-          onTap: () {
-            Navigator.popUntil(context, (route) => route.isFirst);
-            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
-            // Update the state of the app.
-            // ...
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.forum,size: _isLarge?28:24,),
-          title: Text('Connect',style: TextStyle(fontSize:_isLarge?22:18),),
-          onTap: () async{
-            // launch('https://tawk.to/chat/5f3278b420942006f46a9dc2/default',forceSafariVC: true,forceWebView: true);
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>TawkToScreen()),(r)=>r.isFirst);
-            // Update the state of the app.
-            // ...
-          },
-        ),
-        // ListTile(
-        //   leading: Icon(Icons.pin_drop),
-        //   title: Text('Reset PIN',style: TextStyle(fontSize:18),),
-        //   onTap: () {
-        //     // Update the state of the app.
-        //     // ...
-        //   },
-        // ),
-        ListTile(
-          leading: Icon(Icons.vpn_key,size: _isLarge?28:24,),
-          title: Text('Reset Password',style: TextStyle(fontSize:_isLarge?22:18),),
-          onTap: () {
-            // Update the state of the app.
-            // ...
-          },
-        ),
-        Padding(
-          padding: EdgeInsets.all(15),
-          child: FlatButton(onPressed: (){}, child: Padding(
-            padding:  EdgeInsets.all(8.0),
-            child: Text('Apply',style: TextStyle(fontSize:_isLarge?24:20,color: Colors.white,fontWeight: FontWeight.bold),),
-          ),color: kPrimaryColor,),
-        )
-    ],
-  ),
       ),
     );
   }
