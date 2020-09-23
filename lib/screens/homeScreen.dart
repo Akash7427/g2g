@@ -354,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen>
                                           ),
                                           IconButton(
                                               icon: Icon(
-                                                Icons.info_outline_rounded,
+                                                Icons.info_outline,
                                                 color: account.balanceOverdue !=
                                                         null
                                                     ? (account.balanceOverdue >
@@ -425,7 +425,6 @@ class _HomeScreenState extends State<HomeScreen>
                                   ),
                                   FlatButton(
                                     color: kPrimaryColor,
-                                    height: 40,
                                     onPressed: () {},
                                     child: Text(
                                       'Pay ' +
