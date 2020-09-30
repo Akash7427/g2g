@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+
 import 'package:g2g/constants.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/utility/pref_helper.dart';
@@ -16,8 +16,8 @@ class AccountsController {
         '$apiBaseURL/Client/GetAccounts?clientId=$clientID&includeQuote=true&includeOpen=true&includeClosed=true',
         headers: {
           'Content-Type': 'application/json',
-          HttpHeaders.authorizationHeader:
-              'AuthFinWs token="${prefs.getString('SessionToken')}"'
+          'Authorization':
+              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
         });
     print(clientID);
     print(response.body);

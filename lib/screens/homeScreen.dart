@@ -611,44 +611,44 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         )
                       : Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Container(
-                          child: Card(
-                            color: Colors.grey[200],
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 10.0),
-                                    child: Text(
-                                      'Next Repayment',
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 8.0),
-                                    child: Text(
-                                      '\$300',
-                                      style: TextStyle(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.bold,
-                                          color: kSecondaryColor),
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Container(
+                                child: Card(
+                                  color: Colors.grey[200],
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.0),
+                                          child: Text(
+                                            'Next Repayment',
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: Text(
+                                            '\$300',
+                                            style: TextStyle(
+                                                fontSize: 28,
+                                                fontWeight: FontWeight.bold,
+                                                color: kSecondaryColor),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
                                               vertical: 10.0),
                                           child: Row(
                                             mainAxisAlignment:

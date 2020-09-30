@@ -141,7 +141,9 @@ class _LoginScreenState extends State<LoginScreen>
                                           }
                                           clientController
                                               .authenticateClient(
-                                                  clientID.text, password.text,false)
+                                            clientID.text,
+                                            password.text,
+                                          )
                                               .then(
                                             (user) async {
                                               if (user == null) {

@@ -214,10 +214,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         height: 40,
                       ),
                       Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
+                        width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.only(
                             right: 20, left: 20, top: 10, bottom: 30),
                         height: 100,
