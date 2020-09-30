@@ -6,7 +6,6 @@ import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/homeScreen.dart';
-import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -36,8 +35,6 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
-    clientID.text = 'gs@beedev.com.au';
-    // password.text = 'kYJdq6UoC/+VCPksP69h7w==';
     tripleDES();
     // animationController =
     //     AnimationController(vsync: this, duration: Duration(seconds: 1));
@@ -132,63 +129,78 @@ class _LoginScreenState extends State<LoginScreen>
                                         });
 
                                         clientController
-                                            .authenticateClient(
-                                                clientID.text, password.text)
-                                            .then(
-                                          (user) async {
-                                            if (user == null) {
-                                              pr.hide();
-                                              Alert(
-                                                  context: context,
-                                                  title: 'Invalid Credentials',
-                                                  type: AlertType.error,
-                                                  buttons: [
-                                                    DialogButton(
-                                                      child: Text(
-                                                        "Close",
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: _isLarge
-                                                                ? 24
-                                                                : 18),
-                                                      ),
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              context),
-                                                      color: kPrimaryColor,
-                                                      radius:
-                                                          BorderRadius.circular(
-                                                              0.0),
-                                                    ),
-                                                  ],
-                                                  style: AlertStyle(
-                                                    animationType:
-                                                        AnimationType.fromTop,
-                                                    isCloseButton: false,
-                                                    isOverlayTapDismiss: false,
-                                                    titleStyle: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize:
-                                                            _isLarge ? 24 : 18),
-                                                  )).show();
-                                            } else {
-                                              accountsController
-                                                  .getAccounts(user.userID,
-                                                      user.sessionToken)
-                                                  .then((accounts) {
+                                            .authenticateUser()
+                                            .then((value) async {
+                                          if (value == null) {
+                                            Scaffold.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Something went wrong please try again!'),
+                                            ));
+                                            return;
+                                          }
+                                          clientController
+                                              .authenticateClient(
+                                                  clientID.text, password.text,false)
+                                              .then(
+                                            (user) async {
+                                              if (user == null) {
                                                 pr.hide();
-                                                Navigator.pushAndRemoveUntil(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            HomeScreen(user,
-                                                                accounts)),
-                                                    (route) => false);
-                                              });
-                                            }
-                                          },
-                                        );
+                                                Alert(
+                                                    context: context,
+                                                    title:
+                                                        'Invalid Credentials',
+                                                    type: AlertType.error,
+                                                    buttons: [
+                                                      DialogButton(
+                                                        child: Text(
+                                                          "Close",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: _isLarge
+                                                                  ? 24
+                                                                  : 18),
+                                                        ),
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context),
+                                                        color: kPrimaryColor,
+                                                        radius: BorderRadius
+                                                            .circular(0.0),
+                                                      ),
+                                                    ],
+                                                    style: AlertStyle(
+                                                      animationType:
+                                                          AnimationType.fromTop,
+                                                      isCloseButton: false,
+                                                      isOverlayTapDismiss:
+                                                          false,
+                                                      titleStyle: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: _isLarge
+                                                              ? 24
+                                                              : 18),
+                                                    )).show();
+                                              } else {
+                                                accountsController
+                                                    .getAccounts(user.userID,
+                                                        user.sessionToken)
+                                                    .then((accounts) {
+                                                  pr.hide();
+                                                  Navigator.pushAndRemoveUntil(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HomeScreen(user,
+                                                                  accounts)),
+                                                      (route) => false);
+                                                });
+                                              }
+                                            },
+                                          );
+                                        });
                                       } else {
                                         setState(() {
                                           _autoValidate = true;
@@ -204,12 +216,6 @@ class _LoginScreenState extends State<LoginScreen>
                       ),
                       SizedBox(height: 10),
                       FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ResetPassword()));
-                        },
                         child: Text(
                           'Forget Password?',
                           textAlign: TextAlign.center,
