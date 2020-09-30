@@ -43,6 +43,8 @@ dependencies:
   tripledes: ^2.1.0
   dart_des: ^0.0.2
   flutter_3des:
+  xml2json: ^4.3.0
+  xml_parser: ^0.1.2
 
 dev_dependencies:
   flutter_test:

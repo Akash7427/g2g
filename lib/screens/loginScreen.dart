@@ -6,6 +6,7 @@ import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/homeScreen.dart';
+import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -35,6 +36,8 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
+    clientID.text = 'gs@beedev.com.au';
+    // password.text = 'kYJdq6UoC/+VCPksP69h7w==';
     tripleDES();
     // animationController =
     //     AnimationController(vsync: this, duration: Duration(seconds: 1));
@@ -171,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                   )).show();
                                             } else {
                                               accountsController
-                                                  .getAccounts(clientID.text,
+                                                  .getAccounts(user.userID,
                                                       user.sessionToken)
                                                   .then((accounts) {
                                                 pr.hide();
@@ -201,6 +204,12 @@ class _LoginScreenState extends State<LoginScreen>
                       ),
                       SizedBox(height: 10),
                       FlatButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ResetPassword()));
+                        },
                         child: Text(
                           'Forget Password?',
                           textAlign: TextAlign.center,
