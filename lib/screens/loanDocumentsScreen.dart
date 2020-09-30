@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/constants.dart';
+import 'package:g2g/controllers/loanDocController.dart';
 import 'package:g2g/models/accountModel.dart';
+import 'package:g2g/models/loanDocModel.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/loginScreen.dart';
+import 'package:g2g/utility/pref_helper.dart';
 import 'package:g2g/widgets/custom_loandoc_item.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,12 +28,14 @@ class _LoanDocumentsState extends State<LoanDocuments> {
   double _width;
   double _pixelRatio;
   bool _isLarge;
+
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+
     return Scaffold(
       drawer: NavigationDrawer(),
       key: _documentScaffoldKey,
@@ -41,32 +48,27 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     fit: BoxFit.cover)),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              left: 10.0
-            ),
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
             child: AppBar(
               leading: CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Color(0xffccebf2),
-                    child: IconButton(
-                      onPressed: () {
-                        _documentScaffoldKey.currentState.openDrawer();
-                      },
-                      icon: Icon(
-                        Icons.menu,
-                        color: kSecondaryColor,
-                        size: _isLarge ? 35 : 30,
-                      ),
-                    ),
+                radius: 25,
+                backgroundColor: Color(0xffccebf2),
+                child: IconButton(
+                  onPressed: () {
+                    _documentScaffoldKey.currentState.openDrawer();
+                  },
+                  icon: Icon(
+                    Icons.menu,
+                    color: kSecondaryColor,
+                    size: _isLarge ? 35 : 30,
                   ),
-
-      
+                ),
+              ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-               SizedBox(),
+                  SizedBox(),
                   CircleAvatar(
                     radius: 25,
                     backgroundColor: Color(0xffccebf2),
@@ -93,50 +95,68 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             bottom: 0.0,
             right: 0.0,
             //here the body
-            child:Card(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      buildHeader(),
-                      buildListHeader(),
-                      SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            for (int i = 0; i < 3; i++)
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.0),
-                                child: buildDocumentCard(widget.account),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      FlatButton(
-                          color: kSecondaryColor,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text('BACK',
-                                style: TextStyle(
-                                    fontSize: _isLarge ? 25 : 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white)),
-                          )),
-                    ],
-                  ),
-                ]),
+            child: Card(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    buildHeader(),
+                    buildListHeader(),
+                    FutureBuilder(
+                      future:
+                          Provider.of<LoanDocController>(context, listen: false)
+                              .fetchLoanDocList(widget.account.accountID),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: SpinKitThreeBounce(color: Theme.of(context).accentColor,size: _width*0.14,),
+                          );
+                        } else {
+                          if (snapshot.error != null) {
+                            return Center(
+                              child: Text('Error occured'),
+                            );
+                          } else {
+                            return Expanded(
+                              child: Consumer<LoanDocController>(
+                                  builder: (ctx, docData, _) =>
+                                      ListView.builder(
+                                        itemBuilder: (ctx, index) {
+                                          return CustomLoandocItem(
+                                              docData.getLoanDocList[index],
+                                              _isLarge);
+                                        },
+                                        itemCount:
+                                            docData.getLoanDocList.length,
+                                      )),
+                            );
+                          }
+                        }
+                      },
+                    ),
+                    SizedBox(height: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        FlatButton(
+                            color: kSecondaryColor,
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text('BACK',
+                                  style: TextStyle(
+                                      fontSize: _isLarge ? 25 : 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
+                            )),
+                      ],
+                    ),
+                  ]),
+            ),
           ),
-        ),  
         ],
       ),
     );
@@ -144,6 +164,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
 
   Container buildListHeader() {
     return Container(
+      alignment: Alignment.topCenter,
       margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),
       child: Column(
         children: [
@@ -154,23 +175,25 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                 flex: 2,
                 child: Text('DATE',
                     style: TextStyle(
-                        fontSize: _isLarge ? 14 : 12, fontWeight: FontWeight.bold)),
+                        fontSize: _isLarge ? 14 : 12,
+                        fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 4,
                 child: Text('NAME',
                     style: TextStyle(
-                        fontSize: _isLarge ? 14 : 12, fontWeight: FontWeight.bold)),
+                        fontSize: _isLarge ? 14 : 12,
+                        fontWeight: FontWeight.bold)),
               ),
               Text('ACTIONS',
                   style: TextStyle(
-                      fontSize: _isLarge ? 14 : 12, fontWeight: FontWeight.bold))
-            ,
-             ],
+                      fontSize: _isLarge ? 14 : 12,
+                      fontWeight: FontWeight.bold)),
+            ],
           ),
           Divider(
-          color: Colors.black54,
-        )
+            color: Colors.black54,
+          )
         ],
       ),
     );
@@ -237,9 +260,5 @@ class _LoanDocumentsState extends State<LoanDocuments> {
         ],
       ),
     );
-  }
-
-  Widget buildDocumentCard(Account account) {
-    return CustomLoandocItem(account, _isLarge);
   }
 }

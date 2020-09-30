@@ -19,7 +19,8 @@ Map<String, String> hashSHA256(String clientIDAndPassword){
   return {'salt':salt,'hash':hash};
 }
 void tripleDES(){
-  var key = "#finPOWERTesting@!@#\$###";
+  //var key = "#finPOWERTesting@!@#\$###";
+  var key = "#finPOWERTesting@!@#\$##";
   var blockCipher =  BlockCipher(TripleDESEngine(), key);
   var message = "Good2Go Loans";
   var ciphertext = blockCipher.encodeB64(message);
@@ -45,4 +46,12 @@ void tripleDESNew()async{
   var decryptBase64 = await Flutter3des.decryptFromBase64(encryptBase64, key);
   print(encryptBase64);
   print(decryptBase64);
+}
+
+String getEncryptPassword(String password){
+  String key = "#finPOWERTesting@!@#\\\$##";
+  var blockCipher = BlockCipher(TripleDESEngine(), key);
+  var ciphertext = blockCipher.encodeB64(password);
+  print(ciphertext);
+  return ciphertext;
 }
