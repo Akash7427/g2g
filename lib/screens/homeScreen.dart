@@ -113,10 +113,177 @@ class _HomeScreenState extends State<HomeScreen>
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
 
     return Scaffold(
-      body: setUserForm(),
-      extendBodyBehindAppBar: true,
       key: _homeScreenScaffold,
       drawer: NavigationDrawer(),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0, // this will be set when a new tab is tapped
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/loan.png'),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'My Loans',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/apply_now.png'),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'Apply Now',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/connect.png'),
+                  size: _isLarge ? 38 : 25, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'Connect',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: new Stack(
+        children: <Widget>[
+          new Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: const AssetImage('images/bg.jpg'),
+                    fit: BoxFit.cover)),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+              child: AppBar(
+                leading: CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Color(0xffccebf2),
+                  child: IconButton(
+                    onPressed: () {
+                      _homeScreenScaffold.currentState.openDrawer();
+                    },
+                    icon: Icon(
+                      Icons.menu,
+                      color: kSecondaryColor,
+                      size: _isLarge ? 35 : 30,
+                    ),
+                  ),
+                ),
+                title: Text('Hi ${widget.client.fullName.split(' ')[0]}',
+                    //widget.client.fullName.split(' ')[0]
+                    style: TextStyle(
+                        fontSize: _isLarge ? 28 : 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black)),
+                centerTitle: true,
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                actions: [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color(0xffccebf2),
+                    child: IconButton(
+                      onPressed: () {
+                        launch("tel://1300197727");
+                      },
+                      icon: Icon(
+                        Icons.call,
+                        color: kSecondaryColor,
+                        size: _isLarge ? 35 : 30,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+              // AppBar(
+              //   title: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //       CircleAvatar(
+              //         radius: 25,
+              //         backgroundColor: Color(0xffccebf2),
+              //         child: IconButton(
+              //           onPressed: () {
+              //             _homeScreenScaffold.currentState.openDrawer();
+              //           },
+              //           icon: Icon(
+              //             Icons.menu,
+              //             color: kSecondaryColor,
+              //             size: 30,
+              //           ),
+              //         ),
+              //       ),
+              //       Text('Hi ${widget.client.fullName.split(' ')[0]}',
+              //           //widget.client.fullName.split(' ')[0]
+              //           style: TextStyle(
+              //               fontSize: _isLarge ? 28 : 22,
+              //               fontWeight: FontWeight.bold,
+              //               color: Colors.black)),
+              //       CircleAvatar(
+              //         radius: 25,
+              //         backgroundColor: Color(0xffccebf2),
+              //         child: IconButton(
+              //           onPressed: () {
+              //             launch("tel://1300197727");
+              //           },
+              //           icon: Icon(
+              //             Icons.call,
+              //             color: kSecondaryColor,
+              //             size: _isLarge ? 35 : 30,
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              //   backgroundColor: Colors.transparent,
+              //   elevation: 0.0,
+              // ),
+              ),
+          new Positioned(
+            top: 100.0,
+            left: 0.0,
+            bottom: 0.0,
+            right: 0.0,
+            //here the body
+            child: PageView.builder(
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return buildPage(context, widget.accounts[index]);
+              },
+              itemCount: widget.accounts.length,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -472,16 +639,16 @@ class _HomeScreenState extends State<HomeScreen>
                                     padding: EdgeInsets.symmetric(
                                         vertical: 8.0),
                                     child: Text(
-                                            '\$300',
-                                            style: TextStyle(
-                                                fontSize: 28,
-                                                fontWeight: FontWeight.bold,
-                                                color: kSecondaryColor),
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
+                                      '\$300',
+                                      style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold,
+                                          color: kSecondaryColor),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
                                               vertical: 10.0),
                                           child: Row(
                                             mainAxisAlignment:

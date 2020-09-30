@@ -1,13 +1,17 @@
 class Client {
   String sessionToken, fullName, userID;
   bool userPasswordForceChange;
+
   Client.fromJson(Map<String, dynamic> json)
-      : fullName = json['FullName'],
-        sessionToken = json['SessionToken'],
-        userID = json['ClientId'],
-        userPasswordForceChange = json['UserPasswordForceChange'];
+      : fullName = json['ClientAuthentication']['SessionDetails']['FullName'],
+        sessionToken =
+            json['ClientAuthentication']['SessionDetails']['SessionToken'],
+        userID = json['ClientAuthentication']['ClientID'],
+        userPasswordForceChange =
+            json['ClientAuthentication']['UserPasswordForceChange'];
+
   Map<String, dynamic> toJson() => {
-        'ClientId': userID,
+        'UserId': userID,
         'FullName': fullName,
         'SessionToken': sessionToken,
         'UserPasswordForceChange': userPasswordForceChange
