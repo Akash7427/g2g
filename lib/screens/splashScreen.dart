@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
               print(prefs.getBool('isLoggedIn'));
               if(prefs.getBool('isLoggedIn')??false)
             {
-               
+               await ClientController().authenticateUser();
               user=await ClientController().authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),prefs.getString(PrefHelper.PREF_PASSWORD),true);
               accounts=await AccountsController().getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user,accounts)));
