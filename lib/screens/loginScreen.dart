@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:g2g/components/progressDialog.dart';
@@ -6,8 +8,10 @@ import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/homeScreen.dart';
+import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:tripledes/tripledes.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -142,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen>
                                           clientController
                                               .authenticateClient(
                                             clientID.text,
-                                            password.text,
+                                            getEncryptPassword(password.text),
                                           )
                                               .then(
                                             (user) async {
@@ -225,6 +229,12 @@ class _LoginScreenState extends State<LoginScreen>
                             color: Colors.grey,
                           ),
                         ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ResetPassword()));
+                        },
                       ),
                       SizedBox(height: 20),
                     ],
@@ -281,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen>
         inputFormatters: obscureText
             ? null
             : [
-                UpperCaseTextFormatter(),
+                // UpperCaseTextFormatter(),
               ],
         validator: (value) {
           if (value.isEmpty)
@@ -323,6 +333,14 @@ class _LoginScreenState extends State<LoginScreen>
         controller: controller,
       ),
     );
+  }
+
+  String getEncryptPassword(String password) {
+    String key = "#finPOWERTesting@!@#\\\$##";
+    var blockCipher = BlockCipher(TripleDESEngine(), key);
+    var ciphertext = blockCipher.encodeB64(password);
+    print(ciphertext);
+    return ciphertext;
   }
 }
 

@@ -39,12 +39,13 @@ class ClientController {
     String password,
   ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isWebAuthenticated = prefs.getString('password') != null;
-    String ePass =
-        isWebAuthenticated ? password : getEncryptPassword(password.toString());
-    print('pass' + ePass);
+    // bool isWebAuthenticated = prefs.getString('password') != null;
+    // String ePass =
+    //     isWebAuthenticated ? password : getEncryptPassword(password.toString());
+    // print('pass' + ePass);
+    //
     String envelope =
-        '<ClientAuthentication>\r\n<UserID>$clientID<\/UserID>\r\n<Password>$ePass<\/Password>\r\n<\/ClientAuthentication>';
+        '<ClientAuthentication>\r\n<UserID>$clientID<\/UserID>\r\n<Password>$password<\/Password>\r\n<\/ClientAuthentication>';
     http.Response response = await http.post(
       '$apiBaseURL/custom/ClientLogin',
       headers: <String, String>{
@@ -70,17 +71,17 @@ class ClientController {
     //   innerJson = _getValue(item.findElements("SessionDetails"));
     // }).toList();
     if (jsonDecode(json)['ClientAuthentication']['SessionError'] != null) {
-      return await authenticateClient(clientID, ePass);
+      return await authenticateClient(clientID, password);
     } else if (innerJson['SessionToken'] != null) {
       prefs.setBool('isLoggedIn', true);
       prefs.setString(PrefHelper.PREF_USER_ID, clientID);
       prefs.setString(PrefHelper.Pref_CLIENT_ID, innerJson['ClientId']);
       prefs.setString(PrefHelper.PREF_SESSION_TOKEN, innerJson['SessionToken']);
-      prefs.setString(PrefHelper.PREF_PASSWORD, ePass);
+      prefs.setString(PrefHelper.PREF_PASSWORD, password);
       // prefs.setString('user', response.body);
       return Client.fromJson(innerJson);
     } else if (jsonDecode(response.body)["Code"] == "Subscriber.InvalidHash") {
-      return await authenticateClient(clientID, ePass);
+      return await authenticateClient(clientID, password);
     } else {
       return null;
     }
@@ -89,13 +90,15 @@ class ClientController {
   Future<Map> getClientBasic() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
-        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString('clientID')}',
+        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}',
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:
-              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
+              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
         });
     print(response.body);
+    print('link' +
+        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString('clientID')}');
     return jsonDecode(response.body);
   }
 }

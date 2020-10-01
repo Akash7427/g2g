@@ -63,15 +63,18 @@ class _SplashScreenState extends State<SplashScreen> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       print(prefs.getBool('isLoggedIn'));
-      if (prefs.getString(PrefHelper.PREF_AUTH_TOKEN) == null) {
-        await ClientController().authenticateUser();
-        print(prefs.getString(PrefHelper.PREF_AUTH_TOKEN));
-      }
-      if (prefs.getBool('isLoggedIn') == true) {
+
+      if ((prefs.getBool('isLoggedIn') == true)) {
+        if (prefs.getString(PrefHelper.PREF_AUTH_TOKEN) == null) {
+          await ClientController().authenticateUser();
+          print(prefs.getString(PrefHelper.PREF_AUTH_TOKEN));
+        }
         user = await ClientController().authenticateClient(
-            prefs.getString('clientID'), prefs.getString('password'));
-        accounts = await AccountsController()
-            .getAccounts(prefs.getString('clientID'), user.sessionToken);
+            prefs.getString(PrefHelper.PREF_USER_ID),
+            prefs.getString(PrefHelper.PREF_PASSWORD));
+        accounts = await AccountsController().getAccounts(
+            prefs.getString(PrefHelper.Pref_CLIENT_ID),
+            prefs.getString(PrefHelper.PREF_SESSION_TOKEN));
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => HomeScreen(user, accounts)));
       } else {
