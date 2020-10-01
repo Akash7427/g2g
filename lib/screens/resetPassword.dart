@@ -3,28 +3,30 @@ import 'package:flutter/services.dart';
 import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/accountsController.dart';
-import 'package:g2g/controllers/clientController.dart';
+import 'package:g2g/controllers/resetController.dart';
 import 'package:g2g/responsive_ui.dart';
-import 'package:g2g/screens/homeScreen.dart';
+import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/utility/hashSha256.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class LoginScreen extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _ResetPasswordState extends State<ResetPassword>
     with SingleTickerProviderStateMixin {
-  final _loginFormKey = GlobalKey<FormState>();
-  final clientID = TextEditingController();
-  final password = TextEditingController();
-  final clientController = ClientController();
+  final _resetPasswordFormKey = GlobalKey<FormState>();
+  final userID = TextEditingController();
+  final emailID = TextEditingController();
+  final mobileNumber = TextEditingController();
+  final resetController = ResetController();
   final accountsController = AccountsController();
   bool _autoValidate = false;
   AnimationController animationController;
   Animation animation;
   final userIDNode = FocusNode();
+  final emailIDNode = FocusNode();
   final pwdNode = FocusNode();
   double _height;
   double _width;
@@ -35,6 +37,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
+
     tripleDES();
     // animationController =
     //     AnimationController(vsync: this, duration: Duration(seconds: 1));
@@ -80,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen>
                         height: _isLarge ? 400 : 150,
                       ),
                       Text(
-                        'Log in to your account',
+                        'Reset Password',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 28,
@@ -93,24 +96,27 @@ class _LoginScreenState extends State<LoginScreen>
                         padding: EdgeInsets.all(10),
                         child: Form(
                           autovalidate: _autoValidate,
-                          key: _loginFormKey,
+                          key: _resetPasswordFormKey,
                           child: Card(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                buildFormField(Icons.person_outline, clientID,
-                                    'Email', userIDNode, pwdNode),
+                                buildFormField(Icons.person_outline, userID,
+                                    'UserID', userIDNode, emailIDNode),
                                 SizedBox(height: 15),
-                                buildFormField(Icons.lock, password, 'Password',
-                                    pwdNode, null,
-                                    obscureText: true),
+                                buildFormField(Icons.person_outline, emailID,
+                                    'Email Address', emailIDNode, pwdNode),
+                                SizedBox(height: 15),
+                                buildFormField(Icons.lock, mobileNumber,
+                                    'Password', pwdNode, null,
+                                    obscureText: false),
                                 SizedBox(height: 10),
                                 Container(
                                   child: RaisedButton(
                                     padding: EdgeInsets.all(10),
                                     child: Text(
-                                      'Login'.toUpperCase(),
+                                      'Reset'.toUpperCase(),
                                       style: TextStyle(
                                           fontSize: _isLarge ? 26 : 20,
                                           fontWeight: FontWeight.bold,
@@ -120,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen>
                                     // padding: EdgeInsets.only(
                                     //     top: 15, bottom: 15, left: 15, right: 15),
                                     onPressed: () async {
-                                      if (_loginFormKey.currentState
+                                      if (_resetPasswordFormKey.currentState
                                           .validate()) {
                                         final pr = ProgressDialog(context,
                                             isLogin: true);
@@ -128,81 +134,58 @@ class _LoginScreenState extends State<LoginScreen>
                                           pr.show();
                                         });
 
-                                        clientController
-                                            .authenticateUser()
-                                            .then((value) async {
-                                          if (value == null) {
-                                            Scaffold.of(context)
-                                                .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  'Something went wrong please try again!'),
-                                            ));
-                                            return;
-                                          }
-                                          clientController
-                                              .authenticateClient(
-                                            clientID.text,
-                                            password.text,
-                                          )
-                                              .then(
-                                            (user) async {
-                                              if (user == null) {
-                                                pr.hide();
-                                                Alert(
-                                                    context: context,
-                                                    title:
-                                                        'Invalid Credentials',
-                                                    type: AlertType.error,
-                                                    buttons: [
-                                                      DialogButton(
-                                                        child: Text(
-                                                          "Close",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: _isLarge
-                                                                  ? 24
-                                                                  : 18),
-                                                        ),
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                context),
-                                                        color: kPrimaryColor,
-                                                        radius: BorderRadius
-                                                            .circular(0.0),
+                                        resetController
+                                            .authenticateClient(userID.text,
+                                                emailID.text, mobileNumber.text)
+                                            .then(
+                                          (reset) async {
+                                            if (reset.IsExisting == 'FALSE') {
+                                              pr.hide();
+                                              Alert(
+                                                  context: context,
+                                                  title: '${reset.Message}',
+                                                  type: AlertType.error,
+                                                  buttons: [
+                                                    DialogButton(
+                                                      child: Text(
+                                                        "Close",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: _isLarge
+                                                                ? 24
+                                                                : 18),
                                                       ),
-                                                    ],
-                                                    style: AlertStyle(
-                                                      animationType:
-                                                          AnimationType.fromTop,
-                                                      isCloseButton: false,
-                                                      isOverlayTapDismiss:
-                                                          false,
-                                                      titleStyle: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: _isLarge
-                                                              ? 24
-                                                              : 18),
-                                                    )).show();
-                                              } else {
-                                                accountsController
-                                                    .getAccounts(user.userID,
-                                                        user.sessionToken)
-                                                    .then((accounts) {
-                                                  pr.hide();
-                                                  Navigator.pushAndRemoveUntil(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              HomeScreen(user,
-                                                                  accounts)),
-                                                      (route) => false);
-                                                });
-                                              }
-                                            },
-                                          );
-                                        });
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      color: kPrimaryColor,
+                                                      radius:
+                                                          BorderRadius.circular(
+                                                              0.0),
+                                                    ),
+                                                  ],
+                                                  style: AlertStyle(
+                                                    animationType:
+                                                        AnimationType.fromTop,
+                                                    isCloseButton: false,
+                                                    isOverlayTapDismiss: false,
+                                                    titleStyle: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize:
+                                                            _isLarge ? 24 : 18),
+                                                  )).show();
+                                            } else {
+                                              pr.hide();
+                                              Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LoginScreen()),
+                                                  (route) => false);
+                                            }
+                                          },
+                                        );
                                       } else {
                                         setState(() {
                                           _autoValidate = true;
@@ -213,16 +196,6 @@ class _LoginScreenState extends State<LoginScreen>
                                 ),
                               ],
                             ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      FlatButton(
-                        child: Text(
-                          'Forget Password?',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.grey,
                           ),
                         ),
                       ),
@@ -278,14 +251,10 @@ class _LoginScreenState extends State<LoginScreen>
     return Container(
       child: TextFormField(
         cursorColor: kPrimaryColor,
-        inputFormatters: obscureText
-            ? null
-            : [
-                UpperCaseTextFormatter(),
-              ],
+        inputFormatters: obscureText ? null : [],
         validator: (value) {
           if (value.isEmpty)
-            return obscureText ? 'Password Required' : 'Email ID Required';
+            return obscureText ? 'Password Required' : 'ID Required';
           return null;
         },
         textInputAction:

@@ -6,6 +6,7 @@ import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/editProfile.dart';
 import 'package:g2g/screens/twakToScreen.dart';
+import 'package:g2g/screens/updatePasswordScreen.dart';
 
 class NavigationDrawer extends StatefulWidget {
   @override
@@ -173,7 +174,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => TawkToScreen()),
-                                      (r) => r.isFirst);
+                                  (r) => r.isFirst);
                               // Update the state of the app.
                               // ...
                             },
@@ -190,7 +191,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             leading: ImageIcon(AssetImage('images/lock.png'),
                                 size: _isLarge ? 28 : 24, color: kWhiteColor),
                             title: Text(
-                              'Reset Password',
+                              'Update Password',
                               style: TextStyle(
                                   fontSize: _isLarge ? 22 : 18,
                                   color: kWhiteColor),
@@ -198,6 +199,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             onTap: () {
                               // Update the state of the app.
                               // ...
+                              setState(() {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            UpdatePassword()));
+                              });
                             },
                           ),
                         ],
@@ -206,10 +214,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         height: 40,
                       ),
                       Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
+                        width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.only(
                             right: 20, left: 20, top: 10, bottom: 30),
                         height: 100,
