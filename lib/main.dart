@@ -3,6 +3,7 @@ import 'package:g2g/constants.dart';
 import 'package:g2g/screens/splashScreen.dart';
 import 'package:provider/provider.dart';
 
+import 'controllers/file_doc_controller.dart';
 import 'controllers/loanDocController.dart';
 
 void main() =>runApp(Good2GoApp());
@@ -19,6 +20,8 @@ class _Good2GoAppState extends State<Good2GoApp> {
     return MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (ctx)=>  LoanDocController()),
+            ChangeNotifierProvider(create: (ctx)=>  FileDocController()),
+
           ],
           child: MaterialApp(
         theme: ThemeData(

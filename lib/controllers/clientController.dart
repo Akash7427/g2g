@@ -66,7 +66,7 @@ class ClientController {
     //   innerJson = _getValue(item.findElements("SessionDetails"));
     // }).toList();
     if(jsonDecode(json)['ClientAuthentication']['SessionError']!=null){
-        return await authenticateClient(clientID, ePass,isWebAuthenticated);
+        return await authenticateClient(clientID, password,isWebAuthenticated);
     }
 
    else if (innerJson['SessionToken'] != null) {
