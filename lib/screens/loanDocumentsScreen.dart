@@ -124,6 +124,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                                       ListView.builder(
                                         itemBuilder: (ctx, index) {
                                           return CustomLoandocItem(
+                                            widget.account.accountID,
                                               docData.getLoanDocList[index],
                                               _isLarge);
                                         },
