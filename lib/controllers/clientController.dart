@@ -93,7 +93,7 @@ class ClientController {
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:
-          'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
+              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
         });
     print(response.body);
     return jsonDecode(response.body);

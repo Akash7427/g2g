@@ -782,8 +782,8 @@ class _HomeScreenState extends State<HomeScreen>
                                     )
                                   ],
                                 ))
-                    ],
-                  )
+                          ],
+                        )
                 ]),
               ),
             ),
@@ -989,15 +989,14 @@ class _HomeScreenState extends State<HomeScreen>
                         pr.show();
                         transactionsController
                             .getTransactions(
-                            account.accountID, widget.client.sessionToken)
+                                account.accountID, widget.client.sessionToken)
                             .then((transactions) {
                           pr.hide();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      TransactionsScreen(
-                                          account, transactions)));
+                                  builder: (context) => TransactionsScreen(
+                                      account, transactions)));
                         });
                       },
                       leading: ImageIcon(

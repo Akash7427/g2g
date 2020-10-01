@@ -83,17 +83,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    _pixelRatio = MediaQuery
-        .of(context)
-        .devicePixelRatio;
-    _width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    _height = MediaQuery.of(context).size.height;
+    _pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     return Scaffold(
       body: Container(
@@ -104,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 image: AssetImage('images/bg.jpg'),
                 fit: BoxFit.cover,
                 colorFilter:
-                ColorFilter.mode(Colors.black12, BlendMode.overlay))),
+                    ColorFilter.mode(Colors.black12, BlendMode.overlay))),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
