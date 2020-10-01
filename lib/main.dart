@@ -19,7 +19,7 @@ class _Good2GoAppState extends State<Good2GoApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
           providers: [
-            ChangeNotifierProvider(create: (ctx)=>  LoanDocController()),
+            ChangeNotifierProvider(create: (ctx)=>  LoanDocController()),//This is provider
             ChangeNotifierProvider(create: (ctx)=>  FileDocController()),
 
           ],
