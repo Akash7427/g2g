@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/controllers/file_doc_controller.dart';
 import 'package:g2g/controllers/loanDocController.dart';
 
@@ -21,11 +22,10 @@ class CustomLoandocItem extends StatefulWidget {
 }
 
 class _CustomLoandocItemState extends State<CustomLoandocItem> {
-  
+  bool isloading = false;
   @override
   Widget build(BuildContext context) {
-    var fileDocPro= Provider.of<FileDocController>(context,
-                                listen: false);
+    var fileDocPro = Provider.of<FileDocController>(context, listen: false);
     return Column(
       children: [
         Container(
@@ -63,23 +63,17 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
                 children: [
                   InkWell(
                     onTap: () {
-                     
                       fileDocPro.fetchDoc(
-                                widget.accountId,
-                                widget.loanDocModel.getDocPk,
-                                widget.loanDocModel.getDocFileName);
-                      
-                            
-                                
-
-                               
-                             
-                            
-                          
+                          widget.accountId,
+                          widget.loanDocModel.getDocPk,
+                          widget.loanDocModel.getDocFileName);
                     },
-                    child: ImageIcon(
-                      AssetImage("images/eye_icon.png"),
-                      color: Color(0xFF3A5A98),
+                    child: InkWell(
+                      onTap: () {},
+                      child: ImageIcon(
+                        AssetImage("images/eye_icon.png"),
+                        color: Color(0xFF3A5A98),
+                      ),
                     ),
                   ),
                   SizedBox(width: 12.0),

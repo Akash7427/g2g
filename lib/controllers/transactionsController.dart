@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:g2g/constants.dart';
 import 'package:g2g/models/transactionModel.dart';
+import 'package:g2g/utility/pref_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +19,7 @@ class TransactionsController {
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:
-              'AuthFinWs token="${prefs.getString('SessionToken')}"'
+              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
         });
     print(jsonDecode(response.body));
     for (Map m in jsonDecode(response.body))
