@@ -19,7 +19,7 @@ class LoanDocController with ChangeNotifier {
     http.Response response = await http.get(
         '$apiBaseURL/custom/GetAccountDocuments?AccountID=$accountID&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}',
         headers: {
-          'Content-Type': 'application/json',
+          //    'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:
               'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
         });
