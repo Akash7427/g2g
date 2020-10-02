@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:g2g/constants.dart';
+import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/screens/splashScreen.dart';
 import 'package:provider/provider.dart';
 
+import 'controllers/accountsController.dart';
 import 'controllers/file_doc_controller.dart';
 import 'controllers/loanDocController.dart';
 
@@ -21,6 +23,8 @@ class _Good2GoAppState extends State<Good2GoApp> {
           providers: [
             ChangeNotifierProvider(create: (ctx)=>  LoanDocController()),//This is provider
             ChangeNotifierProvider(create: (ctx)=>  FileDocController()),
+            ChangeNotifierProvider(create:(ctx)=> ClientController()),
+            ChangeNotifierProvider(create:(ctx)=> AccountsController())
 
           ],
           child: MaterialApp(

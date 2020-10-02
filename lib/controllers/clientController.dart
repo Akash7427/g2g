@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/utility/hashSha256.dart';
 
@@ -11,42 +12,47 @@ import 'package:xml/xml.dart' as xml;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xml2json/xml2json.dart';
 
-class ClientController {
+class ClientController with ChangeNotifier {
+  Client client;
+  String clientName='';
 
-  Future<String> authenticateUser()async{
-     SharedPreferences prefs=await SharedPreferences.getInstance();
-     var userID = 'WEBSERVICES';
-     var password = 'G2GW3bs3rv1c35';
-     Map hashAndSalt =hashSHA256(userID+ password);
-     print('$apiBaseURL/Authentication/AuthenticateUser?subscriberId=$subscriberID&userId=$userID&password=$password&hash=${hashAndSalt['hash']}&hashSalt=${hashAndSalt['salt']}');
+  Future<String> authenticateUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userID = 'WEBSERVICES';
+    var password = 'G2GW3bs3rv1c35';
+    Map hashAndSalt = hashSHA256(userID + password);
 
-     http.Response response=await http.get('$apiBaseURL/Authentication/AuthenticateUser?subscriberId=$subscriberID&userId=$userID&password=$password&hash=${hashAndSalt['hash']}&hashSalt=${hashAndSalt['salt']}');
+    print(
+        '$apiBaseURL/Authentication/AuthenticateUser?subscriberId=$subscriberID&userId=$userID&password=$password&hash=${hashAndSalt['hash']}&hashSalt=${hashAndSalt['salt']}');
+
+    http.Response response = await http.get(
+        '$apiBaseURL/Authentication/AuthenticateUser?subscriberId=$subscriberID&userId=$userID&password=$password&hash=${hashAndSalt['hash']}&hashSalt=${hashAndSalt['salt']}');
     print(response.body);
     var webUserResponse = jsonDecode(response.body);
-    if (webUserResponse['SessionToken'] !=null){
-      
-      prefs.setString(PrefHelper.PREF_AUTH_TOKEN,webUserResponse['SessionToken'] );
-      
+    if (webUserResponse['SessionToken'] != null) {
+      prefs.setString(
+          PrefHelper.PREF_AUTH_TOKEN, webUserResponse['SessionToken']);
+
       // prefs.setString('user', response.body);
       return webUserResponse['SessionToken'];
-    
-     
-    }
-    else if (webUserResponse["Code"] =="Subscriber.InvalidHash"){
-       return await authenticateUser();
+    } else if (webUserResponse["Code"] == "Subscriber.InvalidHash") {
+      return await authenticateUser();
     }
     return null;
   }
-  Future<Client> authenticateClient(String clientID,String password,bool isWebAuthenticated) async {
+
+  Future<Client> authenticateClient(
+      String clientID, String password, bool isWebAuthenticated) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String ePass = isWebAuthenticated?password:getEncryptPassword(password);
+    String ePass = isWebAuthenticated ? password : getEncryptPassword(password);
     String envelope =
         '<ClientAuthentication>\r\n<UserID>$clientID<\/UserID>\r\n<Password>$ePass<\/Password>\r\n<\/ClientAuthentication>';
     http.Response response = await http.post(
       '$apiBaseURL/custom/ClientLogin',
       headers: <String, String>{
         'Content-Type': 'text/plain',
-        'Authorization': 'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
+        'Authorization':
+            'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
       },
       body: envelope,
     );
@@ -65,20 +71,21 @@ class ClientController {
     // items.map((xml.XmlElement item) {
     //   innerJson = _getValue(item.findElements("SessionDetails"));
     // }).toList();
-    if(jsonDecode(json)['ClientAuthentication']['SessionError']!=null){
-        return await authenticateClient(clientID, password,isWebAuthenticated);
-    }
-
-   else if (innerJson['SessionToken'] != null) {
+    if (jsonDecode(json)['ClientAuthentication']['SessionError'] != null) {
+      return await authenticateClient(clientID, password, isWebAuthenticated);
+    } else if (innerJson['SessionToken'] != null) {
       prefs.setBool('isLoggedIn', true);
-      prefs.setString(PrefHelper.PREF_USER_ID,clientID);
+      prefs.setString(PrefHelper.PREF_USER_ID, clientID);
       prefs.setString(PrefHelper.Pref_CLIENT_ID, innerJson['ClientId']);
       prefs.setString(PrefHelper.PREF_SESSION_TOKEN, innerJson['SessionToken']);
       prefs.setString(PrefHelper.PREF_PASSWORD, ePass);
+      prefs.setString(PrefHelper.PREF_FULLNAME,innerJson['FullName']);
       // prefs.setString('user', response.body);
-      return Client.fromJson(innerJson);
+      client = Client.fromJson(innerJson);
+      notifyListeners();
+      return client;
     } else if (jsonDecode(response.body)["Code"] == "Subscriber.InvalidHash") {
-      return await authenticateClient(clientID, ePass,isWebAuthenticated);
+      return await authenticateClient(clientID, ePass, isWebAuthenticated);
     } else {
       return null;
     }
@@ -104,4 +111,15 @@ class ClientController {
     print(response.body);
     return jsonDecode(response.body);
   }
+
+  Future<void>  fetchClientNameofSharedP() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    clientName =  prefs.getString(PrefHelper.PREF_FULLNAME);
+  }
+
+  String get getClientName{
+    return clientName;
+  }
+
+  
 }

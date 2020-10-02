@@ -6,7 +6,7 @@ class PrefHelper{
   static final String PREF_USER_ID = 'pref_user_id';
   static final String Pref_CLIENT_ID = 'pref_client_id';
   static final String PREF_PASSWORD = 'pref_password';
-  static final String PREF_TEST = 'pref_test';
+  static final String PREF_FULLNAME = 'pref_fullname';
 
 
  

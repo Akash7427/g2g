@@ -39,6 +39,63 @@ class _LoanDocumentsState extends State<LoanDocuments> {
     return Scaffold(
       drawer: NavigationDrawer(),
       key: _documentScaffoldKey,
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0, // this will be set when a new tab is tapped
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/loan.png'),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'My Loans',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/apply_now.png'),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'Apply Now',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/connect.png'),
+                  size: _isLarge ? 38 : 25, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'Connect',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           new Container(

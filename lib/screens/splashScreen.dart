@@ -13,6 +13,7 @@ import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/homeScreen.dart';
 import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/utility/pref_helper.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class SplashScreen extends StatefulWidget {
   
@@ -75,8 +76,8 @@ class _SplashScreenState extends State<SplashScreen> {
             {
                await ClientController().authenticateUser();
               user=await ClientController().authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),prefs.getString(PrefHelper.PREF_PASSWORD),true);
-              accounts=await AccountsController().getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user,accounts)));
+              accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user)));
               }
               else{
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));

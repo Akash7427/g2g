@@ -7,6 +7,7 @@ import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/homeScreen.dart';
 import 'package:g2g/utility/hashSha256.dart';
+import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -20,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen>
   final clientID = TextEditingController();
   final password = TextEditingController();
   final clientController = ClientController();
-  final accountsController = AccountsController();
+  
   bool _autoValidate = false;
   AnimationController animationController;
   Animation animation;
@@ -184,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                               : 18),
                                                     )).show();
                                               } else {
-                                                accountsController
+                                                Provider.of<AccountsController>(context)
                                                     .getAccounts(user.userID,
                                                         user.sessionToken)
                                                     .then((accounts) {
@@ -194,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               HomeScreen(user,
-                                                                  accounts)),
+                                                                  )),
                                                       (route) => false);
                                                 });
                                               }
