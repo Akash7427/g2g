@@ -69,9 +69,29 @@ class _ResetPasswordState extends State<ResetPassword>
           },
           child: ListView(
             children: [
+              SafeArea(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  alignment: Alignment.bottomLeft,
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color(0xffccebf2),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: kSecondaryColor,
+                        size: _isLarge ? 35 : 30,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 60, bottom: 10, left: 20, right: 20.0),
+                    top: 30, bottom: 10, left: 20, right: 20.0),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   color: Colors.white,
@@ -108,8 +128,8 @@ class _ResetPasswordState extends State<ResetPassword>
                                 buildFormField(Icons.person_outline, emailID,
                                     'Email Address', emailIDNode, pwdNode),
                                 SizedBox(height: 15),
-                                buildFormField(Icons.lock, mobileNumber,
-                                    'Password', pwdNode, null,
+                                buildFormField(Icons.call, mobileNumber,
+                                    'Mobile Number', pwdNode, null,
                                     obscureText: false),
                                 SizedBox(height: 10),
                                 Container(
@@ -176,6 +196,40 @@ class _ResetPasswordState extends State<ResetPassword>
                                                             _isLarge ? 24 : 18),
                                                   )).show();
                                             } else {
+                                              Alert(
+                                                  context: context,
+                                                  title: '${reset.Message}',
+                                                  type: AlertType.success,
+                                                  buttons: [
+                                                    DialogButton(
+                                                      child: Text(
+                                                        "Close",
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: _isLarge
+                                                                ? 24
+                                                                : 18),
+                                                      ),
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      color: kPrimaryColor,
+                                                      radius:
+                                                          BorderRadius.circular(
+                                                              0.0),
+                                                    ),
+                                                  ],
+                                                  style: AlertStyle(
+                                                    animationType:
+                                                        AnimationType.fromTop,
+                                                    isCloseButton: false,
+                                                    isOverlayTapDismiss: false,
+                                                    titleStyle: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize:
+                                                            _isLarge ? 24 : 18),
+                                                  )).show();
                                               pr.hide();
                                               Navigator.pushAndRemoveUntil(
                                                   context,

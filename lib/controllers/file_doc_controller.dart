@@ -15,9 +15,11 @@ import 'package:http/http.dart' as http;
 import '../constants.dart';
 
 class FileDocController with ChangeNotifier {
+  bool isloading = false;
   File _docFile;
 
   Future<void> fetchDoc(String accountId, String docPk, String fileName) async {
+    isloading = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     print(
@@ -44,7 +46,7 @@ class FileDocController with ChangeNotifier {
       createFileOfPdfUrl(response, fileName).then((f) async {
         _docFile = f;
         await OpenFile.open(_docFile.path);
-
+        isloading = false;
         notifyListeners();
       });
     });
@@ -52,10 +54,12 @@ class FileDocController with ChangeNotifier {
 
   Future<File> createFileOfPdfUrl(
       HttpClientResponse response, String fileName) async {
+    isloading = true;
     var bytes = await consolidateHttpClientResponseBytes(response);
     String dir = (await getApplicationDocumentsDirectory()).path;
     File file = new File('$dir/$fileName');
     await file.writeAsBytes(bytes);
+    isloading = false;
     return file;
   }
 

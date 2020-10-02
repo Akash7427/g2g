@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/clientController.dart';
+import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/editProfile.dart';
+import 'package:g2g/screens/loginScreen.dart';
+import 'package:g2g/screens/transactionScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:g2g/screens/updatePasswordScreen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawer extends StatefulWidget {
   @override
@@ -63,7 +68,51 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         height: 10,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Alert(
+                              context: context,
+                              title: 'Are you sure you want to Logout?',
+                              style: AlertStyle(
+                                  isCloseButton: false,
+                                  titleStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: _isLarge ? 26 : 20)),
+                              buttons: [
+                                DialogButton(
+                                  child: Text(
+                                    "Close",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: _isLarge ? 24 : 18),
+                                  ),
+                                  onPressed: () => Navigator.pop(context),
+                                  color: kSecondaryColor,
+                                  radius: BorderRadius.circular(10.0),
+                                ),
+                                DialogButton(
+                                  radius: BorderRadius.circular(10),
+                                  child: Text(
+                                    "Logout",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: _isLarge ? 24 : 18),
+                                  ),
+                                  onPressed: () {
+                                    SharedPreferences.getInstance()
+                                        .then((prefs) {
+                                      prefs.remove('isLoggedIn');
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          new MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  LoginScreen()),
+                                          (r) => false);
+                                    });
+                                  },
+                                  color: Colors.grey[600],
+                                ),
+                              ]).show();
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -139,6 +188,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             ),
                             onTap: () {
                               // Update the state of the app.
+
                               // ...
                             },
                           ),
