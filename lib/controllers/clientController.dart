@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/utility/hashSha256.dart';
 
 import 'package:g2g/constants.dart';
+import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/utility/pref_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
@@ -103,27 +103,10 @@ class ClientController with ChangeNotifier {
     return textValue;
   }
 
-  Future<Map> getClientBasic() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    http.Response response = await http.get(
-        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString('clientID')}',
-        headers: {
-          'Content-Type': 'application/json',
-          HttpHeaders.authorizationHeader:
-              'AuthFinWs token="${jsonDecode(prefs.getString('user'))['SessionToken']}"'
-        });
-    print(response.body);
-    return jsonDecode(response.body);
-  }
-
-  Future<void>  fetchClientNameofSharedP() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    clientName =  prefs.getString(PrefHelper.PREF_FULLNAME);
-  }
-
-  String get getClientName{
-    return clientName;
-  }
 
   
+
+
+
+
 }
