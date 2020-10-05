@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/utility/hashSha256.dart';
 
@@ -18,6 +19,7 @@ class ClientController with ChangeNotifier {
 
   Future<String> authenticateUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    
     var userID = 'WEBSERVICES';
     var password = 'G2GW3bs3rv1c35';
     Map hashAndSalt = hashSHA256(userID + password);
@@ -44,6 +46,7 @@ class ClientController with ChangeNotifier {
   Future<Client> authenticateClient(
       String clientID, String password, bool isWebAuthenticated) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final secure_storage = new FlutterSecureStorage();
     String ePass = isWebAuthenticated ? password : getEncryptPassword(password);
     String envelope =
         '<ClientAuthentication>\r\n<UserID>$clientID<\/UserID>\r\n<Password>$ePass<\/Password>\r\n<\/ClientAuthentication>';
@@ -78,8 +81,9 @@ class ClientController with ChangeNotifier {
       prefs.setString(PrefHelper.PREF_USER_ID, clientID);
       prefs.setString(PrefHelper.Pref_CLIENT_ID, innerJson['ClientId']);
       prefs.setString(PrefHelper.PREF_SESSION_TOKEN, innerJson['SessionToken']);
-      prefs.setString(PrefHelper.PREF_PASSWORD, ePass);
+     // prefs.setString(PrefHelper.PREF_PASSWORD, ePass);
       prefs.setString(PrefHelper.PREF_FULLNAME,innerJson['FullName']);
+      await secure_storage.write(key: PrefHelper.PREF_PASSWORD, value: ePass);
       // prefs.setString('user', response.body);
       client = Client.fromJson(innerJson);
       notifyListeners();

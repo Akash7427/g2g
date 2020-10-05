@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/accountsController.dart';
@@ -260,7 +261,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   Future<void> logout()async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    final secureStorage = new FlutterSecureStorage();
     await preferences.clear();
+    await secureStorage.deleteAll();
    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
 
 
