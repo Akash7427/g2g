@@ -3,19 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
+import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/loanDocumentsScreen.dart';
 import 'package:g2g/screens/transactionScreen.dart';
+import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   final Client client;
-  final List<Account> accounts;
-  HomeScreen(this.client, this.accounts);
+ 
+  
+  HomeScreen(this.client);
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -28,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen>
   double _pixelRatio;
   bool _isLarge;
   final transactionsController = TransactionsController();
+   List<Account> accounts;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -35,13 +39,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   bool isOverdue() {
-    for (Account account in widget.accounts)
+    for (Account account in accounts)
       if (account.balanceOverdue > 0 && account.status == "Open") return true;
     return false;
   }
 
   bool isElligible() {
-    for (Account account in widget.accounts)
+    for (Account account in accounts)
       if ((account.balanceOverdue > 0 || account.balance > 0) &&
           account.status == "Open") return false;
     return true;
@@ -111,6 +115,11 @@ class _HomeScreenState extends State<HomeScreen>
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    
+
+   var accProvider =  Provider.of<AccountsController>(context,listen: false);
+
+     accounts = accProvider.getAccountsList();
 
     return Scaffold(
       key: _homeScreenScaffold,
@@ -412,9 +421,9 @@ class _HomeScreenState extends State<HomeScreen>
             child: PageView.builder(
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                return buildPage(context, widget.accounts[index]);
+                return buildPage(context, accounts[index]);
               },
-              itemCount: widget.accounts.length,
+              itemCount: accounts.length,
             ),
           ),
         ],

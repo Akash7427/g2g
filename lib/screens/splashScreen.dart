@@ -11,6 +11,7 @@ import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/homeScreen.dart';
 import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/utility/pref_helper.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -57,28 +58,27 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Timer(Duration(seconds: widget.seconds), () async {
-      Client user;
-      List<Account> accounts;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
+   
+    Timer(
+        Duration(seconds: widget.seconds),
+            () async{
+              Client user;
+              List<Account> accounts;
+              SharedPreferences prefs=await SharedPreferences.getInstance();
+              print(prefs.getBool('isLoggedIn'));
+              if(prefs.getBool('isLoggedIn')??false)
+            {
+               await ClientController().authenticateUser();
+              user=await ClientController().authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),prefs.getString(PrefHelper.PREF_PASSWORD),true);
+              accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user)));
+              }
+              else{
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+              }
+        }
+    );
 
-      print(prefs.getBool('isLoggedIn'));
-      if (prefs.getString(PrefHelper.PREF_AUTH_TOKEN) == null) {
-        await ClientController().authenticateUser();
-        print(prefs.getString(PrefHelper.PREF_AUTH_TOKEN));
-      }
-      if (prefs.getBool('isLoggedIn') == true) {
-        user = await ClientController().authenticateClient(
-            prefs.getString('clientID'), prefs.getString('password'));
-        accounts = await AccountsController()
-            .getAccounts(prefs.getString('clientID'), user.sessionToken);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => HomeScreen(user, accounts)));
-      } else {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => LoginScreen()));
-      }
-    });
   }
 
   @override
