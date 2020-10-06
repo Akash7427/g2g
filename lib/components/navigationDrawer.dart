@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/accountsController.dart';
@@ -9,12 +10,8 @@ import 'package:g2g/screens/editProfile.dart';
 import 'package:g2g/screens/loanDocumentsScreen.dart';
 import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
-
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:g2g/screens/updatePasswordScreen.dart';
-
 
 class NavigationDrawer extends StatefulWidget {
   @override
@@ -225,7 +222,6 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 // ...
                               },
                             ),
-
                           ],
                         ),
                         SizedBox(
@@ -243,71 +239,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             onPressed: () {},
                             child: Text(
                               'Apply Now',
-
-                            onTap: () async {
-                              // launch('https://tawk.to/chat/5f3278b420942006f46a9dc2/default',forceSafariVC: true,forceWebView: true);
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => TawkToScreen()),
-                                  (r) => r.isFirst);
-                              // Update the state of the app.
-                              // ...
-                            },
-                          ),
-                          // ListTile(
-                          //   leading: Icon(Icons.pin_drop),
-                          //   title: Text('Reset PIN',style: TextStyle(fontSize:18),),
-                          //   onTap: () {
-                          //     // Update the state of the app.
-                          //     // ...
-                          //   },
-                          // ),
-                          ListTile(
-                            leading: ImageIcon(AssetImage('images/lock.png'),
-                                size: _isLarge ? 28 : 24, color: kWhiteColor),
-                            title: Text(
-                              'Update Password',
-
                               style: TextStyle(
                                   fontSize: _isLarge ? 24 : 20,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
-
                             color: kPrimaryColor,
-
-                            onTap: () {
-                              // Update the state of the app.
-                              // ...
-                              setState(() {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            UpdatePassword()));
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.only(
-                            right: 20, left: 20, top: 10, bottom: 30),
-                        height: 100,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Apply Now',
-                            style: TextStyle(
-                                fontSize: _isLarge ? 24 : 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-
                           ),
                         ),
                       ],
@@ -324,7 +261,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   Future<void> logout()async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    final secureStorage = new FlutterSecureStorage();
     await preferences.clear();
+    await secureStorage.deleteAll();
    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
 
 

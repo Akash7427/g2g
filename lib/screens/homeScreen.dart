@@ -286,9 +286,9 @@ class _HomeScreenState extends State<HomeScreen>
             child: PageView.builder(
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                return buildPage(context, widget.accounts[index]);
+                return buildPage(context, accounts[index]);
               },
-              itemCount: widget.accounts.length,
+              itemCount: accounts.length,
             ),
           ),
         ],

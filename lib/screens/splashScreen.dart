@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
@@ -65,11 +66,13 @@ class _SplashScreenState extends State<SplashScreen> {
               Client user;
               List<Account> accounts;
               SharedPreferences prefs=await SharedPreferences.getInstance();
+              final secureStorage= new FlutterSecureStorage();
               print(prefs.getBool('isLoggedIn'));
               if(prefs.getBool('isLoggedIn')??false)
             {
                await ClientController().authenticateUser();
-              user=await ClientController().authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),prefs.getString(PrefHelper.PREF_PASSWORD),true);
+               String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
+              user=await ClientController().authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
               accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user)));
               }
