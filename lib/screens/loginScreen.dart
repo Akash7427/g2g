@@ -144,6 +144,7 @@ class _LoginScreenState extends State<LoginScreen>
                                               .authenticateClient(
                                             clientID.text,
                                             password.text,
+                                            false
                                           )
                                               .then(
                                             (user) async {
