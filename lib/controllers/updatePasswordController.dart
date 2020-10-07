@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:g2g/models/updatePasswordModel.dart';
+import 'package:g2g/utility/pref_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xml2json/xml2json.dart';
@@ -20,7 +21,7 @@ class UpdatePasswordController {
         headers: {
           'content-Type': 'text/xml',
           'Authorization':
-              'AuthFinWs token="${prefs.getString('SessionToken')}"'
+              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
         });
 
     myTransformer.parse(response.body); //xml parsed

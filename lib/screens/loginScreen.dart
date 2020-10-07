@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                               : 18),
                                                     )).show();
                                               } else {
-                                                Provider.of<AccountsController>(context)
+                                                Provider.of<AccountsController>(context,listen:false)
                                                     .getAccounts(user.userID,
                                                         user.sessionToken)
                                                     .then((accounts) {
