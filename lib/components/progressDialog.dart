@@ -211,13 +211,13 @@ class _BodyState extends State<_Body> {
       child: SizedBox(
         width: 80.0,
         height: 80.0,
-        child: _isLogin?SpinKitPouringHourglass(
+        child: _isLogin?SpinKitThreeBounce(
            duration: Duration(seconds:1),
-          size: 70,
+          size: 50,
          color: kPrimaryColor, 
-        ):SpinKitHourGlass(
+        ):SpinKitThreeBounce(
            duration: Duration(seconds:3),
-          size: 70,
+          size: 50,
          color: kPrimaryColor, 
         )//_progressWidget,
       ),

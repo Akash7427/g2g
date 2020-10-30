@@ -221,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen>
                       SizedBox(height: 10),
                       FlatButton(
                         child: Text(
-                          'Forget Password?',
+                          'Forgot Password?',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey,
@@ -240,11 +240,11 @@ class _LoginScreenState extends State<LoginScreen>
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: 'Don’t have an account? ',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                        ),
+                        // text: 'Don’t have an account? ',
+                        // style: TextStyle(
+                        //   color: Colors.white,
+                        //   fontSize: 25,
+                        // ),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'Create',
@@ -283,8 +283,9 @@ class _LoginScreenState extends State<LoginScreen>
         inputFormatters: obscureText
             ? null
             : [
-                UpperCaseTextFormatter(),
+          LowerCaseTextFormatter(),
               ],
+
         validator: (value) {
           if (value.isEmpty)
             return obscureText ? 'Password Required' : 'Email ID Required';
@@ -292,9 +293,9 @@ class _LoginScreenState extends State<LoginScreen>
         },
         textInputAction:
             nextNode != null ? TextInputAction.next : TextInputAction.done,
-        textCapitalization: obscureText
-            ? TextCapitalization.sentences
-            : TextCapitalization.characters,
+        // textCapitalization: obscureText
+        //     ? TextCapitalization.sentences
+        //     : TextCapitalization.characters,
         obscureText: obscureText,
         focusNode: fNode,
         decoration: InputDecoration(
@@ -334,6 +335,16 @@ class UpperCaseTextFormatter extends TextInputFormatter {
       TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text?.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
+}
+class LowerCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text?.toLowerCase(),
       selection: newValue.selection,
     );
   }

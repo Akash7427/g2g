@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:g2g/models/clientModel.dart';
+import 'package:g2g/utility/custom_dialog.dart';
 import 'package:g2g/utility/hashSha256.dart';
 
 import 'package:g2g/constants.dart';
@@ -50,6 +51,9 @@ class ClientController with ChangeNotifier {
     String ePass = isWebAuthenticated ? password : getEncryptPassword(password);
     String envelope =
         '<ClientAuthentication>\r\n<UserID>$clientID<\/UserID>\r\n<Password>$ePass<\/Password>\r\n<\/ClientAuthentication>';
+  print('clientLogin_envelope'+envelope);
+    print('clientLogin_url'+'$apiBaseURL/custom/ClientLogin');
+
     http.Response response = await http.post(
       '$apiBaseURL/custom/ClientLogin',
       headers: <String, String>{
@@ -75,7 +79,9 @@ class ClientController with ChangeNotifier {
     //   innerJson = _getValue(item.findElements("SessionDetails"));
     // }).toList();
     if (jsonDecode(json)['ClientAuthentication']['SessionError'] != null) {
-      return await authenticateClient(clientID, password, isWebAuthenticated);
+
+     return await authenticateClient(clientID, password, isWebAuthenticated);
+    //  CustomDialog.showMyDialog(context, 'ClientLogin', jsonDecode(json)['ClientAuthentication']['SessionError'], 'Retry', authenticateClient(context,clientID, password, isWebAuthenticated));
     } else if (innerJson['SessionToken'] != null) {
       prefs.setBool('isLoggedIn', true);
       prefs.setString(PrefHelper.PREF_USER_ID, clientID);
