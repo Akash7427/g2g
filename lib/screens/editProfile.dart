@@ -235,7 +235,7 @@ class _EditProfileState extends State<EditProfile> {
                                                     child: FlatButton(
                                   color: kSecondaryColor,
                                   onPressed: (){
-                                  // Navigator.pop(context);
+
                                 }, child: Padding(
                                   padding:  EdgeInsets.all(12.0),
                                   child: Text('SAVE',
