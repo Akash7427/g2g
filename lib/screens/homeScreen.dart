@@ -8,8 +8,10 @@ import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/responsive_ui.dart';
+import 'package:g2g/screens/apply_now.dart';
 import 'package:g2g/screens/loanDocumentsScreen.dart';
 import 'package:g2g/screens/transactionScreen.dart';
+import 'package:g2g/screens/twakToScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,6 +34,8 @@ class _HomeScreenState extends State<HomeScreen>
   bool _isLarge;
   final transactionsController = TransactionsController();
    List<Account> accounts;
+
+   int bottomNavIndex =0;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -127,6 +131,28 @@ class _HomeScreenState extends State<HomeScreen>
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 0, // this will be set when a new tab is tapped
+        onTap: (value) => setState(() {
+          switch (value) {
+            case 0:
+
+              break;// Create this function, it should return your first page as a widget
+            case 1:
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ApplyNowScreen()),
+                      (r) => r.isFirst);
+              break;// Create this function, it should return your second page as a widget
+            case 2:
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TawkToScreen()),
+                      (r) => r.isFirst);
+              break;// Create this function, it should return your third page as a widget
+           // Create this function, it should return your fourth page as a widget
+          }
+        }),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Container(
@@ -300,7 +326,8 @@ class _HomeScreenState extends State<HomeScreen>
     return new Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 0, // this will be set when a new tab is tapped
+        currentIndex: bottomNavIndex, // this will be set when a new tab is tapped
+        onTap: (value) => setState(() => bottomNavIndex = value),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Container(
@@ -337,6 +364,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           BottomNavigationBarItem(
+
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/connect.png'),
@@ -352,6 +380,7 @@ class _HomeScreenState extends State<HomeScreen>
                     fontWeight: FontWeight.bold),
               ),
             ),
+
           ),
         ],
       ),
