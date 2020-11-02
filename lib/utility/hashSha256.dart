@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
-import 'package:flutter_3des/flutter_3des.dart';
+
 import 'package:g2g/constants.dart';
 import 'package:tripledes/tripledes.dart';
 Map<String, String> hashSHA256(String clientIDAndPassword){
@@ -32,21 +32,21 @@ void tripleDES(){
   print("EncryptedString (this is base64 encoded): $ciphertext");
   print("DecryptedString (this is base64 decoded): $decoded");
 }
-void tripleDESNew()async{
-  var key = "#finPOWERTesting@!@#\$";
-  const string = "encryption";
-  // const key = "702040801020305070B0D1101020305070B0D1112110D0B0";
-  // const iv = "070B0D1101020305";
-
-  // var encrypt = await Flutter3des.encrypt(string, key, iv: iv);
-  // var decrypt = await Flutter3des.decrypt(encrypt, key, iv: iv);
-  // var encryptHex = await Flutter3des.encryptToHex(string, key, iv: iv);
-  // var decryptHex = await Flutter3des.decryptFromHex(encryptHex, key, iv: iv);
-  var encryptBase64 = await Flutter3des.encryptToBase64(string, key);
-  var decryptBase64 = await Flutter3des.decryptFromBase64(encryptBase64, key);
-  print(encryptBase64);
-  print(decryptBase64);
-}
+// void tripleDESNew()async{
+//   var key = "#finPOWERTesting@!@#\$";
+//   const string = "encryption";
+//   // const key = "702040801020305070B0D1101020305070B0D1112110D0B0";
+//   // const iv = "070B0D1101020305";
+//
+//   // var encrypt = await Flutter3des.encrypt(string, key, iv: iv);
+//   // var decrypt = await Flutter3des.decrypt(encrypt, key, iv: iv);
+//   // var encryptHex = await Flutter3des.encryptToHex(string, key, iv: iv);
+//   // var decryptHex = await Flutter3des.decryptFromHex(encryptHex, key, iv: iv);
+//   var encryptBase64 = await Flutter3des.encryptToBase64(string, key);
+//   var decryptBase64 = await Flutter3des.decryptFromBase64(encryptBase64, key);
+//   print(encryptBase64);
+//   print(decryptBase64);
+// }
 
 String getEncryptPassword(String password){
   String key = "#finPOWERTesting@!@#\\\$##";

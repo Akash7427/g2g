@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
@@ -11,6 +12,7 @@ import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/homeScreen.dart';
 import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/utility/pref_helper.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -57,31 +59,29 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Timer(Duration(seconds: widget.seconds), () async {
-      Client user;
-      List<Account> accounts;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      print(prefs.getBool('isLoggedIn'));
-
-      if ((prefs.getBool('isLoggedIn') == true)) {
-        if (prefs.getString(PrefHelper.PREF_AUTH_TOKEN) == null) {
-          await ClientController().authenticateUser();
-          print(prefs.getString(PrefHelper.PREF_AUTH_TOKEN));
+   
+    Timer(
+        Duration(seconds: widget.seconds),
+            () async{
+              Client user;
+              List<Account> accounts;
+              SharedPreferences prefs=await SharedPreferences.getInstance();
+              final secureStorage= new FlutterSecureStorage();
+              print(prefs.getBool('isLoggedIn'));
+              if(prefs.getBool('isLoggedIn')??false)
+            {
+               await ClientController().authenticateUser();
+               String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
+              user=await ClientController().authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
+              accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user)));
+              }
+              else{
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+              }
         }
-        user = await ClientController().authenticateClient(
-            prefs.getString(PrefHelper.PREF_USER_ID),
-            prefs.getString(PrefHelper.PREF_PASSWORD));
-        accounts = await AccountsController().getAccounts(
-            prefs.getString(PrefHelper.Pref_CLIENT_ID),
-            prefs.getString(PrefHelper.PREF_SESSION_TOKEN));
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => HomeScreen(user, accounts)));
-      } else {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (BuildContext context) => LoginScreen()));
-      }
-    });
+    );
+
   }
 
   @override

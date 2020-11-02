@@ -1,4 +1,6 @@
-class Client {
+import 'package:flutter/cupertino.dart';
+
+class Client with ChangeNotifier{
   String sessionToken, fullName, userID;
   bool userPasswordForceChange;
   Client.fromJson(Map<String, dynamic> json)
@@ -6,10 +8,21 @@ class Client {
         sessionToken = json['SessionToken'],
         userID = json['ClientId'],
         userPasswordForceChange = json['UserPasswordForceChange'];
+
   Map<String, dynamic> toJson() => {
         'ClientId': userID,
         'FullName': fullName,
         'SessionToken': sessionToken,
         'UserPasswordForceChange': userPasswordForceChange
+      
       };
+
+
+
+
+      
+
+
+
+   
 }

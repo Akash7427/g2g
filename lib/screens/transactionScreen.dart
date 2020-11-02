@@ -13,14 +13,14 @@ import 'package:url_launcher/url_launcher.dart';
 class TransactionsScreen extends StatefulWidget {
   final Account account;
   final List<Transaction> transactions;
-  TransactionsScreen(this.account,this.transactions);
+  TransactionsScreen(this.account, this.transactions);
   @override
   _TransactionsScreenState createState() => _TransactionsScreenState();
 }
 
 class _TransactionsScreenState extends State<TransactionsScreen> {
   final _transactionScaffoldKey = GlobalKey<ScaffoldState>();
-  
+
   double _height;
   double _width;
   double _pixelRatio;
@@ -34,6 +34,63 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     return Scaffold(
       drawer: NavigationDrawer(),
       key: _transactionScaffoldKey,
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0, // this will be set when a new tab is tapped
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/loan.png'),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'My Loans',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/apply_now.png'),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'Apply Now',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/connect.png'),
+                  size: _isLarge ? 38 : 25, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'Connect',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           new Container(
@@ -43,32 +100,27 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     fit: BoxFit.cover)),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-              top: 10.0,
-              left: 10.0
-            ),
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
             child: AppBar(
               leading: CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Color(0xffccebf2),
-                    child: IconButton(
-                      onPressed: () {
-                        _transactionScaffoldKey.currentState.openDrawer();
-                      },
-                      icon: Icon(
-                        Icons.menu,
-                        color: kSecondaryColor,
-                        size: _isLarge ? 35 : 30,
-                      ),
-                    ),
+                radius: 25,
+                backgroundColor: Color(0xffccebf2),
+                child: IconButton(
+                  onPressed: () {
+                    _transactionScaffoldKey.currentState.openDrawer();
+                  },
+                  icon: Icon(
+                    Icons.menu,
+                    color: kSecondaryColor,
+                    size: _isLarge ? 35 : 30,
                   ),
-
-      
+                ),
+              ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-               SizedBox(),
+                  SizedBox(),
                   CircleAvatar(
                     radius: 25,
                     backgroundColor: Color(0xffccebf2),
@@ -95,51 +147,52 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             bottom: 0.0,
             right: 0.0,
             //here the body
-            child:Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:[
-                        buildHeader(),
-                        buildListHeader(),
-                        Expanded(
-                                                  child: SingleChildScrollView(
-                              child: Column(
-                              children: [
-                                for (Transaction transaction in widget.transactions)
+                    children: [
+                      buildHeader(),
+                      buildListHeader(),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              for (Transaction transaction
+                                  in widget.transactions)
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(vertical:3.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 3.0),
                                   child: buildTransactionCard(transaction),
                                 ),
-                              ],
-                            ),
+                            ],
                           ),
                         ),
-                      
-                    SizedBox(height:20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        FlatButton(
-                          color: kSecondaryColor,
-                          onPressed: (){
-                          Navigator.pop(context);
-                        }, child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text('BACK',
-                              style: TextStyle(
-                                  fontSize: _isLarge ? 25 : 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        )),
-                      ],
-                    ),
-                  ]),
-                ),
+                      ),
+                      SizedBox(height: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          FlatButton(
+                              color: kSecondaryColor,
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text('BACK',
+                                    style: TextStyle(
+                                        fontSize: _isLarge ? 25 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                              )),
+                        ],
+                      ),
+                    ]),
               ),
-           
-      ),
+            ),
+          ),
         ],
       ),
     );
@@ -157,23 +210,25 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 flex: 2,
                 child: Text('DATE',
                     style: TextStyle(
-                        fontSize: _isLarge ? 14 : 12, fontWeight: FontWeight.bold)),
+                        fontSize: _isLarge ? 14 : 12,
+                        fontWeight: FontWeight.bold)),
               ),
               Expanded(
                 flex: 4,
                 child: Text('REFERENCE',
                     style: TextStyle(
-                        fontSize: _isLarge ? 14 : 12, fontWeight: FontWeight.bold)),
+                        fontSize: _isLarge ? 14 : 12,
+                        fontWeight: FontWeight.bold)),
               ),
               Text('BALANCE',
                   style: TextStyle(
-                      fontSize: _isLarge ? 14 : 12, fontWeight: FontWeight.bold))
-            ,
-             ],
+                      fontSize: _isLarge ? 14 : 12,
+                      fontWeight: FontWeight.bold)),
+            ],
           ),
           Divider(
-          color: Colors.black54,
-        )
+            color: Colors.black54,
+          )
         ],
       ),
     );
@@ -241,7 +296,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       ),
     );
   }
-
 
   Widget buildTransactionCard(Transaction transaction) {
     return CustomTransItem(transaction, _isLarge);

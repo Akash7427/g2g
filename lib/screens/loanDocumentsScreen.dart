@@ -4,15 +4,14 @@ import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/loanDocController.dart';
 import 'package:g2g/models/accountModel.dart';
-import 'package:g2g/models/loanDocModel.dart';
+
 import 'package:g2g/responsive_ui.dart';
-import 'package:g2g/screens/loginScreen.dart';
-import 'package:g2g/utility/pref_helper.dart';
+
 import 'package:g2g/widgets/custom_loandoc_item.dart';
-import 'package:intl/intl.dart';
+
 import 'package:provider/provider.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+
 import 'package:url_launcher/url_launcher.dart';
 
 class LoanDocuments extends StatefulWidget {
@@ -39,6 +38,63 @@ class _LoanDocumentsState extends State<LoanDocuments> {
     return Scaffold(
       drawer: NavigationDrawer(),
       key: _documentScaffoldKey,
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0, // this will be set when a new tab is tapped
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/loan.png'),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'My Loans',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/apply_now.png'),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'Apply Now',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Container(
+              alignment: Alignment.center,
+              child: ImageIcon(AssetImage('images/connect.png'),
+                  size: _isLarge ? 38 : 25, color: kSecondaryColor),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Text(
+                'Connect',
+                style: TextStyle(
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           new Container(
@@ -101,40 +157,42 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                   children: [
                     buildHeader(),
                     buildListHeader(),
-                    FutureBuilder(
-                      future:
-                          Provider.of<LoanDocController>(context, listen: false)
-                              .fetchLoanDocList(widget.account.accountID),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: SpinKitThreeBounce(color: Theme.of(context).accentColor,size: _width*0.14,),
-                          );
-                        } else {
-                          if (snapshot.error != null) {
+                    Expanded(
+                                          child: FutureBuilder(
+                        future:
+                            Provider.of<LoanDocController>(context, listen: false)
+                                .fetchLoanDocList(widget.account.accountID),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return Center(
-                              child: Text('Error occured'),
+                              child: SpinKitThreeBounce(color: Theme.of(context).accentColor,size: _width*0.14,),
                             );
                           } else {
-                            return Expanded(
-                              child: Consumer<LoanDocController>(
-                                  builder: (ctx, docData, _) =>
-                                      ListView.builder(
-                                        itemBuilder: (ctx, index) {
-                                          return CustomLoandocItem(
-                                            widget.account.accountID,
-                                              docData.getLoanDocList[index],
-                                              _isLarge);
-                                        },
-                                        itemCount:
-                                            docData.getLoanDocList.length,
-                                      )),
-                            );
+                            if (snapshot.error != null) {
+                              return Center(
+                                child: Text('No Documents Found'),
+                              );
+                            } else {
+                              return Expanded(
+                                child: Consumer<LoanDocController>(
+                                    builder: (ctx, docData, _) =>
+                                        ListView.builder(
+                                          itemBuilder: (ctx, index) {
+                                            return CustomLoandocItem(
+                                              widget.account.accountID,
+                                                docData.getLoanDocList[index],
+                                                _isLarge);
+                                          },
+                                          itemCount:
+                                              docData.getLoanDocList.length,
+                                        )),
+                              );
+                            }
                           }
-                        }
-                      },
+                        },
+                      ),
                     ),
                     SizedBox(height: 8),
                     Column(

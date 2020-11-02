@@ -6,10 +6,9 @@ import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/homeScreen.dart';
-import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
+import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:tripledes/tripledes.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -22,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen>
   final clientID = TextEditingController();
   final password = TextEditingController();
   final clientController = ClientController();
-  final accountsController = AccountsController();
+  
   bool _autoValidate = false;
   AnimationController animationController;
   Animation animation;
@@ -144,7 +143,8 @@ class _LoginScreenState extends State<LoginScreen>
                                           clientController
                                               .authenticateClient(
                                             clientID.text,
-                                            getEncryptPassword(password.text),
+                                            password.text,
+                                            false
                                           )
                                               .then(
                                             (user) async {
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                               : 18),
                                                     )).show();
                                               } else {
-                                                accountsController
+                                                Provider.of<AccountsController>(context,listen:false)
                                                     .getAccounts(user.userID,
                                                         user.sessionToken)
                                                     .then((accounts) {
@@ -198,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               HomeScreen(user,
-                                                                  accounts)),
+                                                                  )),
                                                       (route) => false);
                                                 });
                                               }
@@ -221,18 +221,12 @@ class _LoginScreenState extends State<LoginScreen>
                       SizedBox(height: 10),
                       FlatButton(
                         child: Text(
-                          'Forget Password?',
+                          'Forgot Password?',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey,
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ResetPassword()));
-                        },
                       ),
                       SizedBox(height: 20),
                     ],
@@ -246,11 +240,11 @@ class _LoginScreenState extends State<LoginScreen>
                   children: [
                     RichText(
                       text: TextSpan(
-                        text: 'Don’t have an account? ',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                        ),
+                        // text: 'Don’t have an account? ',
+                        // style: TextStyle(
+                        //   color: Colors.white,
+                        //   fontSize: 25,
+                        // ),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'Create',
@@ -289,8 +283,9 @@ class _LoginScreenState extends State<LoginScreen>
         inputFormatters: obscureText
             ? null
             : [
-                // UpperCaseTextFormatter(),
+          LowerCaseTextFormatter(),
               ],
+
         validator: (value) {
           if (value.isEmpty)
             return obscureText ? 'Password Required' : 'Email ID Required';
@@ -298,9 +293,9 @@ class _LoginScreenState extends State<LoginScreen>
         },
         textInputAction:
             nextNode != null ? TextInputAction.next : TextInputAction.done,
-        textCapitalization: obscureText
-            ? TextCapitalization.sentences
-            : TextCapitalization.characters,
+        // textCapitalization: obscureText
+        //     ? TextCapitalization.sentences
+        //     : TextCapitalization.characters,
         obscureText: obscureText,
         focusNode: fNode,
         decoration: InputDecoration(
@@ -332,14 +327,6 @@ class _LoginScreenState extends State<LoginScreen>
       ),
     );
   }
-
-  String getEncryptPassword(String password) {
-    String key = "#finPOWERTesting@!@#\\\$##";
-    var blockCipher = BlockCipher(TripleDESEngine(), key);
-    var ciphertext = blockCipher.encodeB64(password);
-    print(ciphertext);
-    return ciphertext;
-  }
 }
 
 class UpperCaseTextFormatter extends TextInputFormatter {
@@ -348,6 +335,16 @@ class UpperCaseTextFormatter extends TextInputFormatter {
       TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text?.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
+}
+class LowerCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text?.toLowerCase(),
       selection: newValue.selection,
     );
   }

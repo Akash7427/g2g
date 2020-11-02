@@ -36,16 +36,17 @@ dependencies:
   flutter_spinkit: ^4.1.2
   rflutter_alert: ^1.0.3
   after_layout: ^1.0.7+2
-  webview_flutter: ^0.3.22+1
   flutter_web_view: ^0.0.6
   flutter_webview_plugin: ^0.3.11
   tripledes: ^2.1.0
   dart_des: ^0.0.2
-  flutter_3des:
+  flutter_des: ^1.1.1
   xml2json: ^4.3.0
   provider: ^4.3.2+2
   open_file: ^3.0.1
   path_provider: ^1.6.18
+  flutter_secure_storage: ^3.3.4
+  webview_flutter: ^1.0.5
 
 dev_dependencies:
   flutter_test:

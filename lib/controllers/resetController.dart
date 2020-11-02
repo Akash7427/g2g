@@ -21,7 +21,7 @@ class ResetController {
         headers: {
           'content-Type': 'text/xml',
           'Authorization':
-              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
+              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
         });
 
     myTransformer.parse(response.body); //xml parsed
