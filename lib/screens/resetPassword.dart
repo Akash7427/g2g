@@ -258,37 +258,37 @@ class _ResetPasswordState extends State<ResetPassword>
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        text: 'Don’t have an account? ',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Create',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                    )
-                  ],
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.all(10),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       RichText(
+              //         text: TextSpan(
+              //           text: 'Don’t have an account? ',
+              //           style: TextStyle(
+              //             color: Colors.white,
+              //             fontSize: 25,
+              //           ),
+              //           children: <TextSpan>[
+              //             TextSpan(
+              //               text: 'Create',
+              //               style: TextStyle(
+              //                 color: Colors.white,
+              //                 fontSize: 25,
+              //                 fontWeight: FontWeight.bold,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //       Icon(
+              //         Icons.arrow_forward,
+              //         color: Colors.white,
+              //       )
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 height: 40,
               )

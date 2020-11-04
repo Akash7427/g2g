@@ -59,29 +59,28 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-   
-    Timer(
-        Duration(seconds: widget.seconds),
-            () async{
-              Client user;
-              List<Account> accounts;
-              SharedPreferences prefs=await SharedPreferences.getInstance();
-              final secureStorage= new FlutterSecureStorage();
-              print(prefs.getBool('isLoggedIn'));
-              if(prefs.getBool('isLoggedIn')??false)
-            {
-               await ClientController().authenticateUser();
-               String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
-              user=await ClientController().authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
-              accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user)));
-              }
-              else{
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
-              }
-        }
-    );
+    Timer(Duration(seconds: widget.seconds), () async {
+      Client user;
+      List<Account> accounts;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final secureStorage = new FlutterSecureStorage();
+      print(prefs.getBool('isLoggedIn'));
+      if (prefs.getBool('isLoggedIn') ?? false) {
+        await ClientController().authenticateUser();
 
+        String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
+        user = await ClientController().authenticateClient(
+            prefs.getString(PrefHelper.PREF_USER_ID), ePass, true);
+        accounts = await Provider.of<AccountsController>(context, listen: false)
+            .getAccounts(
+                prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => HomeScreen(user)));
+      } else {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => LoginScreen()));
+      }
+    });
   }
 
   @override

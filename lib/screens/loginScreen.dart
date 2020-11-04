@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen>
   final clientID = TextEditingController();
   final password = TextEditingController();
   final clientController = ClientController();
-  
+
   bool _autoValidate = false;
   AnimationController animationController;
   Animation animation;
@@ -141,11 +141,8 @@ class _LoginScreenState extends State<LoginScreen>
                                             return;
                                           }
                                           clientController
-                                              .authenticateClient(
-                                            clientID.text,
-                                            password.text,
-                                            false
-                                          )
+                                              .authenticateClient(clientID.text,
+                                                  password.text, false)
                                               .then(
                                             (user) async {
                                               if (user == null) {
@@ -188,18 +185,21 @@ class _LoginScreenState extends State<LoginScreen>
                                                               : 18),
                                                     )).show();
                                               } else {
-                                                Provider.of<AccountsController>(context,listen:false)
+                                                Provider.of<AccountsController>(
+                                                    context,
+                                                    listen: false)
                                                     .getAccounts(user.userID,
-                                                        user.sessionToken)
+                                                    user.sessionToken)
                                                     .then((accounts) {
                                                   pr.hide();
                                                   Navigator.pushAndRemoveUntil(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              HomeScreen(user,
-                                                                  )),
-                                                      (route) => false);
+                                                              HomeScreen(
+                                                                user,
+                                                              )),
+                                                          (route) => false);
                                                 });
                                               }
                                             },
@@ -284,7 +284,7 @@ class _LoginScreenState extends State<LoginScreen>
             ? null
             : [
           LowerCaseTextFormatter(),
-              ],
+        ],
 
         validator: (value) {
           if (value.isEmpty)
@@ -339,6 +339,7 @@ class UpperCaseTextFormatter extends TextInputFormatter {
     );
   }
 }
+
 class LowerCaseTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(

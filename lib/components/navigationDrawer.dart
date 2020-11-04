@@ -9,6 +9,7 @@ import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/editProfile.dart';
 import 'package:g2g/screens/loanDocumentsScreen.dart';
 import 'package:g2g/screens/loginScreen.dart';
+import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,14 +32,14 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-    var clientProvider = Provider.of<ClientController>(context,listen: false);
-    var accountProvider =Provider.of<AccountsController>(context,listen: false);
-    
-    
+    var clientProvider = Provider.of<ClientController>(context, listen: false);
+    var accountProvider =
+        Provider.of<AccountsController>(context, listen: false);
+
     return Drawer(
       child: FutureBuilder(
-        future:clientProvider.fetchClientNameofSharedP(),
-              builder:(context,snapshot)=> Container(
+        future: clientProvider.fetchClientNameofSharedP(),
+        builder: (context, snapshot) => Container(
           color: Colors.white,
           child: Column(
             // Important: Remove any padding from the ListView.
@@ -47,7 +48,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
               Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 15, left: 20, right: 20),
                     child: DrawerHeader(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -63,12 +65,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if(snapshot.connectionState== ConnectionState.waiting)
+                        if (snapshot.connectionState == ConnectionState.waiting)
                           CircularProgressIndicator(),
-                        
-                        
                         Text(
-                         clientProvider.getClientName ,
+                          clientProvider.getClientName,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 25,
@@ -79,7 +79,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         ),
                         InkWell(
                           onTap: () {
-                              logout();
+                            logout();
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -155,12 +155,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                     color: kWhiteColor),
                               ),
                               onTap: () {
-                                
                                 Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      LoanDocuments(accountProvider.getAccountsList()[0])));
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            LoanDocuments(
+                                                accountProvider
+                                                    .getAccountsList()[0])));
                               },
                             ),
                             ListTile(
@@ -181,8 +182,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               },
                             ),
                             ListTile(
-                              leading: ImageIcon(AssetImage('images/connect.png'),
-                                  size: _isLarge ? 28 : 24, color: kWhiteColor),
+                              leading: ImageIcon(
+                                  AssetImage('images/connect.png'),
+                                  size: _isLarge ? 28 : 24,
+                                  color: kWhiteColor),
                               title: Text(
                                 'Connect',
                                 style: TextStyle(
@@ -218,8 +221,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                     color: kWhiteColor),
                               ),
                               onTap: () {
-                                // Update the state of the app.
-                                // ...
+                                setState(() {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ResetPassword()));
+                                });
                               },
                             ),
                           ],
@@ -259,13 +267,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     );
   }
 
-  Future<void> logout()async{
+  Future<void> logout() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     final secureStorage = new FlutterSecureStorage();
     await preferences.clear();
     await secureStorage.deleteAll();
-   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
-
-
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
   }
 }

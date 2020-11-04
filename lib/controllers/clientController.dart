@@ -17,7 +17,7 @@ import 'package:xml2json/xml2json.dart';
 
 class ClientController with ChangeNotifier {
   Client client;
-  String clientName='';
+  String clientName = '';
 
   Future<String> authenticateUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -35,6 +35,9 @@ class ClientController with ChangeNotifier {
     if (webUserResponse['SessionToken'] != null) {
       prefs.setString(
           PrefHelper.PREF_AUTH_TOKEN, webUserResponse['SessionToken']);
+      prefs.setString(PrefHelper.Pref_CLIENT_ID, webUserResponse['ClientId']);
+
+      print(webUserResponse['ClientId']);
 
       // prefs.setString('user', response.body);
       return webUserResponse['SessionToken'];
@@ -51,8 +54,8 @@ class ClientController with ChangeNotifier {
     String ePass = isWebAuthenticated ? password : getEncryptPassword(password);
     String envelope =
         '<ClientAuthentication>\r\n<UserID>$clientID<\/UserID>\r\n<Password>$ePass<\/Password>\r\n<\/ClientAuthentication>';
-  print('clientLogin_envelope'+envelope);
-    print('clientLogin_url'+'$apiBaseURL/custom/ClientLogin');
+    print('clientLogin_envelope' + envelope);
+    print('clientLogin_url' + '$apiBaseURL/custom/ClientLogin');
 
     http.Response response = await http.post(
       '$apiBaseURL/custom/ClientLogin',
@@ -79,16 +82,15 @@ class ClientController with ChangeNotifier {
     //   innerJson = _getValue(item.findElements("SessionDetails"));
     // }).toList();
     if (jsonDecode(json)['ClientAuthentication']['SessionError'] != null) {
-
-     return await authenticateClient(clientID, password, isWebAuthenticated);
-    //  CustomDialog.showMyDialog(context, 'ClientLogin', jsonDecode(json)['ClientAuthentication']['SessionError'], 'Retry', authenticateClient(context,clientID, password, isWebAuthenticated));
+      return await authenticateClient(clientID, password, isWebAuthenticated);
+      //  CustomDialog.showMyDialog(context, 'ClientLogin', jsonDecode(json)['ClientAuthentication']['SessionError'], 'Retry', authenticateClient(context,clientID, password, isWebAuthenticated));
     } else if (innerJson['SessionToken'] != null) {
       prefs.setBool('isLoggedIn', true);
       prefs.setString(PrefHelper.PREF_USER_ID, clientID);
       prefs.setString(PrefHelper.Pref_CLIENT_ID, innerJson['ClientId']);
       prefs.setString(PrefHelper.PREF_SESSION_TOKEN, innerJson['SessionToken']);
       //prefs.setString(PrefHelper.PREF_PASSWORD, ePass);
-      prefs.setString(PrefHelper.PREF_FULLNAME,innerJson['FullName']);
+      prefs.setString(PrefHelper.PREF_FULLNAME, innerJson['FullName']);
       await storage.write(key: PrefHelper.PREF_PASSWORD, value: ePass);
       // prefs.setString('user', response.body);
       client = Client.fromJson(innerJson);
@@ -112,33 +114,30 @@ class ClientController with ChangeNotifier {
   Future<Map> getClientBasic() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
-        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}',
+        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(
+            PrefHelper.Pref_CLIENT_ID)}',
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:
-              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
+          'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
         });
     print(response.body);
+    print(jsonDecode(response.body)['ContactMethodEmail']);
+
+    prefs.setString(PrefHelper.PREF_EMAIL_ID,
+        jsonDecode(response.body)['ContactMethodEmail']);
     print('link' +
-        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString('clientID')}');
+        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(
+            'clientID')}');
     return jsonDecode(response.body);
   }
 
-
-
-  Future<void>  fetchClientNameofSharedP() async{
+  Future<void> fetchClientNameofSharedP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    clientName =  prefs.getString(PrefHelper.PREF_FULLNAME);
+    clientName = prefs.getString(PrefHelper.PREF_FULLNAME);
   }
 
-
-
-
-
-  String get getClientName{
+  String get getClientName {
     return clientName;
   }
-
-
 }
- 

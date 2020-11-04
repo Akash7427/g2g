@@ -25,6 +25,11 @@ class AccountsController with ChangeNotifier {
         });
     print(clientID);
     print(response.body);
+    for (Map m in jsonDecode(response.body)) {
+      prefs.setDouble(PrefHelper.PREF_ACCOUNT_BALANCE, m['Balance']);
+      prefs.setString(PrefHelper.PREF_ACCOUNT_ID, m['AccountId'].toString());
+    }
+
     for (Map m in jsonDecode(response.body))
       if (m['Status'] == 'Open')
         _accounts.add(Account.fromJson(m));
