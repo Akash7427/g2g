@@ -47,6 +47,8 @@ dependencies:
   path_provider: ^1.6.18
   flutter_secure_storage: ^3.3.4
   webview_flutter: ^1.0.5
+  flutter_form_builder: ^3.14.1
+  dio: ^3.0.10
 
 dev_dependencies:
   flutter_test:

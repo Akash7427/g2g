@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 
-class Client with ChangeNotifier{
+
+class Client{
   String sessionToken, fullName, userID;
   bool userPasswordForceChange;
   Client.fromJson(Map<String, dynamic> json)

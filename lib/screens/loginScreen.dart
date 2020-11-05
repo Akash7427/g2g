@@ -20,7 +20,6 @@ class _LoginScreenState extends State<LoginScreen>
   final _loginFormKey = GlobalKey<FormState>();
   final clientID = TextEditingController();
   final password = TextEditingController();
-  final clientController = ClientController();
 
   bool _autoValidate = false;
   AnimationController animationController;
@@ -129,8 +128,8 @@ class _LoginScreenState extends State<LoginScreen>
                                           pr.show();
                                         });
 
-                                        clientController
-                                            .authenticateUser()
+
+                                        Provider.of<ClientController>(context,listen:false).authenticateUser()
                                             .then((value) async {
                                           if (value == null) {
                                             Scaffold.of(context)
@@ -140,9 +139,12 @@ class _LoginScreenState extends State<LoginScreen>
                                             ));
                                             return;
                                           }
-                                          clientController
-                                              .authenticateClient(clientID.text,
-                                                  password.text, false)
+                                      Provider.of<ClientController>(context,listen:false)
+                                              .authenticateClient(
+                                            clientID.text,
+                                            password.text,
+                                            false
+                                          )
                                               .then(
                                             (user) async {
                                               if (user == null) {
@@ -185,11 +187,9 @@ class _LoginScreenState extends State<LoginScreen>
                                                               : 18),
                                                     )).show();
                                               } else {
-                                                Provider.of<AccountsController>(
-                                                    context,
-                                                    listen: false)
+                                                Provider.of<AccountsController>(context,listen:false)
                                                     .getAccounts(user.userID,
-                                                    user.sessionToken)
+                                                        user.sessionToken)
                                                     .then((accounts) {
                                                   pr.hide();
                                                   Navigator.pushAndRemoveUntil(
@@ -197,9 +197,8 @@ class _LoginScreenState extends State<LoginScreen>
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               HomeScreen(
-                                                                user,
-                                                              )),
-                                                          (route) => false);
+                                                                  )),
+                                                      (route) => false);
                                                 });
                                               }
                                             },
@@ -284,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen>
             ? null
             : [
           LowerCaseTextFormatter(),
-        ],
+              ],
 
         validator: (value) {
           if (value.isEmpty)
@@ -339,7 +338,6 @@ class UpperCaseTextFormatter extends TextInputFormatter {
     );
   }
 }
-
 class LowerCaseTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(

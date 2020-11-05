@@ -15,14 +15,13 @@ import 'package:g2g/screens/transactionScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:g2g/utility/pref_helper.dart';
 
 class HomeScreen extends StatefulWidget {
-  final Client client;
 
-  HomeScreen(this.client);
+ 
+  
+  HomeScreen();
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -35,9 +34,11 @@ class _HomeScreenState extends State<HomeScreen>
   double _pixelRatio;
   bool _isLarge;
   final transactionsController = TransactionsController();
-  List<Account> accounts;
+   List<Account> accounts;
 
-  int bottomNavIndex = 0;
+   int bottomNavIndex =0;
+  Client client;
+
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -46,34 +47,15 @@ class _HomeScreenState extends State<HomeScreen>
 
   bool isOverdue() {
     for (Account account in accounts)
-      if (account.balanceOverdue ?? 0 > 0 && account.status == "Open")
-        return true;
+      if (account.balanceOverdue > 0 && account.status == "Open") return true;
     return false;
   }
 
   bool isElligible() {
     for (Account account in accounts)
-      if ((account.balanceOverdue ?? 0 > 0 || account.balance > 0) &&
+      if ((account.balanceOverdue > 0 || account.balance > 0) &&
           account.status == "Open") return false;
     return true;
-  }
-
-  payURL() async {
-    await ClientController().getClientBasic();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    var name = accounts[0].Name;
-    List fname = name.split(',');
-    print('fname' + fname[1]);
-
-    try {
-      String url =
-          'https://www.goodtogoloans.com.au/payments/?fname=${fname[1].toString().trim()}&lname=${fname[0]}&email=${prefs.getString(PrefHelper.PREF_EMAIL_ID)}&account_id=${prefs.getString(PrefHelper.PREF_ACCOUNT_ID)}&client_id=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&amount=${prefs.getDouble(PrefHelper.PREF_ACCOUNT_BALANCE)}';
-      print(url);
-      await launch(url);
-    } on Exception catch (e) {
-      print(e.toString());
-    }
   }
 
   void _showDialog() {
@@ -99,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen>
                 children: [
                   Text(
                       '${isOverdue() ? 'Hi' : (isElligible() ? 'Welcome' : 'Well Done')}' +
-                          ', ${widget.client.fullName.split(' ')[0]}',
+                          ', $client.fullName.split(' ')[0]}',
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
                           fontWeight: FontWeight.bold,
@@ -136,22 +118,18 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    _pixelRatio = MediaQuery
-        .of(context)
-        .devicePixelRatio;
-    _width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    _height = MediaQuery.of(context).size.height;
+    _pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
 
-    var accProvider = Provider.of<AccountsController>(context, listen: false);
+
+    var accProvider =  Provider.of<AccountsController>(context,listen: false);
+    var clientProvider = Provider.of<ClientController>(context,listen: false);
 
     accounts = accProvider.getAccountsList();
+     client =  clientProvider.getClient();
+
 
     return Scaffold(
       key: _homeScreenScaffold,
@@ -159,25 +137,28 @@ class _HomeScreenState extends State<HomeScreen>
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 0, // this will be set when a new tab is tapped
-        onTap: (value) =>
-            setState(() {
-              switch (value) {
-                case 0:
-                  break; // Create this function, it should return your first page as a widget
-                case 1:
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => ApplyNowScreen()),
-                          (r) => r.isFirst);
-                  break; // Create this function, it should return your second page as a widget
-                case 2:
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => TawkToScreen()),
-                          (r) => r.isFirst);
-                  break; // Create this function, it should return your third page as a widget
-              // Create this function, it should return your fourth page as a widget
-              }
+        onTap: (value) => setState(() {
+          switch (value) {
+            case 0:
+
+              break;// Create this function, it should return your first page as a widget
+            case 1:
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ApplyNowScreen()),
+              //         (r) => r.isFirst);
+            launch('https://www.goodtogoloans.com.au/');
+              break;// Create this function, it should return your second page as a widget
+            case 2:
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TawkToScreen()),
+                      (r) => r.isFirst);
+              break;// Create this function, it should return your third page as a widget
+           // Create this function, it should return your fourth page as a widget
+          }
         }),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -258,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
-                title: Text('Hi ${widget.client.fullName.split(' ')[0]}',
+                title: Text('Hi ${client.fullName.split(' ')[0]}',
                     //widget.client.fullName.split(' ')[0]
                     style: TextStyle(
                         fontSize: _isLarge ? 28 : 22,
@@ -352,8 +333,7 @@ class _HomeScreenState extends State<HomeScreen>
     return new Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex:
-        bottomNavIndex, // this will be set when a new tab is tapped
+        currentIndex: bottomNavIndex, // this will be set when a new tab is tapped
         onTap: (value) => setState(() => bottomNavIndex = value),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -391,6 +371,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           BottomNavigationBarItem(
+
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/connect.png'),
@@ -406,6 +387,7 @@ class _HomeScreenState extends State<HomeScreen>
                     fontWeight: FontWeight.bold),
               ),
             ),
+
           ),
         ],
       ),
@@ -440,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                   ),
-                  Text('Hi ${widget.client.fullName.split(' ')[0]}',
+                  Text('Hi ${client.fullName.split(' ')[0]}',
                       //widget.client.fullName.split(' ')[0]
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
@@ -655,9 +637,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   ),
                                   FlatButton(
                                     color: kPrimaryColor,
-                                    onPressed: () {
-                                      payURL();
-                                    },
+                                    onPressed: () {},
                                     child: Text(
                                       'Pay ' +
                                           '\$' +
@@ -1054,7 +1034,7 @@ class _HomeScreenState extends State<HomeScreen>
                         pr.show();
                         transactionsController
                             .getTransactions(
-                                account.accountID, widget.client.sessionToken)
+                                account.accountID, client.sessionToken)
                             .then((transactions) {
                           pr.hide();
                           Navigator.push(
