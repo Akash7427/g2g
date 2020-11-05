@@ -141,7 +141,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               EditProfile(clientData)),
-                                          (r) => r.isFirst);
+                                      (r) => r.isFirst);
                                 });
                               },
                             ),

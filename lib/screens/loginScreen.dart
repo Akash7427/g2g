@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                         context,
                                                         listen: false)
                                                     .getAccounts(user.userID,
-                                                    user.sessionToken)
+                                                        user.sessionToken)
                                                     .then((accounts) {
                                                   pr.hide();
                                                   Navigator.pushAndRemoveUntil(
