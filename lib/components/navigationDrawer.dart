@@ -13,6 +13,7 @@ import 'package:g2g/screens/twakToScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:g2g/screens/homeScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NavigationDrawer extends StatefulWidget {
   @override
@@ -237,7 +238,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               right: 20, left: 20, top: 10, bottom: 30),
                           height: 100,
                           child: FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              launch('https://www.goodtogoloans.com.au/');
+                            },
                             child: Text(
                               'Apply Now',
                               style: TextStyle(
