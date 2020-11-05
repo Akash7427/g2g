@@ -17,10 +17,8 @@ import 'package:xml2json/xml2json.dart';
 
 class ClientController with ChangeNotifier {
   Client client;
-  String clientName='';
+  String clientName = '';
   ClientBasicModel clientBasicModel;
-
-
 
   Future<String> authenticateUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -54,8 +52,8 @@ class ClientController with ChangeNotifier {
     String ePass = isWebAuthenticated ? password : getEncryptPassword(password);
     String envelope =
         '<ClientAuthentication>\r\n<UserID>$clientID<\/UserID>\r\n<Password>$ePass<\/Password>\r\n<\/ClientAuthentication>';
-  print('clientLogin_envelope'+envelope);
-    print('clientLogin_url'+'$apiBaseURL/custom/ClientLogin');
+    print('clientLogin_envelope' + envelope);
+    print('clientLogin_url' + '$apiBaseURL/custom/ClientLogin');
 
     http.Response response = await http.post(
       '$apiBaseURL/custom/ClientLogin',
@@ -82,16 +80,15 @@ class ClientController with ChangeNotifier {
     //   innerJson = _getValue(item.findElements("SessionDetails"));
     // }).toList();
     if (jsonDecode(json)['ClientAuthentication']['SessionError'] != null) {
-
-     return await authenticateClient(clientID, password, isWebAuthenticated);
-    //  CustomDialog.showMyDialog(context, 'ClientLogin', jsonDecode(json)['ClientAuthentication']['SessionError'], 'Retry', authenticateClient(context,clientID, password, isWebAuthenticated));
+      return await authenticateClient(clientID, password, isWebAuthenticated);
+      //  CustomDialog.showMyDialog(context, 'ClientLogin', jsonDecode(json)['ClientAuthentication']['SessionError'], 'Retry', authenticateClient(context,clientID, password, isWebAuthenticated));
     } else if (innerJson['SessionToken'] != null) {
       prefs.setBool('isLoggedIn', true);
       prefs.setString(PrefHelper.PREF_USER_ID, clientID);
       prefs.setString(PrefHelper.Pref_CLIENT_ID, innerJson['ClientId']);
       prefs.setString(PrefHelper.PREF_SESSION_TOKEN, innerJson['SessionToken']);
       //prefs.setString(PrefHelper.PREF_PASSWORD, ePass);
-      prefs.setString(PrefHelper.PREF_FULLNAME,innerJson['FullName']);
+      prefs.setString(PrefHelper.PREF_FULLNAME, innerJson['FullName']);
       await storage.write(key: PrefHelper.PREF_PASSWORD, value: ePass);
       // prefs.setString('user', response.body);
       client = Client.fromJson(innerJson);
@@ -105,95 +102,81 @@ class ClientController with ChangeNotifier {
     }
   }
 
-
-
   Future<ClientBasicModel> getClientBasic() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
-        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}',
+        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(
+            PrefHelper.Pref_CLIENT_ID)}',
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:
-              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
+          'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
         });
     print(response.body);
+    prefs.setString(PrefHelper.PREF_EMAIL_ID,
+        jsonDecode(response.body)['ContactMethodEmail']);
     print('link' +
-        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString('clientID')}');
+        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(
+            'clientID')}');
     try {
       clientBasicModel = ClientBasicModel.fromJson(jsonDecode(response.body));
-    }catch(error){
+    } catch (error) {
       print(error.toString());
     }
     notifyListeners();
     return clientBasicModel;
   }
 
- Future<Map> postClientBasic(Map<String,dynamic> data) async{
-   // SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('inputFormBody'+json.encode({
-      "fName":data["first_name"],
-      "lName":data["last_name"],
-      "ContactMethodEmail":data["email"],
-      "ContactMethodMobile":data["mobile_no"],
-      "ContactMethodPhoneHome":data["home_phone_no"],
-      "ContactMethodPhoneWork":data["work_phone_no"],
-      "StreetAddressFull":data["street_address"],
-      "Suburb":data["suburb"],
-      "Postcode":data["post_code"]
-
-    },
-    ));
-    Map<String,String> bodyMap = {
-      "fName":data["first_name"],
-      "lName":data["last_name"],
-      "ContactMethodEmail":data["email"],
-      "ContactMethodMobile":data["mobile_no"],
-      "ContactMethodPhoneHome":data["home_phone_no"],
-      "ContactMethodPhoneWork":data["work_phone_no"],
-      "StreetAddressFull":data["street_address"],
-      "Suburb":data["suburb"],
-      "Postcode":data["post_code"]
+  Future<Map> postClientBasic(Map<String, dynamic> data) async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    print('inputFormBody' +
+        json.encode(
+          {
+            "fName": data["first_name"],
+            "lName": data["last_name"],
+            "ContactMethodEmail": data["email"],
+            "ContactMethodMobile": data["mobile_no"],
+            "ContactMethodPhoneHome": data["home_phone_no"],
+            "ContactMethodPhoneWork": data["work_phone_no"],
+            "StreetAddressFull": data["street_address"],
+            "Suburb": data["suburb"],
+            "Postcode": data["post_code"]
+          },
+        ));
+    Map<String, String> bodyMap = {
+      "fName": data["first_name"],
+      "lName": data["last_name"],
+      "ContactMethodEmail": data["email"],
+      "ContactMethodMobile": data["mobile_no"],
+      "ContactMethodPhoneHome": data["home_phone_no"],
+      "ContactMethodPhoneWork": data["work_phone_no"],
+      "StreetAddressFull": data["street_address"],
+      "Suburb": data["suburb"],
+      "Postcode": data["post_code"]
     };
     http.Response response = await http.post(
         'https://www.goodtogoloans.com.au/crons/mobile_app_email.php',
         headers: {
-
           'Accept': '*/*',
-
         },
         encoding: Encoding.getByName("utf-8"),
-
-      body: bodyMap
-
-
-
-    );
-
-
-
+        body: bodyMap);
 
     print(response.body);
 
     return jsonDecode(response.body);
   }
 
-
-
-  Future<void>  fetchClientNameofSharedP() async{
+  Future<void> fetchClientNameofSharedP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    clientName =  prefs.getString(PrefHelper.PREF_FULLNAME);
+    clientName = prefs.getString(PrefHelper.PREF_FULLNAME);
   }
 
-
-  Client  getClient(){
+  Client getClient() {
     return client;
   }
 
-
-  String get getClientName{
+  String get getClientName {
     return clientName;
   }
-
-
 }
- 

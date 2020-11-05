@@ -128,8 +128,9 @@ class _LoginScreenState extends State<LoginScreen>
                                           pr.show();
                                         });
 
-
-                                        Provider.of<ClientController>(context,listen:false).authenticateUser()
+                                        Provider.of<ClientController>(context,
+                                                listen: false)
+                                            .authenticateUser()
                                             .then((value) async {
                                           if (value == null) {
                                             Scaffold.of(context)
@@ -139,12 +140,10 @@ class _LoginScreenState extends State<LoginScreen>
                                             ));
                                             return;
                                           }
-                                      Provider.of<ClientController>(context,listen:false)
-                                              .authenticateClient(
-                                            clientID.text,
-                                            password.text,
-                                            false
-                                          )
+                                          Provider.of<ClientController>(context,
+                                                  listen: false)
+                                              .authenticateClient(clientID.text,
+                                                  password.text, false)
                                               .then(
                                             (user) async {
                                               if (user == null) {
@@ -187,18 +186,19 @@ class _LoginScreenState extends State<LoginScreen>
                                                               : 18),
                                                     )).show();
                                               } else {
-                                                Provider.of<AccountsController>(context,listen:false)
+                                                Provider.of<AccountsController>(
+                                                    context,
+                                                    listen: false)
                                                     .getAccounts(user.userID,
-                                                        user.sessionToken)
+                                                    user.sessionToken)
                                                     .then((accounts) {
                                                   pr.hide();
                                                   Navigator.pushAndRemoveUntil(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              HomeScreen(
-                                                                  )),
-                                                      (route) => false);
+                                                              HomeScreen()),
+                                                          (route) => false);
                                                 });
                                               }
                                             },
@@ -232,37 +232,37 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        // text: 'Don’t have an account? ',
-                        // style: TextStyle(
-                        //   color: Colors.white,
-                        //   fontSize: 25,
-                        // ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Create',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward,
-                      color: Colors.white,
-                    )
-                  ],
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.all(10),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       RichText(
+              //         text: TextSpan(
+              //           // text: 'Don’t have an account? ',
+              //           // style: TextStyle(
+              //           //   color: Colors.white,
+              //           //   fontSize: 25,
+              //           // ),
+              //           children: <TextSpan>[
+              //             TextSpan(
+              //               text: 'Create',
+              //               style: TextStyle(
+              //                 color: Colors.white,
+              //                 fontSize: 25,
+              //                 fontWeight: FontWeight.bold,
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //       Icon(
+              //         Icons.arrow_forward,
+              //         color: Colors.white,
+              //       )
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 height: 40,
               )
@@ -283,7 +283,7 @@ class _LoginScreenState extends State<LoginScreen>
             ? null
             : [
           LowerCaseTextFormatter(),
-              ],
+        ],
 
         validator: (value) {
           if (value.isEmpty)
@@ -338,6 +338,7 @@ class UpperCaseTextFormatter extends TextInputFormatter {
     );
   }
 }
+
 class LowerCaseTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
