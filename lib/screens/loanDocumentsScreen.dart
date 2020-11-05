@@ -6,6 +6,7 @@ import 'package:g2g/controllers/loanDocController.dart';
 import 'package:g2g/models/accountModel.dart';
 
 import 'package:g2g/responsive_ui.dart';
+import 'package:g2g/screens/twakToScreen.dart';
 
 import 'package:g2g/widgets/custom_loandoc_item.dart';
 
@@ -41,6 +42,29 @@ class _LoanDocumentsState extends State<LoanDocuments> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 0, // this will be set when a new tab is tapped
+        onTap: (value) => setState(() {
+          switch (value) {
+            case 0:
+
+              break;// Create this function, it should return your first page as a widget
+            case 1:
+            // Navigator.pushAndRemoveUntil(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => ApplyNowScreen()),
+            //         (r) => r.isFirst);
+              launch('https://www.goodtogoloans.com.au/');
+              break;// Create this function, it should return your second page as a widget
+            case 2:
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TawkToScreen()),
+                      (r) => r.isFirst);
+              break;// Create this function, it should return your third page as a widget
+          // Create this function, it should return your fourth page as a widget
+          }
+        }),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Container(

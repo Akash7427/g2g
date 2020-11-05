@@ -74,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen> {
                String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
               user=await ClientController().authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
               accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(user)));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
               }
               else{
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));

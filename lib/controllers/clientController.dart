@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:g2g/models/clientBasicModel.dart';
 import 'package:g2g/models/clientModel.dart';
-import 'package:g2g/utility/custom_dialog.dart';
 import 'package:g2g/utility/hashSha256.dart';
 
 import 'package:g2g/constants.dart';
 import 'package:g2g/utility/pref_helper.dart';
-import 'package:g2g/models/accountModel.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +18,9 @@ import 'package:xml2json/xml2json.dart';
 class ClientController with ChangeNotifier {
   Client client;
   String clientName='';
+  ClientBasicModel clientBasicModel;
+
+
 
   Future<String> authenticateUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -92,6 +95,7 @@ class ClientController with ChangeNotifier {
       await storage.write(key: PrefHelper.PREF_PASSWORD, value: ePass);
       // prefs.setString('user', response.body);
       client = Client.fromJson(innerJson);
+
       notifyListeners();
       return client;
     } else if (jsonDecode(response.body)["Code"] == "Subscriber.InvalidHash") {
@@ -101,15 +105,9 @@ class ClientController with ChangeNotifier {
     }
   }
 
-  _getValue(Iterable<xml.XmlElement> items) {
-    var textValue;
-    items.map((xml.XmlElement node) {
-      textValue = node.text;
-    }).toList();
-    return textValue;
-  }
 
-  Future<Map> getClientBasic() async {
+
+  Future<ClientBasicModel> getClientBasic() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
         '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}',
@@ -121,6 +119,61 @@ class ClientController with ChangeNotifier {
     print(response.body);
     print('link' +
         '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString('clientID')}');
+    try {
+      clientBasicModel = ClientBasicModel.fromJson(jsonDecode(response.body));
+    }catch(error){
+      print(error.toString());
+    }
+    notifyListeners();
+    return clientBasicModel;
+  }
+
+ Future<Map> postClientBasic(Map<String,dynamic> data) async{
+   // SharedPreferences prefs = await SharedPreferences.getInstance();
+    print('inputFormBody'+json.encode({
+      "fName":data["first_name"],
+      "lName":data["last_name"],
+      "ContactMethodEmail":data["email"],
+      "ContactMethodMobile":data["mobile_no"],
+      "ContactMethodPhoneHome":data["home_phone_no"],
+      "ContactMethodPhoneWork":data["work_phone_no"],
+      "StreetAddressFull":data["street_address"],
+      "Suburb":data["suburb"],
+      "Postcode":data["post_code"]
+
+    },
+    ));
+    Map<String,String> bodyMap = {
+      "fName":data["first_name"],
+      "lName":data["last_name"],
+      "ContactMethodEmail":data["email"],
+      "ContactMethodMobile":data["mobile_no"],
+      "ContactMethodPhoneHome":data["home_phone_no"],
+      "ContactMethodPhoneWork":data["work_phone_no"],
+      "StreetAddressFull":data["street_address"],
+      "Suburb":data["suburb"],
+      "Postcode":data["post_code"]
+    };
+    http.Response response = await http.post(
+        'https://www.goodtogoloans.com.au/crons/mobile_app_email.php',
+        headers: {
+
+          'Accept': '*/*',
+
+        },
+        encoding: Encoding.getByName("utf-8"),
+
+      body: bodyMap
+
+
+
+    );
+
+
+
+
+    print(response.body);
+
     return jsonDecode(response.body);
   }
 
@@ -132,7 +185,9 @@ class ClientController with ChangeNotifier {
   }
 
 
-
+  Client  getClient(){
+    return client;
+  }
 
 
   String get getClientName{

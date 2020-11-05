@@ -4,6 +4,7 @@ import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/accountsController.dart';
+import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/clientModel.dart';
@@ -17,10 +18,10 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
-  final Client client;
+
  
   
-  HomeScreen(this.client);
+  HomeScreen();
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -36,6 +37,8 @@ class _HomeScreenState extends State<HomeScreen>
    List<Account> accounts;
 
    int bottomNavIndex =0;
+  Client client;
+
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -78,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen>
                 children: [
                   Text(
                       '${isOverdue() ? 'Hi' : (isElligible() ? 'Welcome' : 'Well Done')}' +
-                          ', ${widget.client.fullName.split(' ')[0]}',
+                          ', $client.fullName.split(' ')[0]}',
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
                           fontWeight: FontWeight.bold,
@@ -119,11 +122,14 @@ class _HomeScreenState extends State<HomeScreen>
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-    
 
-   var accProvider =  Provider.of<AccountsController>(context,listen: false);
 
-     accounts = accProvider.getAccountsList();
+    var accProvider =  Provider.of<AccountsController>(context,listen: false);
+    var clientProvider = Provider.of<ClientController>(context,listen: false);
+
+    accounts = accProvider.getAccountsList();
+     client =  clientProvider.getClient();
+
 
     return Scaffold(
       key: _homeScreenScaffold,
@@ -137,11 +143,12 @@ class _HomeScreenState extends State<HomeScreen>
 
               break;// Create this function, it should return your first page as a widget
             case 1:
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ApplyNowScreen()),
-                      (r) => r.isFirst);
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ApplyNowScreen()),
+              //         (r) => r.isFirst);
+            launch('https://www.goodtogoloans.com.au/');
               break;// Create this function, it should return your second page as a widget
             case 2:
               Navigator.pushAndRemoveUntil(
@@ -232,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                   ),
                 ),
-                title: Text('Hi ${widget.client.fullName.split(' ')[0]}',
+                title: Text('Hi ${client.fullName.split(' ')[0]}',
                     //widget.client.fullName.split(' ')[0]
                     style: TextStyle(
                         fontSize: _isLarge ? 28 : 22,
@@ -415,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                   ),
-                  Text('Hi ${widget.client.fullName.split(' ')[0]}',
+                  Text('Hi ${client.fullName.split(' ')[0]}',
                       //widget.client.fullName.split(' ')[0]
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
@@ -1027,7 +1034,7 @@ class _HomeScreenState extends State<HomeScreen>
                         pr.show();
                         transactionsController
                             .getTransactions(
-                                account.accountID, widget.client.sessionToken)
+                                account.accountID, client.sessionToken)
                             .then((transactions) {
                           pr.hide();
                           Navigator.push(
