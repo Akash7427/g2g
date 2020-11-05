@@ -71,16 +71,17 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           ),
                         ),
                       ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (snapshot.connectionState == ConnectionState.waiting)
-                          CircularProgressIndicator(),
-                        Text(
-                          clientProvider.getClientName,
-                          style: TextStyle(
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting)
+                              CircularProgressIndicator(),
+                            Text(
+                              clientProvider.getClientName,
+                              style: TextStyle(
                               color: Colors.black,
                               fontSize: 25,
                               fontWeight: FontWeight.bold),
@@ -169,10 +170,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            LoanDocuments(
-                                                accountProvider
-                                                    .getAccountsList()[0])));
+                                        builder: (context) => LoanDocuments(
+                                            accountProvider
+                                                .getAccountsList()[0])));
                               },
                             ),
                             ListTile(

@@ -187,8 +187,8 @@ class _LoginScreenState extends State<LoginScreen>
                                                     )).show();
                                               } else {
                                                 Provider.of<AccountsController>(
-                                                    context,
-                                                    listen: false)
+                                                        context,
+                                                        listen: false)
                                                     .getAccounts(user.userID,
                                                     user.sessionToken)
                                                     .then((accounts) {
@@ -291,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen>
           return null;
         },
         textInputAction:
-            nextNode != null ? TextInputAction.next : TextInputAction.done,
+        nextNode != null ? TextInputAction.next : TextInputAction.done,
         // textCapitalization: obscureText
         //     ? TextCapitalization.sentences
         //     : TextCapitalization.characters,
