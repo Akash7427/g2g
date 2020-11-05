@@ -12,6 +12,7 @@ import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:g2g/screens/homeScreen.dart';
 
 class NavigationDrawer extends StatefulWidget {
   @override
@@ -33,12 +34,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     var clientProvider = Provider.of<ClientController>(context,listen: false);
     var accountProvider =Provider.of<AccountsController>(context,listen: false);
-    
-    
+
+
     return Drawer(
       child: FutureBuilder(
         future:clientProvider.fetchClientNameofSharedP(),
-              builder:(context,snapshot)=> Container(
+        builder:(context,snapshot)=> Container(
           color: Colors.white,
           child: Column(
             // Important: Remove any padding from the ListView.
@@ -65,10 +66,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                       children: [
                         if(snapshot.connectionState== ConnectionState.waiting)
                           CircularProgressIndicator(),
-                        
-                        
+
+
                         Text(
-                         clientProvider.getClientName ,
+                          clientProvider.getClientName ,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 25,
@@ -79,7 +80,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         ),
                         InkWell(
                           onTap: () {
-                              logout();
+                            logout();
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -108,10 +109,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                    colors: [kSecondaryColor, kPrimaryColor],
-                    begin: Alignment.center,
-                    end: Alignment.bottomCenter,
-                  )),
+                        colors: [kSecondaryColor, kPrimaryColor],
+                        begin: Alignment.center,
+                        end: Alignment.bottomCenter,
+                      )),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -139,7 +140,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               EditProfile(clientData)),
-                                      (r) => r.isFirst);
+                                          (r) => r.isFirst);
                                 });
                               },
                             ),
@@ -155,12 +156,12 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                     color: kWhiteColor),
                               ),
                               onTap: () {
-                                
+
                                 Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      LoanDocuments(accountProvider.getAccountsList()[0])));
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            LoanDocuments(accountProvider.getAccountsList()[0])));
                               },
                             ),
                             ListTile(
@@ -173,9 +174,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                     color: kWhiteColor),
                               ),
                               onTap: () {
-                                Navigator.pop(
-                                    context, (route) => route.isFirst);
-                                // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                                // Navigator.pop(
+                                //     context, (route) => route.isFirst);
+                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
                                 // Update the state of the app.
                                 // ...
                               },
@@ -264,7 +265,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
     final secureStorage = new FlutterSecureStorage();
     await preferences.clear();
     await secureStorage.deleteAll();
-   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
 
 
   }

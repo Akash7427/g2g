@@ -20,8 +20,7 @@ class _LoginScreenState extends State<LoginScreen>
   final _loginFormKey = GlobalKey<FormState>();
   final clientID = TextEditingController();
   final password = TextEditingController();
-  final clientController = ClientController();
-  
+
   bool _autoValidate = false;
   AnimationController animationController;
   Animation animation;
@@ -129,8 +128,8 @@ class _LoginScreenState extends State<LoginScreen>
                                           pr.show();
                                         });
 
-                                        clientController
-                                            .authenticateUser()
+
+                                        Provider.of<ClientController>(context,listen:false).authenticateUser()
                                             .then((value) async {
                                           if (value == null) {
                                             Scaffold.of(context)
@@ -140,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen>
                                             ));
                                             return;
                                           }
-                                          clientController
+                                      Provider.of<ClientController>(context,listen:false)
                                               .authenticateClient(
                                             clientID.text,
                                             password.text,
@@ -197,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              HomeScreen(user,
+                                                              HomeScreen(
                                                                   )),
                                                       (route) => false);
                                                 });
