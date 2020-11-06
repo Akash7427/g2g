@@ -70,9 +70,9 @@ class _SplashScreenState extends State<SplashScreen> {
               print(prefs.getBool('isLoggedIn'));
               if(prefs.getBool('isLoggedIn')??false)
             {
-               await ClientController().authenticateUser();
+               await Provider.of<ClientController>(context,listen: false).authenticateUser();
                String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
-              user=await ClientController().authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
+               user=await Provider.of<ClientController>(context,listen: false).authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
               accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
               }
