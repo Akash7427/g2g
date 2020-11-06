@@ -15,17 +15,18 @@ class TawkToScreen extends StatefulWidget {
 }
 
 class _TawkToScreenState extends State<TawkToScreen> {
-  final  _connectScreenKey=GlobalKey<ScaffoldState>();
+  final _connectScreenKey = GlobalKey<ScaffoldState>();
   WebViewController _controller;
   double _height;
   double _width;
   double _pixelRatio;
   bool _isLarge;
+
   @override
   void initState() {
     super.initState();
-    
   }
+
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
@@ -33,6 +34,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     return WebviewScaffold(
+      key: _connectScreenKey,
       appBar: AppBar(
         actions: [
           InkWell(
@@ -46,7 +48,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
                   size: _isLarge ? 35 : 30,
                 ),
               )),
-              InkWell(
+          InkWell(
               onTap: () {
                 Navigator.pop(context);
               },
@@ -62,34 +64,38 @@ class _TawkToScreenState extends State<TawkToScreen> {
         iconTheme: IconThemeData(color: kSecondaryColor, size: 30),
         title: Text('Connect',
             style: TextStyle(
-                fontSize: _isLarge?28:22,
+                fontSize: _isLarge ? 28 : 22,
                 fontWeight: FontWeight.bold,
                 color: kSecondaryColor)),
         leading: IconButton(
-          icon: Icon(Icons.menu, color: kSecondaryColor, size: 30),
+          icon: Icon(Icons.arrow_back, color: kSecondaryColor, size: 30),
           onPressed: () {
-            _connectScreenKey.currentState.openDrawer();
+            Navigator.pop(context);
           },
         ),
       ),
       resizeToAvoidBottomInset: true,
       withJavascript: true,
-      url: 'https://tawk.to/chat/5f3278b420942006f46a9dc2/default',initialChild: SpinKitPouringHourglass(color:kPrimaryColor,size:_width*0.25),hidden: true,);
+      url: 'https://tawk.to/chat/5f3278b420942006f46a9dc2/default',
+      initialChild:
+          SpinKitPouringHourglass(color: kPrimaryColor, size: _width * 0.25),
+      hidden: true,
+    );
     // Scaffold(
     //   key: _connectScreenKey,
     //   drawer: NavigationDrawer(),
-    //   appBar: 
-    
-    //   body: 
+    //   appBar:
+
+    //   body:
     //   SafeArea(
     //           child:  WebView(
     //      initialUrl: 'https://tawk.to/chat/5f3278b420942006f46a9dc2/default',
     //      javascriptMode: JavascriptMode.unrestricted,
-      
+
     //      onWebViewCreated: (WebViewController webViewController) async {
     //             _controller=webViewController;
     //          webViewController.loadUrl('https://tawk.to/chat/5f3278b420942006f46a9dc2/default');
-             
+
     //         },
     //     ),
     //   )

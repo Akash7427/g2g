@@ -59,6 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
+
    
     Timer(
         Duration(seconds: widget.seconds),
@@ -81,7 +82,6 @@ class _SplashScreenState extends State<SplashScreen> {
               }
         }
     );
-
   }
 
   @override
