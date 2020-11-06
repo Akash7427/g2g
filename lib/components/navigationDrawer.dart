@@ -30,48 +30,58 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery.of(context).size.height;
-    _pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    _width = MediaQuery.of(context).size.width;
+    _height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    _pixelRatio = MediaQuery
+        .of(context)
+        .devicePixelRatio;
+    _width = MediaQuery
+        .of(context)
+        .size
+        .width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     var clientProvider = Provider.of<ClientController>(context, listen: false);
     var accountProvider =
-        Provider.of<AccountsController>(context, listen: false);
+    Provider.of<AccountsController>(context, listen: false);
 
     return Drawer(
       child: FutureBuilder(
         future: clientProvider.fetchClientNameofSharedP(),
-        builder: (context, snapshot) => Container(
-          color: Colors.white,
-          child: Column(
-            // Important: Remove any padding from the ListView.
-            // padding: EdgeInsets.zero,
-            children: <Widget>[
-              Column(
-                children: [
-                  Padding(
-                    padding:
+        builder: (context, snapshot) =>
+            Container(
+              color: Colors.white,
+              child: Column(
+                // Important: Remove any padding from the ListView.
+                // padding: EdgeInsets.zero,
+                children: <Widget>[
+                  Column(
+                    children: [
+                      Padding(
+                        padding:
                         const EdgeInsets.only(top: 15, left: 20, right: 20),
-                    child: DrawerHeader(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        image: DecorationImage(
-                          image: AssetImage('images/logo2.png'),
-                          alignment: Alignment.bottomCenter,
+                        child: DrawerHeader(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            image: DecorationImage(
+                              image: AssetImage('images/logo2.png'),
+                              alignment: Alignment.bottomCenter,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (snapshot.connectionState == ConnectionState.waiting)
-                          CircularProgressIndicator(),
-                        Text(
-                          clientProvider.getClientName,
-                          style: TextStyle(
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting)
+                              CircularProgressIndicator(),
+                            Text(
+                              clientProvider.getClientName,
+                              style: TextStyle(
                               color: Colors.black,
                               fontSize: 25,
                               fontWeight: FontWeight.bold),
@@ -141,7 +151,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               EditProfile(clientData)),
-                                      (r) => r.isFirst);
+                                          (r) => r.isFirst);
                                 });
                               },
                             ),
@@ -160,10 +170,9 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            LoanDocuments(
-                                                accountProvider
-                                                    .getAccountsList()[0])));
+                                        builder: (context) => LoanDocuments(
+                                            accountProvider
+                                                .getAccountsList()[0])));
                               },
                             ),
                             ListTile(
