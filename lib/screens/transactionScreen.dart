@@ -7,13 +7,10 @@ import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
 import 'package:g2g/responsive_ui.dart';
-import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:g2g/widgets/custom_trans_item.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'homeScreen.dart';
@@ -34,17 +31,14 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   double _width;
   double _pixelRatio;
   bool _isLarge;
-
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     // monitor network fetch
 
     // if failed,use refreshFailed()
-
     if (mounted) setState(() {});
-
     _refreshController.refreshCompleted();
   }
 
@@ -54,7 +48,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -151,99 +144,98 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
           ),
         ],
       ),
-      body: SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: false,
-        header: WaterDropHeader(),
-        footer: CustomFooter(
-          builder: (BuildContext context, LoadStatus mode) {
-            Widget body;
-            if (mode == LoadStatus.idle) {
-              body = Text("pull up load");
-            } else if (mode == LoadStatus.loading) {
-              body = CupertinoActivityIndicator();
-            } else if (mode == LoadStatus.failed) {
-              body = Text("Load Failed!Click retry!");
-            } else if (mode == LoadStatus.canLoading) {
-              body = Text("release to load more");
-            } else {
-              body = Text("No more Data");
-            }
-            return Container(
-              height: 55.0,
-              child: Center(child: body),
-            );
-          },
-        ),
-        controller: _refreshController,
-        onRefresh: _onRefresh,
-        onLoading: _onLoading,
-        child: Stack(
-          children: <Widget>[
-            new Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: const AssetImage('images/bg.jpg'),
-                      fit: BoxFit.cover)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-              child: AppBar(
-                leading: CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Color(0xffccebf2),
-                  child: IconButton(
-                    onPressed: () {
-                      _transactionScaffoldKey.currentState.openDrawer();
-                    },
-                    icon: Icon(
-                      Icons.menu,
-                      color: kSecondaryColor,
-                      size: _isLarge ? 35 : 30,
-                    ),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: const AssetImage('images/bg.jpg'),
+                    fit: BoxFit.cover)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+            child: AppBar(
+              leading: CircleAvatar(
+                radius: 25,
+                backgroundColor: Color(0xffccebf2),
+                child: IconButton(
+                  onPressed: () {
+                    _transactionScaffoldKey.currentState.openDrawer();
+                  },
+                  icon: Icon(
+                    Icons.menu,
+                    color: kSecondaryColor,
+                    size: _isLarge ? 35 : 30,
                   ),
                 ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(),
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Color(0xffccebf2),
-                      child: IconButton(
-                        onPressed: () {
-                          launch("tel://1300197727");
-                        },
-                        icon: Icon(
-                          Icons.call,
-                          color: kSecondaryColor,
-                          size: _isLarge ? 35 : 30,
-                        ),
+              ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(),
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color(0xffccebf2),
+                    child: IconButton(
+                      onPressed: () {
+                        launch("tel://1300197727");
+                      },
+                      icon: Icon(
+                        Icons.call,
+                        color: kSecondaryColor,
+                        size: _isLarge ? 35 : 30,
                       ),
                     ),
-                  ],
-                ),
-                backgroundColor: Colors.transparent,
-                elevation: 0.0,
+                  ),
+                ],
               ),
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
             ),
-            new Positioned(
-              top: 100.0,
-              left: 0.0,
-              bottom: 0.0,
-              right: 0.0,
-              //here the body
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+          ),
+          new Positioned(
+            top: 100.0,
+            left: 0.0,
+            bottom: 0.0,
+            right: 0.0,
+            //here the body
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SmartRefresher(
+                  enablePullDown: true,
+                  enablePullUp: false,
+                  header: WaterDropHeader(),
+                  footer: CustomFooter(
+                    builder: (BuildContext context, LoadStatus mode) {
+                      Widget body;
+                      if (mode == LoadStatus.idle) {
+                        body = Text("pull up load");
+                      } else if (mode == LoadStatus.loading) {
+                        body = CupertinoActivityIndicator();
+                      } else if (mode == LoadStatus.failed) {
+                        body = Text("Load Failed!Click retry!");
+                      } else if (mode == LoadStatus.canLoading) {
+                        body = Text("release to load more");
+                      } else {
+                        body = Text("No more Data");
+                      }
+                      return Container(
+                        height: 55.0,
+                        child: Center(child: body),
+                      );
+                    },
+                  ),
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  onLoading: _onLoading,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         buildHeader(),
                         buildListHeader(),
-                        Expanded(
-                          child: FutureBuilder(
+                        FutureBuilder(
                             future: Provider.of<TransactionsController>(context,
                                     listen: false)
                                 .getTransactions(widget.account.accountID),
@@ -251,17 +243,17 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return Center(
-                                  child: SpinKitThreeBounce(color: Theme
-                                      .of(context)
-                                      .accentColor, size: _width * 0.14,),
+                                  child: SpinKitThreeBounce(
+                                    color: Theme.of(context).accentColor,
+                                    size: _width * 0.14,
+                                  ),
                                 );
                               } else {
                                 if (snapshot.error != null) {
                                   return Center(
                                     child: Text('No Documents Found'),
                                   );
-                                }
-                                else {
+                                } else {
                                   return Expanded(
                                     child: Consumer<TransactionsController>(
                                       builder: (ctx, transactionData, _) =>
@@ -269,15 +261,15 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                               itemCount: transactionData
                                                   .geTransactionList.length,
                                               itemBuilder: (ctx, index) {
-                                                var transaction = transactionData
-                                                    .geTransactionList[index];
+                                                var transaction =
+                                                    transactionData
+                                                            .geTransactionList[
+                                                        index];
 
                                                 return Padding(
                                                   padding: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 3.0),
-                                                  child:
-                                                  buildTransactionCard(
+                                                      .symmetric(vertical: 3.0),
+                                                  child: buildTransactionCard(
                                                       transaction),
                                                 );
                                               }),
@@ -286,7 +278,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                 }
                               }
                             }),
-                        ),
                         SizedBox(height: 20),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -310,8 +301,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
