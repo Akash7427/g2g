@@ -197,8 +197,12 @@ class _LoginScreenState extends State<LoginScreen>
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              HomeScreen()),
-                                                      (route) => false);
+
+                                                              HomeScreen(),settings: RouteSettings(
+                                                        arguments: 1,
+                                                      )),
+                                                          (route) => false);
+
                                                 });
                                               }
                                             },

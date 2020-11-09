@@ -80,7 +80,8 @@ class ClientController with ChangeNotifier {
     //   innerJson = _getValue(item.findElements("SessionDetails"));
     // }).toList();
     if (jsonDecode(json)['ClientAuthentication']['SessionError'] != null) {
-      return await authenticateClient(clientID, password, isWebAuthenticated);
+      return null;
+     // return await authenticateClient(clientID, password, isWebAuthenticated);
       //  CustomDialog.showMyDialog(context, 'ClientLogin', jsonDecode(json)['ClientAuthentication']['SessionError'], 'Retry', authenticateClient(context,clientID, password, isWebAuthenticated));
     } else if (innerJson['SessionToken'] != null) {
       prefs.setBool('isLoggedIn', true);
@@ -96,7 +97,8 @@ class ClientController with ChangeNotifier {
       notifyListeners();
       return client;
     } else if (jsonDecode(response.body)["Code"] == "Subscriber.InvalidHash") {
-      return await authenticateClient(clientID, ePass, isWebAuthenticated);
+     // return await authenticateClient(clientID, ePass, isWebAuthenticated);
+      return null;
     } else {
       return null;
     }

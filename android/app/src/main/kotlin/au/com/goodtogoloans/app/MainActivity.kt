@@ -1,4 +1,4 @@
-package com.beedev.g2g
+package au.com.goodtogoloans.app
 
 import io.flutter.embedding.android.FlutterActivity
 
