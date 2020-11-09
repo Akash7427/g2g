@@ -190,17 +190,19 @@ class _LoginScreenState extends State<LoginScreen>
                                                         context,
                                                         listen: false)
                                                     .getAccounts(user.userID,
-                                                    user.sessionToken)
+                                                        user.sessionToken)
                                                     .then((accounts) {
                                                   pr.hide();
                                                   Navigator.pushAndRemoveUntil(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
+
                                                               HomeScreen(),settings: RouteSettings(
                                                         arguments: 1,
                                                       )),
                                                           (route) => false);
+
                                                 });
                                               }
                                             },
@@ -284,8 +286,8 @@ class _LoginScreenState extends State<LoginScreen>
         inputFormatters: obscureText
             ? null
             : [
-          LowerCaseTextFormatter(),
-        ],
+                LowerCaseTextFormatter(),
+              ],
 
         validator: (value) {
           if (value.isEmpty)
@@ -293,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen>
           return null;
         },
         textInputAction:
-        nextNode != null ? TextInputAction.next : TextInputAction.done,
+            nextNode != null ? TextInputAction.next : TextInputAction.done,
         // textCapitalization: obscureText
         //     ? TextCapitalization.sentences
         //     : TextCapitalization.characters,
