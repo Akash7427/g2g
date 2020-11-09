@@ -127,13 +127,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  dio:
-    dependency: "direct main"
-    description:
-      name: dio
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.10"
   fading_edge_scrollview:
     dependency: transitive
     description:
@@ -202,6 +195,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.2"
+  flutter_launcher_icons:
+    dependency: "direct main"
+    description:
+      name: flutter_launcher_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -358,7 +358,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.3.0-nullsafety.4"
+    version: "1.3.0-nullsafety.3"
   nested:
     dependency: transitive
     description:
@@ -485,6 +485,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.3.2+2"
+  pull_to_refresh:
+    dependency: "direct main"
+    description:
+      name: pull_to_refresh
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.2"
   random_string:
     dependency: transitive
     description:
@@ -573,7 +580,7 @@ packages:
       name: stack_trace
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.10.0-nullsafety.4"
+    version: "1.10.0-nullsafety.1"
   stream_channel:
     dependency: transitive
     description:
@@ -714,6 +721,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.4.0"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
 sdks:
-  dart: ">=2.10.0-110 <=2.11.0-242.0.dev"
+  dart: ">=2.10.0-110 <2.11.0"
   flutter: ">=1.22.0 <2.0.0"

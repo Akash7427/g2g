@@ -1,19 +1,28 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/constants.dart';
+import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/loginScreen.dart';
+import 'package:g2g/screens/twakToScreen.dart';
 import 'package:g2g/widgets/custom_trans_item.dart';
+import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'homeScreen.dart';
+
 class TransactionsScreen extends StatefulWidget {
   final Account account;
-  final List<Transaction> transactions;
-  TransactionsScreen(this.account, this.transactions);
+
+  TransactionsScreen(this.account);
+
   @override
   _TransactionsScreenState createState() => _TransactionsScreenState();
 }
@@ -25,18 +34,69 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   double _width;
   double _pixelRatio;
   bool _isLarge;
+
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    // monitor network fetch
+
+    // if failed,use refreshFailed()
+
+    if (mounted) setState(() {});
+
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+
     return Scaffold(
       drawer: NavigationDrawer(),
       key: _transactionScaffoldKey,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 0, // this will be set when a new tab is tapped
+        onTap: (value) => setState(() {
+          switch (value) {
+            case 0:
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomeScreen(),
+                      settings: RouteSettings(
+                        arguments: 0,
+                      )));
+              break; // Create this function, it should return your first page as a widget
+            case 1:
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ApplyNowScreen()),
+              //         (r) => r.isFirst);
+              launch('https://www.goodtogoloans.com.au/');
+              break; // Create this function, it should return your second page as a widget
+            case 2:
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => TawkToScreen()),
+                  (r) => r.isFirst);
+              break; // Create this function, it should return your third page as a widget
+            // Create this function, it should return your fourth page as a widget
+          }
+        }), // this will be set when a new tab is tapped
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Container(
@@ -91,109 +151,167 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
           ),
         ],
       ),
-      body: Stack(
-        children: <Widget>[
-          new Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: const AssetImage('images/bg.jpg'),
-                    fit: BoxFit.cover)),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-            child: AppBar(
-              leading: CircleAvatar(
-                radius: 25,
-                backgroundColor: Color(0xffccebf2),
-                child: IconButton(
-                  onPressed: () {
-                    _transactionScaffoldKey.currentState.openDrawer();
-                  },
-                  icon: Icon(
-                    Icons.menu,
-                    color: kSecondaryColor,
-                    size: _isLarge ? 35 : 30,
-                  ),
-                ),
-              ),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(),
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Color(0xffccebf2),
-                    child: IconButton(
-                      onPressed: () {
-                        launch("tel://1300197727");
-                      },
-                      icon: Icon(
-                        Icons.call,
-                        color: kSecondaryColor,
-                        size: _isLarge ? 35 : 30,
-                      ),
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: false,
+        header: WaterDropHeader(),
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = Text("pull up load");
+            } else if (mode == LoadStatus.loading) {
+              body = CupertinoActivityIndicator();
+            } else if (mode == LoadStatus.failed) {
+              body = Text("Load Failed!Click retry!");
+            } else if (mode == LoadStatus.canLoading) {
+              body = Text("release to load more");
+            } else {
+              body = Text("No more Data");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          },
+        ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: Stack(
+          children: <Widget>[
+            new Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: const AssetImage('images/bg.jpg'),
+                      fit: BoxFit.cover)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+              child: AppBar(
+                leading: CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Color(0xffccebf2),
+                  child: IconButton(
+                    onPressed: () {
+                      _transactionScaffoldKey.currentState.openDrawer();
+                    },
+                    icon: Icon(
+                      Icons.menu,
+                      color: kSecondaryColor,
+                      size: _isLarge ? 35 : 30,
                     ),
                   ),
-                ],
-              ),
-              backgroundColor: Colors.transparent,
-              elevation: 0.0,
-            ),
-          ),
-          new Positioned(
-            top: 100.0,
-            left: 0.0,
-            bottom: 0.0,
-            right: 0.0,
-            //here the body
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      buildHeader(),
-                      buildListHeader(),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              for (Transaction transaction
-                                  in widget.transactions)
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 3.0),
-                                  child: buildTransactionCard(transaction),
-                                ),
-                            ],
-                          ),
+                ),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(),
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Color(0xffccebf2),
+                      child: IconButton(
+                        onPressed: () {
+                          launch("tel://1300197727");
+                        },
+                        icon: Icon(
+                          Icons.call,
+                          color: kSecondaryColor,
+                          size: _isLarge ? 35 : 30,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          FlatButton(
-                              color: kSecondaryColor,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text('BACK',
-                                    style: TextStyle(
-                                        fontSize: _isLarge ? 25 : 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white)),
-                              )),
-                        ],
-                      ),
-                    ]),
+                    ),
+                  ],
+                ),
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
               ),
             ),
-          ),
-        ],
+            new Positioned(
+              top: 100.0,
+              left: 0.0,
+              bottom: 0.0,
+              right: 0.0,
+              //here the body
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        buildHeader(),
+                        buildListHeader(),
+                        Expanded(
+                          child: FutureBuilder(
+                            future: Provider.of<TransactionsController>(context,
+                                    listen: false)
+                                .getTransactions(widget.account.accountID),
+                            builder: (ctx, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: SpinKitThreeBounce(color: Theme
+                                      .of(context)
+                                      .accentColor, size: _width * 0.14,),
+                                );
+                              } else {
+                                if (snapshot.error != null) {
+                                  return Center(
+                                    child: Text('No Documents Found'),
+                                  );
+                                }
+                                else {
+                                  return Expanded(
+                                    child: Consumer<TransactionsController>(
+                                      builder: (ctx, transactionData, _) =>
+                                          ListView.builder(
+                                              itemCount: transactionData
+                                                  .geTransactionList.length,
+                                              itemBuilder: (ctx, index) {
+                                                var transaction = transactionData
+                                                    .geTransactionList[index];
+
+                                                return Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 3.0),
+                                                  child:
+                                                  buildTransactionCard(
+                                                      transaction),
+                                                );
+                                              }),
+                                    ),
+                                  );
+                                }
+                              }
+                            }),
+                        ),
+                        SizedBox(height: 20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            FlatButton(
+                                color: kSecondaryColor,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Text('BACK',
+                                      style: TextStyle(
+                                          fontSize: _isLarge ? 25 : 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white)),
+                                )),
+                          ],
+                        ),
+                      ]),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

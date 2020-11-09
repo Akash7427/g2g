@@ -181,7 +181,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
+                                        builder: (context) => HomeScreen(),
+                                        settings: RouteSettings(
+                                          arguments: 0,
+                                        )));
                                 // Update the state of the app.
                                 // ...
                               },

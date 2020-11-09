@@ -29,6 +29,7 @@ class LoanDocController with ChangeNotifier {
     var json = myTransformer.toParker();
     print(json);
     var innerJson = jsonDecode(json)['AccountDocs']['Document'];
+    loanDocList.clear();
 
     for (Map m in innerJson) loanDocList.add(LoanDocModel.fromJson(m));
 

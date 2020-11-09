@@ -14,6 +14,8 @@ import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/utility/pref_helper.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:g2g/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   final int seconds;
@@ -48,6 +50,8 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
+
+
 class _SplashScreenState extends State<SplashScreen> {
   double _height;
   double _width;
@@ -59,30 +63,40 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-
+    tryAuthenticate();
    
+
+  }
+
+  void tryAuthenticate(){
     Timer(
         Duration(seconds: widget.seconds),
             () async{
-              Client user;
-              List<Account> accounts;
-              SharedPreferences prefs=await SharedPreferences.getInstance();
-              final secureStorage= new FlutterSecureStorage();
-              print(prefs.getBool('isLoggedIn'));
-              if(prefs.getBool('isLoggedIn')??false)
-            {
-               await Provider.of<ClientController>(context,listen: false).authenticateUser();
-               String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
-               user=await Provider.of<ClientController>(context,listen: false).authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
-              accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
-              }
-              else{
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
-              }
+          Client user;
+          List<Account> accounts;
+          SharedPreferences prefs=await SharedPreferences.getInstance();
+          final secureStorage= new FlutterSecureStorage();
+          print(prefs.getBool('isLoggedIn'));
+          if(prefs.getBool('isLoggedIn')??false)
+          {
+            await Provider.of<ClientController>(context,listen: false).authenticateUser();
+            String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
+            user=await Provider.of<ClientController>(context,listen: false).authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
+            if(user==null)
+              showAlert();
+            accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
+
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(),settings: RouteSettings(
+              arguments: 1,
+            )));
+          }
+          else{
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+          }
         }
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +104,8 @@ class _SplashScreenState extends State<SplashScreen> {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -115,4 +131,67 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
+
+  Future<bool> showAlert(){
+    return new Alert(
+        context: context,
+        title:
+        'Invalid Credentials',
+        type: AlertType.error,
+
+
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Login",
+              style: TextStyle(
+                  color:
+                  Colors.white,
+                  fontSize: _isLarge
+                      ? 24
+                      : 18),
+            ),
+            onPressed: () =>
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (BuildContext context) => LoginScreen())),
+            color: kPrimaryColor,
+            radius: BorderRadius
+                .circular(0.0),
+          ),
+          DialogButton(
+            child: Text(
+              "Retry",
+              style: TextStyle(
+                  color:
+                  Colors.white,
+                  fontSize: _isLarge
+                      ? 24
+                      : 18),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              tryAuthenticate();
+
+    }
+                ,
+            color: kPrimaryColor,
+            radius: BorderRadius
+                .circular(0.0),
+          )
+        ],
+        style: AlertStyle(
+          animationType:
+          AnimationType.fromTop,
+          isCloseButton: false,
+          isOverlayTapDismiss:
+          false,
+          titleStyle: TextStyle(
+              fontWeight:
+              FontWeight.bold,
+              fontSize: _isLarge
+                  ? 24
+                  : 18),
+        )).show();
+  }
+
 }

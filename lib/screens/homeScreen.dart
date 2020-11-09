@@ -1,4 +1,5 @@
 import 'package:after_layout/after_layout.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/components/progressDialog.dart';
@@ -16,6 +17,7 @@ import 'package:g2g/screens/loanDocumentsScreen.dart';
 import 'package:g2g/screens/transactionScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,22 +40,55 @@ class _HomeScreenState extends State<HomeScreen>
 
   int bottomNavIndex = 0;
   Client client;
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
+  var accProvider;
+
+  void _onRefresh() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    accounts = accProvider.getAccountsList();
+    if(mounted)
+      setState(() {
+
+      });
+    _refreshController.loadComplete();
+  }
+
 
   @override
   void afterFirstLayout(BuildContext context) {
-    _showDialog();
+  int  flag =  ModalRoute.of(context).settings.arguments;
+  print('navFlag'+ flag.toString());
+  if(flag==1)
+        _showDialog();
+
+
   }
 
   bool isOverdue() {
-    for (Account account in accounts)
-      if (account.balanceOverdue ?? 0 > 0 && account.status == "Open")
-        return true;
+    try {
+      for (Account account in accounts) {
+        if ((account.balanceOverdue??0.0) > 0.0 && account.status == "Open")
+          return true;
+      }
+    }catch(error){
+      print(error.toString());
+    }
     return false;
   }
 
   bool isElligible() {
     for (Account account in accounts)
-      if ((account.balanceOverdue ?? 0 > 0 || account.balance > 0) &&
+      if (((account.balanceOverdue??0.0) > 0.0 || account.balance > 0) &&
           account.status == "Open") return false;
     return true;
   }
@@ -111,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen>
                       isOverdue()
                           ? 'Your Account is Overdue'
                           : (isElligible()
-                              ? 'You\'re elligible to reapply'
+                              ? 'You\'re eligible to reapply'
                               : 'You\'re on Track'),
                       style: TextStyle(
                           fontSize: _isLarge ? 24 : 18,
@@ -152,11 +187,14 @@ class _HomeScreenState extends State<HomeScreen>
         .width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
 
-    var accProvider = Provider.of<AccountsController>(context, listen: false);
+    accProvider = Provider.of<AccountsController>(context, listen: false);
     var clientProvider = Provider.of<ClientController>(context, listen: false);
 
-    accounts = accProvider.getAccountsList();
+
     client = clientProvider.getClient();
+    accounts = accProvider.getAccountsList();
+
+
 
     return Scaffold(
       key: _homeScreenScaffold,
@@ -240,117 +278,149 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ],
       ),
-      body: new Stack(
-        children: <Widget>[
-          new Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: const AssetImage('images/bg.jpg'),
-                    fit: BoxFit.cover)),
-          ),
-          Padding(
-              padding: const EdgeInsets.only(top: 10.0, left: 10, right: 10),
-              child: AppBar(
-                leading: CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Color(0xffccebf2),
-                  child: IconButton(
-                    onPressed: () {
-                      _homeScreenScaffold.currentState.openDrawer();
-                    },
-                    icon: Icon(
-                      Icons.menu,
-                      color: kSecondaryColor,
-                      size: _isLarge ? 35 : 30,
-                    ),
-                  ),
-                ),
-                title: Text('Hi ${(client.fullName.split(' ')[0])}',
-                    //widget.client.fullName.split(' ')[0]
-                    style: TextStyle(
-                        fontSize: _isLarge ? 28 : 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-                centerTitle: true,
-                backgroundColor: Colors.transparent,
-                elevation: 0.0,
-                actions: [
-                  CircleAvatar(
+      body: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: false,
+        header: WaterDropHeader(),
+        footer: CustomFooter(
+          builder: (BuildContext context,LoadStatus mode){
+            Widget body ;
+            if(mode==LoadStatus.idle){
+              body =  Text("pull up load");
+            }
+            else if(mode==LoadStatus.loading){
+              body =  CupertinoActivityIndicator();
+            }
+            else if(mode == LoadStatus.failed){
+              body = Text("Load Failed!Click retry!");
+            }
+            else if(mode == LoadStatus.canLoading){
+              body = Text("release to load more");
+            }
+            else{
+              body = Text("No more Data");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child:body),
+            );
+          },
+        ),
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        onLoading: _onLoading,
+        child: new Stack(
+          children: <Widget>[
+            new Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: const AssetImage('images/bg.jpg'),
+                      fit: BoxFit.cover)),
+            ),
+            Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                child: AppBar(
+                  leading: CircleAvatar(
                     radius: 25,
                     backgroundColor: Color(0xffccebf2),
                     child: IconButton(
                       onPressed: () {
-                        launch("tel://1300197727");
+                        _homeScreenScaffold.currentState.openDrawer();
                       },
                       icon: Icon(
-                        Icons.call,
+                        Icons.menu,
                         color: kSecondaryColor,
                         size: _isLarge ? 35 : 30,
                       ),
                     ),
                   ),
-                ],
-              )
-              // AppBar(
-              //   title: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     crossAxisAlignment: CrossAxisAlignment.center,
-              //     children: [
-              //       CircleAvatar(
-              //         radius: 25,
-              //         backgroundColor: Color(0xffccebf2),
-              //         child: IconButton(
-              //           onPressed: () {
-              //             _homeScreenScaffold.currentState.openDrawer();
-              //           },
-              //           icon: Icon(
-              //             Icons.menu,
-              //             color: kSecondaryColor,
-              //             size: 30,
-              //           ),
-              //         ),
-              //       ),
-              //       Text('Hi ${widget.client.fullName.split(' ')[0]}',
-              //           //widget.client.fullName.split(' ')[0]
-              //           style: TextStyle(
-              //               fontSize: _isLarge ? 28 : 22,
-              //               fontWeight: FontWeight.bold,
-              //               color: Colors.black)),
-              //       CircleAvatar(
-              //         radius: 25,
-              //         backgroundColor: Color(0xffccebf2),
-              //         child: IconButton(
-              //           onPressed: () {
-              //             launch("tel://1300197727");
-              //           },
-              //           icon: Icon(
-              //             Icons.call,
-              //             color: kSecondaryColor,
-              //             size: _isLarge ? 35 : 30,
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              //   backgroundColor: Colors.transparent,
-              //   elevation: 0.0,
-              // ),
+                  title: Text('Hi ${(client.fullName.split(' ')[0])}',
+                      //widget.client.fullName.split(' ')[0]
+                      style: TextStyle(
+                          fontSize: _isLarge ? 28 : 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                  centerTitle: true,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0.0,
+                  actions: [
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundColor: Color(0xffccebf2),
+                      child: IconButton(
+                        onPressed: () {
+                          launch("tel://1300197727");
+                        },
+                        icon: Icon(
+                          Icons.call,
+                          color: kSecondaryColor,
+                          size: _isLarge ? 35 : 30,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+                // AppBar(
+                //   title: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       CircleAvatar(
+                //         radius: 25,
+                //         backgroundColor: Color(0xffccebf2),
+                //         child: IconButton(
+                //           onPressed: () {
+                //             _homeScreenScaffold.currentState.openDrawer();
+                //           },
+                //           icon: Icon(
+                //             Icons.menu,
+                //             color: kSecondaryColor,
+                //             size: 30,
+                //           ),
+                //         ),
+                //       ),
+                //       Text('Hi ${widget.client.fullName.split(' ')[0]}',
+                //           //widget.client.fullName.split(' ')[0]
+                //           style: TextStyle(
+                //               fontSize: _isLarge ? 28 : 22,
+                //               fontWeight: FontWeight.bold,
+                //               color: Colors.black)),
+                //       CircleAvatar(
+                //         radius: 25,
+                //         backgroundColor: Color(0xffccebf2),
+                //         child: IconButton(
+                //           onPressed: () {
+                //             launch("tel://1300197727");
+                //           },
+                //           icon: Icon(
+                //             Icons.call,
+                //             color: kSecondaryColor,
+                //             size: _isLarge ? 35 : 30,
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                //   backgroundColor: Colors.transparent,
+                //   elevation: 0.0,
+                // ),
+                ),
+            new Positioned(
+              top: 100.0,
+              left: 0.0,
+              bottom: 0.0,
+              right: 0.0,
+              //here the body
+              child: PageView.builder(
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return buildPage(context, accounts[index]);
+                },
+                itemCount: accounts.length,
               ),
-          new Positioned(
-            top: 100.0,
-            left: 0.0,
-            bottom: 0.0,
-            right: 0.0,
-            //here the body
-            child: PageView.builder(
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return buildPage(context, accounts[index]);
-              },
-              itemCount: accounts.length,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -991,6 +1061,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 Column(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     buildLoanDetail(
                                         'Open Date',
@@ -1001,8 +1072,8 @@ class _HomeScreenState extends State<HomeScreen>
                                             "/" +
                                             account.maturityDate.year
                                                 .toString()),
-                                    SizedBox(height: _isLarge ? 30 : 15),
-                                    buildLoanDetail('Payments Remaining', '20'),
+                                    //SizedBox(height: _isLarge ? 30 : 15),
+                                   // buildLoanDetail('Payments Remaining', '20'),
                                   ],
                                 )
                               ],
@@ -1057,19 +1128,14 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     child: ListTile(
                       onTap: () async {
-                        final pr = ProgressDialog(context);
-                        pr.show();
-                        transactionsController
-                            .getTransactions(
-                                account.accountID, client.sessionToken)
-                            .then((transactions) {
-                          pr.hide();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TransactionsScreen(
-                                      account, transactions)));
-                        });
+
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    TransactionsScreen(
+                                        account)));
                       },
                       leading: ImageIcon(
                         AssetImage('images/transaction.png'),
