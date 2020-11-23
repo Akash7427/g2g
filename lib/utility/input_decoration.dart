@@ -5,16 +5,16 @@ InputDecoration buildInputDecoration(
   return InputDecoration(
       enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.black54),
-          borderRadius: BorderRadius.circular(15)),
+          borderRadius: BorderRadius.circular(4)),
       focusedErrorBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.redAccent),
-          borderRadius: BorderRadius.circular(15)),
+          borderRadius: BorderRadius.circular(4)),
       errorBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.redAccent),
-          borderRadius: BorderRadius.circular(15)),
+          borderRadius: BorderRadius.circular(4)),
       focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.black),
-          borderRadius: BorderRadius.circular(15)),
+          borderRadius: BorderRadius.circular(4)),
       labelText: label,
       labelStyle: TextStyle(color: Colors.blueGrey),
       contentPadding: EdgeInsets.all(8),
