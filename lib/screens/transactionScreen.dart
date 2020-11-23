@@ -7,13 +7,10 @@ import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
 import 'package:g2g/responsive_ui.dart';
-import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:g2g/widgets/custom_trans_item.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'homeScreen.dart';
@@ -34,17 +31,14 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   double _width;
   double _pixelRatio;
   bool _isLarge;
-
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     // monitor network fetch
 
     // if failed,use refreshFailed()
-
     if (mounted) setState(() {});
-
     _refreshController.refreshCompleted();
   }
 
@@ -54,7 +48,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -180,7 +173,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         onLoading: _onLoading,
         child: Stack(
           children: <Widget>[
-            new Container(
+            Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image: const AssetImage('images/bg.jpg'),
@@ -243,8 +236,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                         buildHeader(),
                         SizedBox(height: 8,),
                         buildListHeader(),
-                        Expanded(
-                          child: FutureBuilder(
+                        FutureBuilder(
                             future: Provider.of<TransactionsController>(context,
                                     listen: false)
                                 .getTransactions(widget.account.accountID),
@@ -252,15 +244,17 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return Center(
-                                  child: SpinKitThreeBounce(color: Theme
-                                      .of(context)
-                                      .accentColor, size: _width * 0.14,),
+                                  child: SpinKitThreeBounce(
+                                    color: Theme.of(context).accentColor,
+                                    size: _width * 0.14,
+                                  ),
                                 );
                               } else {
                                 if (snapshot.error != null) {
                                   return Center(
                                     child: Text('No Transaction Found'),
                                   );
+
                                 }
                                 else {
                                   return MediaQuery.removePadding(
@@ -272,15 +266,15 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                               itemCount: transactionData
                                                   .geTransactionList.length,
                                               itemBuilder: (ctx, index) {
-                                                var transaction = transactionData
-                                                    .geTransactionList[index];
+                                                var transaction =
+                                                    transactionData
+                                                            .geTransactionList[
+                                                        index];
 
                                                 return Padding(
                                                   padding: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 3.0),
-                                                  child:
-                                                  buildTransactionCard(
+                                                      .symmetric(vertical: 3.0),
+                                                  child: buildTransactionCard(
                                                       transaction),
                                                 );
                                               }),
@@ -289,7 +283,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                 }
                               }
                             }),
-                        ),
                         SizedBox(height: 20),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
