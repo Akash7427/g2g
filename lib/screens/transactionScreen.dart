@@ -151,124 +151,124 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
           ),
         ],
       ),
-      body: SmartRefresher(
-        enablePullDown: true,
-        enablePullUp: false,
-        header: WaterDropHeader(),
-        footer: CustomFooter(
-          builder: (BuildContext context, LoadStatus mode) {
-            Widget body;
-            if (mode == LoadStatus.idle) {
-              body = Text("pull up load");
-            } else if (mode == LoadStatus.loading) {
-              body = CupertinoActivityIndicator();
-            } else if (mode == LoadStatus.failed) {
-              body = Text("Load Failed!Click retry!");
-            } else if (mode == LoadStatus.canLoading) {
-              body = Text("release to load more");
-            } else {
-              body = Text("No more Data");
-            }
-            return Container(
-              height: 55.0,
-              child: Center(child: body),
-            );
-          },
-        ),
-        controller: _refreshController,
-        onRefresh: _onRefresh,
-        onLoading: _onLoading,
-        child: Stack(
-          children: <Widget>[
-            new Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: const AssetImage('images/bg.jpg'),
-                      fit: BoxFit.cover)),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-              child: AppBar(
-                leading: CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Color(0xffccebf2),
-                  child: IconButton(
-                    onPressed: () {
-                      _transactionScaffoldKey.currentState.openDrawer();
-                    },
-                    icon: Icon(
-                      Icons.menu,
-                      color: kSecondaryColor,
-                      size: _isLarge ? 35 : 30,
-                    ),
+      body: Stack(
+        children: <Widget>[
+          new Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: const AssetImage('images/bg.jpg'),
+                    fit: BoxFit.cover)),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+            child: AppBar(
+              leading: CircleAvatar(
+                radius: 25,
+                backgroundColor: Color(0xffccebf2),
+                child: IconButton(
+                  onPressed: () {
+                    _transactionScaffoldKey.currentState.openDrawer();
+                  },
+                  icon: Icon(
+                    Icons.menu,
+                    color: kSecondaryColor,
+                    size: _isLarge ? 35 : 30,
                   ),
                 ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(),
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Color(0xffccebf2),
-                      child: IconButton(
-                        onPressed: () {
-                          launch("tel://1300197727");
-                        },
-                        icon: Icon(
-                          Icons.call,
-                          color: kSecondaryColor,
-                          size: _isLarge ? 35 : 30,
-                        ),
+              ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(),
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Color(0xffccebf2),
+                    child: IconButton(
+                      onPressed: () {
+                        launch("tel://1300197727");
+                      },
+                      icon: Icon(
+                        Icons.call,
+                        color: kSecondaryColor,
+                        size: _isLarge ? 35 : 30,
                       ),
                     ),
-                  ],
-                ),
-                backgroundColor: Colors.transparent,
-                elevation: 0.0,
+                  ),
+                ],
               ),
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
             ),
-            new Positioned(
-              top: 100.0,
-              left: 0.0,
-              bottom: 0.0,
-              right: 0.0,
-              //here the body
-              child:
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Card(
-                  child: Column(
-                      children: [
-                        buildHeader(),
-                        SizedBox(height: 8,),
-                        buildListHeader(),
-                        Expanded(
-                          child: FutureBuilder(
-                            future: Provider.of<TransactionsController>(context,
-                                    listen: false)
-                                .getTransactions(widget.account.accountID),
-                            builder: (ctx, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
+          ),
+          new Positioned(
+              top: 110.0,
+            left: 0.0,
+            bottom: 0.0,
+            right: 0.0,
+            //here the body
+            child:
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Card(
+                child: Column(
+                    children: [
+                      buildHeader(),
+                      SizedBox(height: 8,),
+                      buildListHeader(),
+                      Expanded(
+                        child: FutureBuilder(
+                          future: Provider.of<TransactionsController>(context,
+                                  listen: false)
+                              .getTransactions(widget.account.accountID),
+                          builder: (ctx, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: SpinKitThreeBounce(color: Theme
+                                    .of(context)
+                                    .accentColor, size: _width * 0.14,),
+                              );
+                            } else {
+                              if (snapshot.error != null) {
                                 return Center(
-                                  child: SpinKitThreeBounce(color: Theme
-                                      .of(context)
-                                      .accentColor, size: _width * 0.14,),
+                                  child: Text('No Transaction Found'),
                                 );
-                              } else {
-                                if (snapshot.error != null) {
-                                  return Center(
-                                    child: Text('No Transaction Found'),
-                                  );
-                                }
-                                else {
-                                  return MediaQuery.removePadding(
-                                    removeTop: true,
-                                    context: ctx,
-                                    child: Consumer<TransactionsController>(
-                                      builder: (ctx, transactionData, _) =>
-                                          ListView.builder(
+                              }
+                              else {
+                                return MediaQuery.removePadding(
+                                  removeTop: true,
+                                  context: ctx,
+                                  child: Consumer<TransactionsController>(
+                                    builder: (ctx, transactionData, _) =>
+                                        SmartRefresher(
+                                          enablePullDown: true,
+                                          enablePullUp: false,
+                                          header: WaterDropHeader(),
+                                          footer: CustomFooter(
+                                            builder: (BuildContext context, LoadStatus mode) {
+                                              Widget body;
+                                              if (mode == LoadStatus.idle) {
+                                                body = Text("pull up load");
+                                              } else if (mode == LoadStatus.loading) {
+                                                body = CupertinoActivityIndicator();
+                                              } else if (mode == LoadStatus.failed) {
+                                                body = Text("Load Failed!Click retry!");
+                                              } else if (mode == LoadStatus.canLoading) {
+                                                body = Text("release to load more");
+                                              } else {
+                                                body = Text("No more Data");
+                                              }
+                                              return Container(
+                                                height: 55.0,
+                                                child: Center(child: body),
+                                              );
+                                            },
+                                          ),
+                                          controller: _refreshController,
+                                          onRefresh: _onRefresh,
+                                          onLoading: _onLoading,
+                                          child: ListView.builder(
                                               itemCount: transactionData
                                                   .geTransactionList.length,
                                               itemBuilder: (ctx, index) {
@@ -284,50 +284,50 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                       transaction),
                                                 );
                                               }),
-                                    ),
-                                  );
-                                }
-                              }
-                            }),
-                        ),
-                        SizedBox(height: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                  color: kSecondaryColor,
-
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.arrow_back,color:Colors.white),
-                                        SizedBox(width: 4,),
-                                        Text('BACK',
-
-                                            style: TextStyle(
-                                                fontSize: _isLarge ? 25 : 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                            textAlign: TextAlign.center
                                         ),
-                                      ],
-                                    ),
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ]),
-                ),
+                                  ),
+                                );
+                              }
+                            }
+                          }),
+                      ),
+                      SizedBox(height: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                                color: kSecondaryColor,
+
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.arrow_back,color:Colors.white),
+                                      SizedBox(width: 4,),
+                                      Text('BACK',
+
+                                          style: TextStyle(
+                                              fontSize: _isLarge ? 25 : 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                          textAlign: TextAlign.center
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                          ),
+                        ],
+                      ),
+                    ]),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

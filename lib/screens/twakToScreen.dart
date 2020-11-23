@@ -74,7 +74,7 @@ email : 'visitor@email.com'
 };
 
 var Tawk_LoadStart=new Date();
-<!-- rest of the tawk.to widget code 
+
 </script>
                       """);
                       print(result2);

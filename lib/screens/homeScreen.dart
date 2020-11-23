@@ -404,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen>
                 // ),
                 ),
             new Positioned(
-              top: 100.0,
+              top: 110.0,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
@@ -542,7 +542,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           new Positioned(
-            top: 100.0,
+              top: 110.0,
             left: 0.0,
             bottom: 0.0,
             right: 0.0,
@@ -1026,7 +1026,7 @@ class _HomeScreenState extends State<HomeScreen>
                           child: Text(
                             'Loan Details',
                             style: TextStyle(
-                              fontSize: _isLarge ? 28 : 20,
+                              fontSize: _isLarge ? 28 : 18,
                               fontWeight: FontWeight.w700,
                               color: Colors.black,
                             ),
