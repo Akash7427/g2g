@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_tawk/flutter_tawk.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/loginScreen.dart';
+import 'package:g2g/tawk/tawk_visitor.dart';
+import 'package:g2g/tawk/tawk_widget.dart';
 import 'package:g2g/utility/pref_helper.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,6 +29,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
   bool _isLarge;
   String name;
   String email;
+  String clientID;
 
   @override
   void initState() {
@@ -42,6 +44,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
     setState(() {
       name = prefs.getString(PrefHelper.PREF_FULLNAME) ?? '';
       email = prefs.getString(PrefHelper.PREF_EMAIL_ID) ?? '';
+      clientID = prefs.getString(PrefHelper.Pref_CLIENT_ID) ?? '';
       print(name);
       print(email);
     });
@@ -115,10 +118,8 @@ class _TawkToScreenState extends State<TawkToScreen> {
             child: Tawk(
               directChatLink:
                   'https://tawk.to/chat/580d5a22d0f23f0cd8dc1448/default',
-              visitor: TawkVisitor(
-                name: name,
-                email: email,
-              ),
+              visitor:
+                  TawkVisitor(name: name, email: email, ClientID: clientID),
             ),
           ),
         ),

@@ -50,7 +50,7 @@ dependencies:
   flutter_form_builder: ^3.14.1
   flutter_launcher_icons: ^0.8.1
   pull_to_refresh: ^1.6.1
-  flutter_tawk: ^0.0.3
+
 
 
 dev_dependencies:
