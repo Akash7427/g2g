@@ -320,7 +320,7 @@ class _EditProfileState extends State<EditProfile> {
                                    context, "Mobile Number", "Enter Mobile Number"),
                                 keyboardType: TextInputType.number,
                                 validators: [
-                                  FormBuilderValidators.numeric(),
+                               //   FormBuilderValidators.numeric(),
                                   //FormBuilderValidators.minLength(10),
                                   FormBuilderValidators.required()
                                 ],
@@ -344,7 +344,7 @@ class _EditProfileState extends State<EditProfile> {
                                 validators: [
 
                                  // FormBuilderValidators.minLength(10),
-                                  FormBuilderValidators.numeric(),
+                                //  FormBuilderValidators.numeric(),
                                   FormBuilderValidators.required()
                                 ],
                               ),
@@ -368,7 +368,7 @@ class _EditProfileState extends State<EditProfile> {
                                    context,"Ph Work", "Phone Number(Work)"),
                                 keyboardType: TextInputType.number,
                                 validators: [
-                                  FormBuilderValidators.numeric(),
+                                 // FormBuilderValidators.numeric(),
                                  // FormBuilderValidators.minLength(10),
                                   FormBuilderValidators.required()
                                 ],
@@ -702,7 +702,7 @@ class _EditProfileState extends State<EditProfile> {
                                       }
                                     }, child: Padding(
                                   padding:  EdgeInsets.all(12.0),
-                                  child: Text('SAVE',
+                                  child: Text('Send My Request',
                                       style: TextStyle(
                                           fontSize: _isLarge ? 25 : 18,
                                           fontWeight: FontWeight.bold,
