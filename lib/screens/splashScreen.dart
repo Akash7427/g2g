@@ -135,10 +135,21 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<bool> showAlert(){
     return new Alert(
         context: context,
-        title:
-        'Invalid Credentials',
-        type: AlertType.error,
+      title: '',
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          ClipOval(
+            child: Material(
+              color: Colors.red, // button color
+              child: SizedBox(width: 56, height: 56, child: Icon(Icons.close,color:Colors.white)),
+            ),
+          ),
+          SizedBox(height:20),
+          Text('Invalid Password')
 
+        ],
+      ),
 
         buttons: [
           DialogButton(
@@ -183,6 +194,7 @@ class _SplashScreenState extends State<SplashScreen> {
           animationType:
           AnimationType.fromTop,
           isCloseButton: false,
+
           isOverlayTapDismiss:
           false,
           titleStyle: TextStyle(

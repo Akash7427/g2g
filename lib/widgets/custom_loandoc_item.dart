@@ -30,10 +30,9 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
     return Column(
       children: [
         Container(
-          margin:
-              EdgeInsets.only(left: 8.0, right: 8.0, bottom: 12.0, top: 12.0),
+          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 flex: 2,
@@ -69,8 +68,23 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
                           await OpenFile.open(value.path);
                         }
                         else{
-                          Scaffold.of(context).showSnackBar(SnackBar(content: Text('File not present please downoad the file first.'),));
-                        }
+                          pr.show();
+
+                          await fProvider
+                              .fetchDoc(
+                              widget.accountId,
+                              widget.loanDocModel.getDocPk,
+                              widget.loanDocModel.getDocFileName)
+                              .then((value) async {
+                            final result = await OpenFile.open(value.path);
+                            print("outputOF${result.type}");
+                            if (result.type != null) {
+                              setState(() {
+                                pr.hide();
+
+                              });
+                            }
+                          });                        }
                       });
                      
                     },
@@ -79,32 +93,16 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
                       color: Color(0xFF3A5A98),
                     ),
                   ),
-                  SizedBox(width: 12.0),
-                  InkWell(
-                    onTap: () async {
-                       pr.show();
-
-                      await fProvider
-                          .fetchDoc(
-                              widget.accountId,
-                              widget.loanDocModel.getDocPk,
-                              widget.loanDocModel.getDocFileName)
-                          .then((value) async {
-                        final result = await OpenFile.open(value.path);
-                        print("outputOF${result.type}");
-                        if (result.type != null) {
-                          setState(() {
-                            pr.hide();
-                          
-                          });
-                        }
-                      });
-                    },
-                    child: ImageIcon(
-                      AssetImage("images/download_icon.png"),
-                      color: Color(0xFF3A5A98),
-                    ),
-                  ),
+                  // SizedBox(width: 12.0),
+                  // InkWell(
+                  //   onTap: () async {
+                  //
+                  //   },
+                  //   child: ImageIcon(
+                  //     AssetImage("images/download_icon.png"),
+                  //     color: Color(0xFF3A5A98),
+                  //   ),
+                  // ),
                 ],
               ),
             ],
@@ -112,6 +110,8 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
         ),
         Divider(
           color: Colors.black54,
+          endIndent:20,
+          indent: 20,
         )
       ],
     );
