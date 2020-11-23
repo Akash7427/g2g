@@ -107,19 +107,17 @@ class ClientController with ChangeNotifier {
   Future<ClientBasicModel> getClientBasic() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     http.Response response = await http.get(
-        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(
-            PrefHelper.Pref_CLIENT_ID)}',
+        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}',
         headers: {
           'Content-Type': 'application/json',
           HttpHeaders.authorizationHeader:
-          'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
+              'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
         });
     print(response.body);
     prefs.setString(PrefHelper.PREF_EMAIL_ID,
         jsonDecode(response.body)['ContactMethodEmail']);
     print('link' +
-        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(
-            'clientID')}');
+        '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString('clientID')}');
     try {
       clientBasicModel = ClientBasicModel.fromJson(jsonDecode(response.body));
     } catch (error) {

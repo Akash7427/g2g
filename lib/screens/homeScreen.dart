@@ -134,9 +134,7 @@ class _HomeScreenState extends State<HomeScreen>
               child: Column(
                 children: [
                   Text(
-                      '${isOverdue() ? 'Hi' : (isElligible()
-                          ? 'Welcome'
-                          : 'Well Done')}' +
+                      '${isOverdue() ? 'Hi' : (isElligible() ? 'Welcome' : 'Well Done')}' +
                           ', ${client.fullName.split(' ')[0]}',
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
@@ -223,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen>
                   break; // Create this function, it should return your third page as a widget
               // Create this function, it should return your fourth page as a widget
               }
-        }),
+            }),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Container(
