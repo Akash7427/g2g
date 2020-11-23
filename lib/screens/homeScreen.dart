@@ -1143,7 +1143,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       title: Text('Transactions',
                           style: TextStyle(
-                            fontSize: _isLarge ? 28 : 20,
+                            fontSize: _isLarge ? 28 : 18,
                             fontWeight: FontWeight.w700,
                             color: Colors.black,
                           )),

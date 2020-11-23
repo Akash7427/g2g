@@ -40,6 +40,24 @@ class _Good2GoAppState extends State<Good2GoApp> {
         theme: ThemeData(
          primaryColor: kPrimaryColor,
          accentColor: kSecondaryColor,
+          brightness: Brightness.light,
+
+
+          // Define the default font family.
+          fontFamily: 'Montserrat-Light',
+
+          // Define the default TextTheme. Use this to specify the default
+          // text styling for headlines, titles, bodies of text, and more.
+          textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 72.0,fontFamily: 'Montserrat-Regular'),
+            headline2:  TextStyle(fontSize: 48.0,fontFamily: 'Montserrat-Regular'),
+              headline3:  TextStyle(fontSize: 35.0,fontFamily: 'Montserrat-Regular'),
+              headline4:  TextStyle(fontSize: 32.0,fontFamily: 'Montserrat-Regular'),
+              headline5:  TextStyle(fontSize: 24.0,fontFamily: 'Montserrat-Regular'),
+            headline6: TextStyle(fontSize: 20.0,fontFamily: 'Montserrat-Regular'),
+            bodyText2: TextStyle(fontSize: 18.0, fontFamily: 'Montserrat-Regular'),
+            bodyText1: TextStyle(fontSize: 24.0, fontFamily: 'Montserrat-Regular')
+          ),
         ),
         debugShowCheckedModeBanner: false,
         home:SplashScreen(seconds: 3,loaderColor: kPrimaryColor,image: Image.asset('images/logo.png'),photoSize: 220,)

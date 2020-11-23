@@ -8,10 +8,13 @@ import 'package:xml2json/xml2json.dart';
 
 class UpdatePasswordController {
   Future<UpdatePassword> updatePassword(
-      userID, emailID, mobileNumber, password) async {
+      // userID, emailID,
+       mobileNumber,
+      password) async {
     final myTransformer = Xml2Json();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    var userID = prefs.getString(PrefHelper.PREF_USER_ID);
+    var emailID =  prefs.getString(PrefHelper.PREF_EMAIL_ID);
     String data =
         '<ValidateClient> <UserID>$userID</UserID> <EmailAddress>$emailID</EmailAddress> <Mobile>$mobileNumber</Mobile><Password>$password</Password></ValidateClient>';
 

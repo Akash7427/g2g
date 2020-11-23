@@ -23,39 +23,41 @@ class CustomTransItem extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: Text(DateFormat.yMMMd().format(transaction.date),
-              style: TextStyle(
-                fontSize: _isLarge ? 22 : 14,
-              ))
+                  child: Text(DateFormat("dd MMM yy").format(transaction.date),
+                      style: TextStyle(
+                        fontSize: _isLarge ? 28 : 20,
+                      )),
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('${transaction.reference}',
               style: TextStyle(
-                fontSize: _isLarge ? 22 : 14,
-                fontWeight: FontWeight.w600,
+                fontSize: _isLarge ? 28 : 20,
               ))
                     
                   ],
                 ),
                 ),
-                Text(
+                Expanded(
+                  flex: 3,
+                  child: Text(
             '\$${transaction.balance.toStringAsFixed(2)}',
             style: TextStyle(
-                fontSize: _isLarge ? 22 : 14,
-                fontWeight: FontWeight.bold,
-                color: kSecondaryColor),
-            textAlign: TextAlign.start,
+                  fontSize: _isLarge ? 28 : 20,
+                 ),
+            textAlign: TextAlign.end,
           ),
+                ),
               ],
             ),
           ),
 
           Divider(
-            color: Colors.black54,
+            height: 0.1,
+            color: Colors.grey,
             endIndent:20,
             indent: 20,
           )

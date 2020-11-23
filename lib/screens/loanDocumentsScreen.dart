@@ -113,9 +113,9 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               child: Text(
                 'My Loans',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -130,9 +130,9 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               child: Text(
                 'Apply Now',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -140,16 +140,16 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/connect.png'),
-                  size: _isLarge ? 38 : 25, color: kSecondaryColor),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
               child: Text(
                 'Connect',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -218,7 +218,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                 child: Column(
                     children: [
                       buildHeader(),
-                      SizedBox(height: 8,),
+                      SizedBox(height: 24,),
                       buildListHeader(),
                       Expanded(
                                             child: FutureBuilder(
@@ -310,11 +310,10 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                                     children: [
                                       Icon(Icons.arrow_back,color:Colors.white),
                                       SizedBox(width: 4,),
-                                      Text('BACK',
+                                      Text('Back',
 
                                           style: TextStyle(
                                               fontSize: _isLarge ? 25 : 18,
-                                              fontWeight: FontWeight.bold,
                                               color: Colors.white),
                                         textAlign: TextAlign.center
                                       ),
@@ -348,25 +347,29 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                   flex: 2,
                   child: Text('DATE',
                       style: TextStyle(
-                          fontSize: _isLarge ? 14 : 12,
+                          color: Colors.grey,
+                          fontSize: _isLarge ? 16 : 14,
                           fontWeight: FontWeight.bold)),
                 ),
                 Expanded(
                   flex: 4,
                   child: Text('NAME',
                       style: TextStyle(
-                          fontSize: _isLarge ? 14 : 12,
+                          color: Colors.grey,
+                          fontSize: _isLarge ? 16 : 14,
                           fontWeight: FontWeight.bold)),
                 ),
                 Text('ACTIONS',
                     style: TextStyle(
-                        fontSize: _isLarge ? 14 : 12,
+                        color: Colors.grey,
+                        fontSize: _isLarge ? 16 : 14,
                         fontWeight: FontWeight.bold)),
               ],
             ),
           ),
           Divider(
-            color: Colors.black54,
+            height: 0.1,
+            color: Colors.grey,
           )
         ],
       ),
@@ -375,7 +378,8 @@ class _LoanDocumentsState extends State<LoanDocuments> {
 
   Container buildHeader() {
     return Container(
-      margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+
       child: Column(
         children: [
           Row(
@@ -383,7 +387,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               Text(
                 widget.account.accountID,
                 style: TextStyle(
-                    fontSize: _isLarge ? 25 : 15,
+                    fontSize: _isLarge ? 25 : 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,
@@ -391,7 +395,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               Text(
                 " - Loan Documents",
                 style: TextStyle(
-                    fontSize: _isLarge ? 25 : 15,
+                    fontSize: _isLarge ? 25 : 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,
@@ -402,33 +406,38 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             height: 8.0,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
+                flex: 2,
                 child: Text(widget.account.accountTypeDescription,
                     style: TextStyle(
-                        fontSize: _isLarge ? 30 : 20,
+                        fontSize: _isLarge ? 30 : 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.black)),
               ),
               SizedBox(width: 10),
-              Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  color: widget.account.status.toUpperCase() == 'OPEN'
-                      ? kPrimaryColor
-                      : (widget.account.status.toUpperCase() == 'QUOTE'
-                          ? Colors.amber[300]
-                          : Colors.red),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-                    child: Text(widget.account.status.toUpperCase(),
-                        style: TextStyle(
-                            fontSize: _isLarge ? 16 : 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
-                  )),
+              Flexible(
+                flex: 1,
+                child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    color: widget.account.status.toUpperCase() == 'OPEN'
+                        ? Colors.lightGreen
+                        : (widget.account.status.toUpperCase() == 'QUOTE'
+                            ? Colors.amber[300]
+                            : Colors.red),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                      child: Text(widget.account.status.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: _isLarge ? 16 : 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    )),
+              ),
             ],
           ),
         ],
