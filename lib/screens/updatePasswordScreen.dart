@@ -167,14 +167,59 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   buildFormField(Icons.person_outline, userID,
-                                      'UserID', userIDNode, emailIDNode),
+                                      'Login Username', userIDNode, emailIDNode),
                                   SizedBox(height: 15),
                                   buildFormField(Icons.person_outline, emailID,
                                       'Email Address', emailIDNode, mobileNode),
                                   SizedBox(height: 15),
-                                  buildFormField(Icons.call, mobileNumber,
-                                      'Mobile Number', mobileNode, pwdNode,
-                                      obscureText: false),
+                                  // buildFormField(Icons.call, mobileNumber,
+                                  //     'Mobile Number', mobileNode, pwdNode,
+                                  //     obscureText: false),
+                                  Container(
+                                    child: TextFormField(
+                                      cursorColor: kPrimaryColor,
+                                      inputFormatters: false ? null : [],
+                                      validator: (value) {
+                                        if (value.isEmpty)
+                                          return 'Password Required';
+                                        return null;
+                                      },
+                                      textInputAction:
+                                      mobileNode != null ? TextInputAction.next : TextInputAction.done,
+                                      // textCapitalization: obscureText
+                                      //     ? TextCapitalization.sentences
+                                      //     : TextCapitalization.characters,
+                                      obscureText: false,
+                                      focusNode: mobileNode,
+                                      keyboardType: TextInputType.phone,
+                                      decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black54),
+                                          ),
+                                          focusedErrorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.redAccent),
+                                          ),
+                                          errorBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.redAccent),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.black),
+                                          ),
+                                          prefixIcon:
+                                          Icon(Icons.call, color: kPrimaryColor, size: _isLarge ? 30 : 24),
+                                          hintText: 'Mobile Number',
+                                          hintStyle:
+                                          TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
+                                      style: TextStyle(
+                                        fontSize: _isLarge ? 24 : 18,
+                                        color: Colors.black,
+                                      ),
+                                      onFieldSubmitted: (value) {
+                                        if (mobileNode != null) mobileNode.requestFocus();
+                                      },
+                                      controller: mobileNumber,
+                                    ),
+                                  ),
                                   SizedBox(height: 10),
                                   buildFormField(Icons.lock, password,
                                       'New Password', pwdNode, null,

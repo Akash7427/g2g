@@ -11,6 +11,7 @@ import 'package:g2g/screens/loanDocumentsScreen.dart';
 import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/screens/twakToScreen.dart';
+import 'package:g2g/screens/updatePasswordScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:g2g/screens/homeScreen.dart';
@@ -232,7 +233,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                               leading: ImageIcon(AssetImage('images/lock.png'),
                                   size: _isLarge ? 28 : 24, color: kWhiteColor),
                               title: Text(
-                                'Reset Password',
+                                'Update Password',
                                 style: TextStyle(
                                     fontSize: _isLarge ? 22 : 18,
                                     color: kWhiteColor),
@@ -243,7 +244,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ResetPassword()));
+                                              UpdatePassword()));
                                 });
                               },
                             ),

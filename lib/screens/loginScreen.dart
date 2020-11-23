@@ -6,6 +6,7 @@ import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/homeScreen.dart';
+import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -95,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen>
                           autovalidate: _autoValidate,
                           key: _loginFormKey,
                           child: Card(
+                            elevation: 0,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -232,11 +234,17 @@ class _LoginScreenState extends State<LoginScreen>
                       ),
                       SizedBox(height: 10),
                       FlatButton(
+                        onPressed: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ResetPassword()));
+
+                        },
                         child: Text(
                           'Forgot Password?',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.grey,
+                              decoration: TextDecoration.underline,
+                            fontSize: 20
                           ),
                         ),
                       ),
