@@ -424,7 +424,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
                     color: widget.account.status.toUpperCase() == 'OPEN'
-                        ? Colors.lightGreen
+                        ? kPrimaryColor
                         : (widget.account.status.toUpperCase() == 'QUOTE'
                             ? Colors.amber[300]
                             : Colors.red),
