@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     try {
       String url =
-          'https://www.goodtogoloans.com.au/payments/?fname=${fname[1].toString().trim()}&lname=${fname[0]}&email=${prefs.getString(PrefHelper.PREF_EMAIL_ID)}&account_id=${prefs.getString(PrefHelper.PREF_ACCOUNT_ID)}&client_id=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&amount=${prefs.getDouble(PrefHelper.PREF_ACCOUNT_BALANCE)}';
+          'https://www.goodtogoloans.com.au/payments/?fname=${fname[1].toString().trim()}&lname=${fname[0]}&email=${prefs.getString(PrefHelper.PREF_EMAIL_ID)}&account_id=${prefs.getString(PrefHelper.PREF_ACCOUNT_ID)}&client_id=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&amount=${accounts[0].balance}';
       print(url);
       await launch(url);
     } on Exception catch (e) {
@@ -752,7 +752,7 @@ class _HomeScreenState extends State<HomeScreen>
                         )
                       : Row(
                           children: [
-                            Expanded(
+                            /*Expanded(
                               flex: 3,
                               child: Container(
                                 child: Card(
@@ -826,7 +826,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   ),
                                 ),
                               ),
-                            ),
+                            ),*/
                             SizedBox(
                               width: 10,
                             ),
@@ -928,6 +928,7 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ),
           ),
+/*
           Container(
             padding: EdgeInsets.all(10),
             child: Card(
@@ -996,6 +997,7 @@ class _HomeScreenState extends State<HomeScreen>
               ),
             ),
           ),
+*/
           SizedBox(
             width: 10,
           ),
@@ -1035,6 +1037,7 @@ class _HomeScreenState extends State<HomeScreen>
                             padding: EdgeInsets.all(_isLarge ? 20 : 10.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Column(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1053,9 +1056,6 @@ class _HomeScreenState extends State<HomeScreen>
                                             account.openedDate.year.toString()),
                                   ],
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
                                 Column(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1071,9 +1071,10 @@ class _HomeScreenState extends State<HomeScreen>
                                             account.maturityDate.year
                                                 .toString()),
                                     //SizedBox(height: _isLarge ? 30 : 15),
-                                   // buildLoanDetail('Payments Remaining', '20'),
+                                    // buildLoanDetail('Payments Remaining', '20'),
                                   ],
                                 )
+
                               ],
                             ),
                           )

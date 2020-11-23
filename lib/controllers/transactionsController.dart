@@ -12,7 +12,7 @@ import 'package:g2g/models/transactionModel.dart';
 class TransactionsController with ChangeNotifier{
   List<Transaction> transactions = [];
 
-  Future<void> getTransactions(
+  Future<List<Transaction>> getTransactions(
       String accountID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -28,6 +28,7 @@ class TransactionsController with ChangeNotifier{
     for (Map m in jsonDecode(response.body))
       transactions.add(Transaction.fromJson(m));
     notifyListeners();
+    return  transactions;
 
   }
 

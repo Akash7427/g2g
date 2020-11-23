@@ -243,70 +243,88 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               bottom: 0.0,
               right: 0.0,
               //here the body
-              child: Card(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      buildHeader(),
-                      buildListHeader(),
-                      Expanded(
-                                            child: FutureBuilder(
-                          future:
-                              Provider.of<LoanDocController>(context, listen: false)
-                                  .fetchLoanDocList(widget.account.accountID),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<dynamic> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(
-                                child: SpinKitThreeBounce(color: Theme.of(context).accentColor,size: _width*0.14,),
-                              );
-                            } else {
-                              if (snapshot.error != null) {
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Card(
+                  child: Column(
+                      children: [
+                        buildHeader(),
+                        SizedBox(height: 8,),
+                        buildListHeader(),
+                        Expanded(
+                                              child: FutureBuilder(
+                            future:
+                                Provider.of<LoanDocController>(context, listen: false)
+                                    .fetchLoanDocList(widget.account.accountID),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<dynamic> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
                                 return Center(
-                                  child: Text('No Documents Found'),
+                                  child: SpinKitThreeBounce(color: Theme.of(context).accentColor,size: _width*0.14,),
                                 );
                               } else {
-                                return Expanded(
-                                  child: Consumer<LoanDocController>(
+                                if (snapshot.error != null) {
+                                  return Center(
+                                    child: Text('No Documents Found'),
+                                  );
+                                } else {
+                                  return Consumer<LoanDocController>(
                                       builder: (ctx, docData, _) =>
-                                          ListView.builder(
-                                            itemBuilder: (ctx, index) {
-                                              return CustomLoandocItem(
-                                                widget.account.accountID,
-                                                  docData.getLoanDocList[index],
-                                                  _isLarge);
-                                            },
-                                            itemCount:
-                                                docData.getLoanDocList.length,
+                                          MediaQuery.removePadding(
+                                            context: ctx,
+                                            removeTop: true,
+                                            child: ListView.builder(
+                                              itemBuilder: (ctx, index) {
+                                                return CustomLoandocItem(
+                                                  widget.account.accountID,
+                                                    docData.getLoanDocList[index],
+                                                    _isLarge);
+                                              },
+                                              itemCount:
+                                                  docData.getLoanDocList.length,
+                                            ),
                                           )
-                                  ),
-                                );
+                                  );
+                                }
                               }
-                            }
-                          },
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          FlatButton(
-                              color: kSecondaryColor,
-                              onPressed: () {
+                        SizedBox(height: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            InkWell(
+                              onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text('BACK',
-                                    style: TextStyle(
-                                        fontSize: _isLarge ? 25 : 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white)),
-                              )),
-                        ],
-                      ),
-                    ]),
+                              child: Container(
+                                  color: kSecondaryColor,
+
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.arrow_back,color:Colors.white),
+                                        SizedBox(width: 4,),
+                                        Text('BACK',
+
+                                            style: TextStyle(
+                                                fontSize: _isLarge ? 25 : 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          textAlign: TextAlign.center
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ]),
+                ),
               ),
             ),
           ],
@@ -317,32 +335,35 @@ class _LoanDocumentsState extends State<LoanDocuments> {
 
   Container buildListHeader() {
     return Container(
-      alignment: Alignment.topCenter,
-      margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 16.0),
+
       child: Column(
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: Text('DATE',
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),
+            child: Row(
+
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Text('DATE',
+                      style: TextStyle(
+                          fontSize: _isLarge ? 14 : 12,
+                          fontWeight: FontWeight.bold)),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: Text('NAME',
+                      style: TextStyle(
+                          fontSize: _isLarge ? 14 : 12,
+                          fontWeight: FontWeight.bold)),
+                ),
+                Text('ACTIONS',
                     style: TextStyle(
                         fontSize: _isLarge ? 14 : 12,
                         fontWeight: FontWeight.bold)),
-              ),
-              Expanded(
-                flex: 4,
-                child: Text('NAME',
-                    style: TextStyle(
-                        fontSize: _isLarge ? 14 : 12,
-                        fontWeight: FontWeight.bold)),
-              ),
-              Text('ACTIONS',
-                  style: TextStyle(
-                      fontSize: _isLarge ? 14 : 12,
-                      fontWeight: FontWeight.bold)),
-            ],
+              ],
+            ),
           ),
           Divider(
             color: Colors.black54,

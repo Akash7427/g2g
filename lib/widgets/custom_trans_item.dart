@@ -17,13 +17,13 @@ class CustomTransItem extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(left:8.0,right:8.0,bottom:12.0,top:12.0),
+            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: Text(DateFormat.yMMMd().format(transaction.transactionDate),
+                  child: Text(DateFormat.yMMMd().format(transaction.date),
               style: TextStyle(
                 fontSize: _isLarge ? 22 : 14,
               ))
@@ -54,9 +54,11 @@ class CustomTransItem extends StatelessWidget {
             ),
           ),
 
-         Divider(
-          color: Colors.black54,
-        )
+          Divider(
+            color: Colors.black54,
+            endIndent:20,
+            indent: 20,
+          )
         ],
       ),
 
