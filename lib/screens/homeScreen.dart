@@ -234,9 +234,9 @@ class _HomeScreenState extends State<HomeScreen>
               child: Text(
                 'My Loans',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -251,9 +251,9 @@ class _HomeScreenState extends State<HomeScreen>
               child: Text(
                 'Apply Now',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -261,16 +261,16 @@ class _HomeScreenState extends State<HomeScreen>
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/connect.png'),
-                  size: _isLarge ? 38 : 25, color: kSecondaryColor),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
               child: Text(
                 'Connect',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -442,9 +442,9 @@ class _HomeScreenState extends State<HomeScreen>
               child: Text(
                 'My Loans',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -459,9 +459,9 @@ class _HomeScreenState extends State<HomeScreen>
               child: Text(
                 'Apply Now',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -469,16 +469,16 @@ class _HomeScreenState extends State<HomeScreen>
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/connect.png'),
-                  size: _isLarge ? 38 : 25, color: kSecondaryColor),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
               child: Text(
                 'Connect',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -637,8 +637,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         'Overdue',
                                         style: TextStyle(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black),
+                                            color: Colors.black45),
                                         textAlign: TextAlign.start,
                                       ),
                                       Row(
@@ -686,8 +685,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         'Balance',
                                         style: TextStyle(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black),
+                                            color: Colors.black45),
                                         textAlign: TextAlign.start,
                                       ),
                                       Row(
@@ -858,8 +856,8 @@ class _HomeScreenState extends State<HomeScreen>
                                               'Overdue',
                                               style: TextStyle(
                                                   fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black54),
+                                                  color: Colors.black45
+                                                  ),
                                               textAlign: TextAlign.start,
                                             ),
                                           ],
@@ -892,8 +890,7 @@ class _HomeScreenState extends State<HomeScreen>
                                               'Balance',
                                               style: TextStyle(
                                                   fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black54),
+                                                  color: Colors.black45),
                                               textAlign: TextAlign.start,
                                             ),
                                           ],
@@ -1143,7 +1140,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       title: Text('Transactions',
                           style: TextStyle(
-                            fontSize: _isLarge ? 28 : 20,
+                            fontSize: _isLarge ? 28 : 18,
                             fontWeight: FontWeight.w700,
                             color: Colors.black,
                           )),

@@ -166,12 +166,12 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  buildFormField(Icons.person_outline, userID,
-                                      'Login Username', userIDNode, emailIDNode),
-                                  SizedBox(height: 15),
-                                  buildFormField(Icons.person_outline, emailID,
-                                      'Email Address', emailIDNode, mobileNode),
-                                  SizedBox(height: 15),
+                                  // buildFormField(Icons.person_outline, userID,
+                                  //     'Login Username', userIDNode, emailIDNode),
+                                  // SizedBox(height: 15),
+                                  // buildFormField(Icons.person_outline, emailID,
+                                  //     'Email Address', emailIDNode, mobileNode),
+                                  // SizedBox(height: 15),
                                   // buildFormField(Icons.call, mobileNumber,
                                   //     'Mobile Number', mobileNode, pwdNode,
                                   //     obscureText: false),
@@ -249,9 +249,9 @@ class _UpdatePasswordState extends State<UpdatePassword>
 
                                           updatePasswordController
                                               .updatePassword(
-                                                  userID.text,
-                                                  emailID.text,
-                                                  mobileNumber.text,
+                                                  // userID.text,
+                                                  // emailID.text,
+                                                   mobileNumber.text,
                                                   password.text)
                                               .then(
                                             (updatePassword) async {

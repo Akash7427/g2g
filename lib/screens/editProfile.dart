@@ -205,7 +205,7 @@ class _EditProfileState extends State<EditProfile> {
             padding: EdgeInsets.all(10),
             child:  Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20)
+                borderRadius: BorderRadius.circular(4)
               ),
                 elevation: 10,
                   shadowColor: kPrimaryColor,

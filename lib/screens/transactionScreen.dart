@@ -109,9 +109,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               child: Text(
                 'My Loans',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
+                  fontSize: _isLarge ? 22 : 18,
                     color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                    ),
               ),
             ),
           ),
@@ -126,9 +126,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               child: Text(
                 'Apply Now',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -136,7 +136,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/connect.png'),
-                  size: _isLarge ? 38 : 25, color: kSecondaryColor),
+                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
@@ -145,7 +145,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 style: TextStyle(
                     fontSize: _isLarge ? 22 : 18,
                     color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                   ),
               ),
             ),
           ),
@@ -214,7 +214,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 child: Column(
                     children: [
                       buildHeader(),
-                      SizedBox(height: 8,),
+                      SizedBox(height: 24,),
                       buildListHeader(),
                       Expanded(
                         child: FutureBuilder(
@@ -313,7 +313,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
                                           style: TextStyle(
                                               fontSize: _isLarge ? 25 : 18,
-                                              fontWeight: FontWeight.bold,
                                               color: Colors.white),
                                           textAlign: TextAlign.center
                                       ),
@@ -345,20 +344,27 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   flex: 2,
                   child: Text('DATE',
                       style: TextStyle(
-                          fontSize: _isLarge ? 14 : 12,
+                          color: Colors.grey,
+                          fontSize: _isLarge ? 16 : 14,
                           fontWeight: FontWeight.bold)),
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 2,
                   child: Text('REFERENCE',
                       style: TextStyle(
-                          fontSize: _isLarge ? 14 : 12,
+                        color: Colors.grey,
+                          fontSize: _isLarge ? 16 : 14,
                           fontWeight: FontWeight.bold)),
                 ),
-                Text('BALANCE',
-                    style: TextStyle(
-                        fontSize: _isLarge ? 14 : 12,
-                        fontWeight: FontWeight.bold)),
+                Expanded(
+                  flex: 3,
+                  child: Text('BALANCE',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: _isLarge ? 16 : 14,
+                          fontWeight: FontWeight.bold)),
+                ),
               ],
             ),
           ),
@@ -371,8 +377,70 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   }
 
   Container buildHeader() {
+    // return Container(
+    //   margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+    //   child: Column(
+    //     children: [
+    //       Row(
+    //         children: [
+    //           Text(
+    //             widget.account.accountID,
+    //             style: TextStyle(
+    //                 fontSize: _isLarge ? 25 : 15,
+    //                 fontWeight: FontWeight.bold,
+    //                 color: Colors.black),
+    //             textAlign: TextAlign.start,
+    //           ),
+    //           Text(
+    //             " - Transactions",
+    //             style: TextStyle(
+    //                 fontSize: _isLarge ? 25 : 15,
+    //                 fontWeight: FontWeight.bold,
+    //                 color: Colors.black),
+    //             textAlign: TextAlign.start,
+    //           ),
+    //         ],
+    //       ),
+    //       SizedBox(
+    //         height: 8.0,
+    //       ),
+    //       Row(
+    //         crossAxisAlignment: CrossAxisAlignment.end,
+    //         children: [
+    //           Expanded(
+    //             child: Text(widget.account.accountTypeDescription,
+    //                 style: TextStyle(
+    //                     fontSize: _isLarge ? 30 : 20,
+    //                     fontWeight: FontWeight.bold,
+    //                     color: Colors.black)),
+    //           ),
+    //           SizedBox(width: 10),
+    //           Card(
+    //               shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(20.0)),
+    //               color: widget.account.status.toUpperCase() == 'OPEN'
+    //                   ? Colors.lightGreen
+    //                   : (widget.account.status.toUpperCase() == 'QUOTE'
+    //                       ? Colors.amber[300]
+    //                       : Colors.red),
+    //               child: Padding(
+    //                 padding:
+    //                     EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+    //                 child: Text(widget.account.status.toUpperCase(),
+    //                     style: TextStyle(
+    //                         fontSize: _isLarge ? 16 : 12,
+    //                         fontWeight: FontWeight.bold,
+    //                         color: Colors.white)),
+    //               )),
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // );
+
     return Container(
-      margin: EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+
       child: Column(
         children: [
           Row(
@@ -380,7 +448,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               Text(
                 widget.account.accountID,
                 style: TextStyle(
-                    fontSize: _isLarge ? 25 : 15,
+                    fontSize: _isLarge ? 25 : 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,
@@ -388,7 +456,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               Text(
                 " - Transactions",
                 style: TextStyle(
-                    fontSize: _isLarge ? 25 : 15,
+                    fontSize: _isLarge ? 25 : 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,
@@ -399,33 +467,38 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             height: 8.0,
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Expanded(
+                flex: 2,
                 child: Text(widget.account.accountTypeDescription,
                     style: TextStyle(
-                        fontSize: _isLarge ? 30 : 20,
+                        fontSize: _isLarge ? 30 : 28,
                         fontWeight: FontWeight.bold,
                         color: Colors.black)),
               ),
               SizedBox(width: 10),
-              Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  color: widget.account.status.toUpperCase() == 'OPEN'
-                      ? kPrimaryColor
-                      : (widget.account.status.toUpperCase() == 'QUOTE'
-                          ? Colors.amber[300]
-                          : Colors.red),
-                  child: Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-                    child: Text(widget.account.status.toUpperCase(),
-                        style: TextStyle(
-                            fontSize: _isLarge ? 16 : 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
-                  )),
+              Flexible(
+                flex: 1,
+                child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    color: widget.account.status.toUpperCase() == 'OPEN'
+                        ? kPrimaryColor
+                        : (widget.account.status.toUpperCase() == 'QUOTE'
+                        ? Colors.amber[300]
+                        : Colors.red),
+                    child: Padding(
+                      padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                      child: Text(widget.account.status.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: _isLarge ? 16 : 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    )),
+              ),
             ],
           ),
         ],
