@@ -42,9 +42,19 @@ class _TawkState extends State<Tawk> {
     print(visitor);
     final json = jsonEncode(visitor);
     print(json);
-    final javascriptString = 'Tawk_API.setAttributes($json);';
 
+    final javascriptString = 'Tawk_API.setAttributes($json);';
+    final javascriptString1 =
+        'document.getElementById("Name").value ="${visitor.name ?? 'as'}";';
+
+    print(javascriptString);
     _controller.evaluateJavascript(javascriptString);
+  }
+
+  @override
+  void dispose() {
+    _controller.reload();
+    super.dispose();
   }
 
   @override
