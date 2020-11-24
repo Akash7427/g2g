@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:g2g/models/tawk_visitor.dart';
+import 'dart:convert';
 
 class TawkToScreen extends StatefulWidget {
   @override
@@ -64,26 +66,19 @@ class _TawkToScreenState extends State<TawkToScreen> {
                     },
                     onLoadStart: (InAppWebViewController controller,
                         String url) async{
-                      String result2 = await controller.evaluateJavascript(
-                          source: """
-                       <script type="text/javascript">
-var Tawk_API=Tawk_API||{};
-Tawk_API.visitor = {
-name : 'visitor name',
-email : 'visitor@email.com'
-};
 
-var Tawk_LoadStart=new Date();
-
-</script>
-                      """);
-                      print(result2);
 
                     },
                     onLoadStop: (InAppWebViewController controller,
                         String url) async {
 
                      // Foo Bar
+                      TawkVisitor visitor = new TawkVisitor(name: 'Sachin',email: 'sachin@gmail.com',clienId: 'testclient');
+                      final json = jsonEncode(visitor);
+                      final javascriptString = 'Tawk_API.setAttributes($json);';
+                      dynamic result2 = await controller.evaluateJavascript(
+                          source: javascriptString);
+                      print(result2);
 
                     },
                   ),

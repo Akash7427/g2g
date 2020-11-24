@@ -571,10 +571,9 @@ class _HomeScreenState extends State<HomeScreen>
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Card(
-              elevation: 10,
-              shadowColor: kPrimaryColor,
+            padding: EdgeInsets.all(16.0),
+            child: Container(
+              color: Colors.white,
               child: Padding(
                 padding: EdgeInsets.all(12.0),
                 child: Column(children: [
@@ -1002,10 +1001,9 @@ class _HomeScreenState extends State<HomeScreen>
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Card(
-                  elevation: 10,
-                  shadowColor: kPrimaryColor,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  color: Colors.white,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: _isLarge ? 15.0 : 20,
@@ -1081,11 +1079,11 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
               ),
+              Divider(color: Colors.grey,height: 1,indent: 16,endIndent: 16,),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Card(
-                  elevation: 10,
-                  shadowColor: kPrimaryColor,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  color:Colors.white,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: _isLarge ? 15.0 : 20,
@@ -1113,11 +1111,11 @@ class _HomeScreenState extends State<HomeScreen>
                   ),
                 ),
               ),
+              Divider(color: Colors.grey,height: 1,indent: 16,endIndent: 16,),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Card(
-                  elevation: 10,
-                  shadowColor: kPrimaryColor,
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  color: Colors.white,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: _isLarge ? 15.0 : 20,
