@@ -660,55 +660,56 @@ class _EditProfileState extends State<EditProfile> {
                             ],
                           ),
 
+                          
+                          
+                          
+
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: FlatButton(
-                                    color: Colors.grey[700],
-                                    onPressed: (){
-                                      Navigator.pop(context);
-                                    }, child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Text('BACK',
-                                      style: TextStyle(
-                                          fontSize: _isLarge ? 25 : 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white)),
-                                )),
-                              ),
+                              FlatButton(
+                                  color: Colors.grey[700],
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  }, child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text('BACK',
+                                    style: TextStyle(
+                                        fontSize: _isLarge ? 25 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                              )),
                               SizedBox(width:5),
-                              Expanded(
-                                child: FlatButton(
-                                    color: kSecondaryColor,
-                                    onPressed: (){
-                                      var pr = ProgressDialog(context);
-                                      if (_fbKey.currentState.saveAndValidate()) {
-                                        print(_fbKey.currentState.value);
+                              FlatButton(
+                                  color: kSecondaryColor,
+                                  onPressed: (){
+                                    var pr = ProgressDialog(context);
+                                    if (_fbKey.currentState.saveAndValidate()) {
+                                      print(_fbKey.currentState.value);
 
-                                        pr.show();
-                                        Provider.of<ClientController>(context,listen:false).postClientBasic(_fbKey.currentState.value).then((value){
-                                          pr.hide();
-
-                                          _editProfileKey.currentState.showSnackBar(SnackBar(content: Text(value['message']),));
-
-
-
-                                        });
-                                      } else {
-                                        print(_fbKey.currentState.value);
-                                        print('validation failed');
+                                      pr.show();
+                                      Provider.of<ClientController>(context,listen:false).postClientBasic(_fbKey.currentState.value).then((value){
                                         pr.hide();
-                                      }
-                                    }, child: Padding(
-                                  padding:  EdgeInsets.all(12.0),
-                                  child: Text('Send My Request',
-                                      style: TextStyle(
-                                          fontSize: _isLarge ? 25 : 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white)),
-                                )),
-                              ),
+
+                                        _editProfileKey.currentState.showSnackBar(SnackBar(content: Text(value['message']),));
+
+
+
+                                      });
+                                    } else {
+                                      print(_fbKey.currentState.value);
+                                      print('validation failed');
+                                      pr.hide();
+                                    }
+                                  }, child: Padding(
+                                padding:  EdgeInsets.all(12.0),
+                                child: Text('Send My Request',
+                                    style: TextStyle(
+                                        fontSize: _isLarge ? 25 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                              )),
                             ],
                           )
 
