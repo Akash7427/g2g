@@ -162,6 +162,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                             autovalidate: _autoValidate,
                             key: _updatePasswordFormKey,
                             child: Card(
+                              elevation:0,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -226,7 +227,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                       obscureText: true),
                                   SizedBox(height: 10),
                                   Container(
-                                    child: RaisedButton(
+                                    child: FlatButton(
                                       padding: EdgeInsets.all(10),
                                       child: Text(
                                         'Update Password'.toUpperCase(),
