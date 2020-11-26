@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -342,7 +343,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: Text('DATE',
+                  child: AutoSizeText('DATE',
                       style: TextStyle(
                           color: Colors.grey,
                           fontSize: _isLarge ? 16 : 14,
@@ -350,7 +351,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: Text('REFERENCE',
+                  child: AutoSizeText('REFERENCE',
                       style: TextStyle(
                         color: Colors.grey,
                           fontSize: _isLarge ? 16 : 14,
@@ -358,7 +359,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 ),
                 Expanded(
                   flex: 3,
-                  child: Text('BALANCE',
+                  child: AutoSizeText('BALANCE',
                       textAlign: TextAlign.end,
                       style: TextStyle(
                           color: Colors.grey,
@@ -445,7 +446,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
         children: [
           Row(
             children: [
-              Text(
+              AutoSizeText(
                 widget.account.accountID,
                 style: TextStyle(
                     fontSize: _isLarge ? 25 : 18,
@@ -453,7 +454,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     color: Colors.black),
                 textAlign: TextAlign.start,
               ),
-              Text(
+              AutoSizeText(
                 " - Transactions",
                 style: TextStyle(
                     fontSize: _isLarge ? 25 : 18,
@@ -472,7 +473,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             children: [
               Expanded(
                 flex: 2,
-                child: Text(widget.account.accountTypeDescription,
+                child: AutoSizeText(widget.account.accountTypeDescription,
                     style: TextStyle(
                         fontSize: _isLarge ? 30 : 28,
                         fontWeight: FontWeight.bold,
@@ -492,7 +493,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     child: Padding(
                       padding:
                       EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-                      child: Text(widget.account.status.toUpperCase(),
+                      child: AutoSizeText(widget.account.status.toUpperCase(),
                           style: TextStyle(
                               fontSize: _isLarge ? 16 : 12,
                               fontWeight: FontWeight.bold,

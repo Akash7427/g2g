@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -961,7 +962,7 @@ class _EditProfileState extends State<EditProfile> {
                                     Navigator.pop(context);
                                   }, child: Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: Text('BACK',
+                                child: Text('Back',
                                     style: TextStyle(
                                         fontSize: _isLarge ? 25 : 18,
                                         fontWeight: FontWeight.bold,
@@ -991,7 +992,7 @@ class _EditProfileState extends State<EditProfile> {
                                     }
                                   }, child: Padding(
                                 padding:  EdgeInsets.all(12.0),
-                                child: Text('Send My Request',
+                                child: AutoSizeText('Send My Request',
                                     style: TextStyle(
                                         fontSize: _isLarge ? 25 : 18,
                                         fontWeight: FontWeight.bold,
