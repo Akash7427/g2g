@@ -231,7 +231,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                     .accentColor, size: _width * 0.14,),
                               );
                             } else {
-                              if (snapshot.error != null) {
+                              if (!snapshot.hasData) {
                                 return Center(
                                   child: Text('No Transaction Found'),
                                 );
