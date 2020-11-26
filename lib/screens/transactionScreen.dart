@@ -210,6 +210,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Card(
+<<<<<<< HEAD
                 child: Column(children: [
                   buildHeader(),
                   SizedBox(
@@ -244,6 +245,39 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                       child: Consumer<TransactionsController>(
                                         builder: (ctx, transactionData, _) =>
                                             SmartRefresher(
+=======
+                child: Column(
+                    children: [
+                      buildHeader(),
+                      SizedBox(height: 24,),
+                      buildListHeader(),
+                     widget.account.balance.toString()!='0.0' ?Expanded(
+                        child: FutureBuilder(
+                          future: Provider.of<TransactionsController>(context,
+                                  listen: false)
+                              .getTransactions(widget.account.accountID),
+                          builder: (ctx, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: SpinKitThreeBounce(color: Theme
+                                    .of(context)
+                                    .accentColor, size: _width * 0.14,),
+                              );
+                            } else {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                  child: Text('No Transaction Found'),
+                                );
+                              }
+                              else {
+                                return MediaQuery.removePadding(
+                                  removeTop: true,
+                                  context: ctx,
+                                  child: Consumer<TransactionsController>(
+                                    builder: (ctx, transactionData, _) =>
+                                        SmartRefresher(
+>>>>>>> Changes (Edit Profile and Apple Permisions) by Hasan
                                           enablePullDown: true,
                                           enablePullUp: false,
                                           header: WaterDropHeader(),
@@ -281,11 +315,16 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                               itemCount: transactionData
                                                   .geTransactionList.length,
                                               itemBuilder: (ctx, index) {
+<<<<<<< HEAD
                                                 var transaction =
                                                     transactionData
                                                             .geTransactionList[
                                                         index];
 
+=======
+                                                var transaction = transactionData
+                                                    .geTransactionList[index];
+>>>>>>> Changes (Edit Profile and Apple Permisions) by Hasan
                                                 return Padding(
                                                   padding: const EdgeInsets
                                                       .symmetric(vertical: 3.0),
@@ -294,6 +333,39 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                 );
                                               }),
                                         ),
+<<<<<<< HEAD
+=======
+                                  ),
+                                );
+                              }
+                            }
+                          }),
+                      ):Expanded(child: Center(child: Text('No Transaction Found'),),),
+                      SizedBox(height: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                                color: kSecondaryColor,
+
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.arrow_back,color:Colors.white),
+                                      SizedBox(width: 4,),
+                                      Text('BACK',
+
+                                          style: TextStyle(
+                                              fontSize: _isLarge ? 25 : 18,
+                                              color: Colors.white),
+                                          textAlign: TextAlign.center
+>>>>>>> Changes (Edit Profile and Apple Permisions) by Hasan
                                       ),
                                     );
                                   }
