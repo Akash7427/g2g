@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:g2g/components/navigationDrawer.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:g2g/constants.dart';
-import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
+import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/tawk/tawk_visitor.dart';
 import 'package:g2g/tawk/tawk_widget.dart';
 import 'package:g2g/utility/pref_helper.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/controllers/clientController.dart';
 
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:g2g/models/tawk_visitor.dart';
 import 'dart:convert';
-
 
 class TawkToScreen extends StatefulWidget {
   @override
@@ -120,9 +119,9 @@ class _TawkToScreenState extends State<TawkToScreen> {
             padding: EdgeInsets.all(10),
             child: Tawk(
               directChatLink:
-              'https://tawk.to/chat/580d5a22d0f23f0cd8dc1448/default',
+                  'https://tawk.to/chat/580d5a22d0f23f0cd8dc1448/default',
               visitor:
-              TawkVisitor(name: name, email: email, ClientID: clientID),
+                  TawkVisitor(name: name, email: email, ClientID: clientID),
             ),
           ),
         ),
