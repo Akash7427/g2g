@@ -19,7 +19,6 @@ class TawkVisitor {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    print('${data['Client-ID'].toString()}');
 
     if (name != null) {
       data['name'] = name;
