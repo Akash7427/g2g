@@ -234,7 +234,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                                 child: SpinKitThreeBounce(color: Theme.of(context).accentColor,size: _width*0.14,),
                               );
                             } else {
-                              if (snapshot.error != null) {
+                              if (!snapshot.hasData) {
                                 return Center(
                                   child: Text('No Documents Found'),
                                 );
