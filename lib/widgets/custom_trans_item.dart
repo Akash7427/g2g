@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
@@ -19,13 +20,12 @@ class CustomTransItem extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: Text(DateFormat("dd MMM yy").format(transaction.date),
+                  child: AutoSizeText(DateFormat("dd MMM yy").format(transaction.date),
                       style: TextStyle(
-                        fontSize: _isLarge ? 28 : 20,
                       )),
                 ),
                 Expanded(
@@ -33,7 +33,7 @@ class CustomTransItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${transaction.reference}',
+                    AutoSizeText('${transaction.reference}',
               style: TextStyle(
                 fontSize: _isLarge ? 28 : 20,
               ))
@@ -43,7 +43,7 @@ class CustomTransItem extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 3,
-                  child: Text(
+                  child: AutoSizeText(
             '\$${transaction.balance.toStringAsFixed(2)}',
             style: TextStyle(
                   fontSize: _isLarge ? 28 : 20,

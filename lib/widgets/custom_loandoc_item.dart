@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/controllers/file_doc_controller.dart';
@@ -39,9 +40,8 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
                 Expanded(
                   flex: 2,
                   child:
-                      Text(DateFormat("dd MMM yy").format(widget.loanDocModel.docDate),
+                      AutoSizeText(DateFormat("dd MMM yy").format(widget.loanDocModel.docDate),
                           style: TextStyle(
-                            fontSize: widget._isLarge ? 28 : 20,
                           )),
                 ),
                 Expanded(
@@ -49,12 +49,12 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.loanDocModel.docName,
+                      AutoSizeText(widget.loanDocModel.docName,
                           style: TextStyle(
                             fontSize: widget._isLarge ? 20 : 18,
 
                           )),
-                      Text(widget.loanDocModel.docFileName,
+                      AutoSizeText(widget.loanDocModel.docFileName,
                           style: TextStyle(
                               fontSize: widget._isLarge ? 14 : 16,
                               color: kSecondaryColor))

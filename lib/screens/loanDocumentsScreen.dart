@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -345,7 +346,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: Text('DATE',
+                  child: AutoSizeText('DATE',
                       style: TextStyle(
                           color: Colors.grey,
                           fontSize: _isLarge ? 16 : 14,
@@ -353,13 +354,13 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                 ),
                 Expanded(
                   flex: 4,
-                  child: Text('NAME',
+                  child: AutoSizeText('NAME',
                       style: TextStyle(
                           color: Colors.grey,
                           fontSize: _isLarge ? 16 : 14,
                           fontWeight: FontWeight.bold)),
                 ),
-                Text('ACTIONS',
+                AutoSizeText('ACTIONS',
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: _isLarge ? 16 : 14,
@@ -384,7 +385,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
         children: [
           Row(
             children: [
-              Text(
+              AutoSizeText(
                 widget.account.accountID,
                 style: TextStyle(
                     fontSize: _isLarge ? 25 : 18,
@@ -392,7 +393,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     color: Colors.black),
                 textAlign: TextAlign.start,
               ),
-              Text(
+              AutoSizeText(
                 " - Loan Documents",
                 style: TextStyle(
                     fontSize: _isLarge ? 25 : 18,
@@ -411,7 +412,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             children: [
               Expanded(
                 flex: 2,
-                child: Text(widget.account.accountTypeDescription,
+                child: AutoSizeText(widget.account.accountTypeDescription,
                     style: TextStyle(
                         fontSize: _isLarge ? 30 : 28,
                         fontWeight: FontWeight.bold,
@@ -431,7 +432,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     child: Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-                      child: Text(widget.account.status.toUpperCase(),
+                      child: AutoSizeText(widget.account.status.toUpperCase(),
                           style: TextStyle(
                               fontSize: _isLarge ? 16 : 12,
                               fontWeight: FontWeight.bold,
