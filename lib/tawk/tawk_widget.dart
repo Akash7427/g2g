@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:g2g/controllers/clientController.dart';
+import 'package:g2g/utility/pref_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'tawk_visitor.dart';
@@ -44,11 +47,27 @@ class _TawkState extends State<Tawk> {
     print(json);
 
     final javascriptString = 'Tawk_API.setAttributes($json);';
+    print(javascriptString);
     final javascriptString1 =
         'document.getElementById("Name").value ="${visitor.name ?? 'as'}";';
 
     print(javascriptString);
     _controller.evaluateJavascript(javascriptString);
+  }
+
+  _setClientID(TawkVisitor visitor) async {
+    await ClientController().getClientBasic();
+    print(visitor);
+    final json = jsonEncode(visitor);
+    print(json);
+
+    print('onlink ' + json);
+
+    final javascriptString =
+        'Tawk_API = Tawk_API || {};Tawk_API.onPrechatSubmit = function(data){return $json};';
+
+    print(javascriptString);
+    await _controller.evaluateJavascript(javascriptString);
   }
 
   @override
@@ -73,11 +92,13 @@ class _TawkState extends State<Tawk> {
             if (widget.onLinkTap != null) {
               widget.onLinkTap(request.url);
             }
+
             return NavigationDecision.navigate;
           },
           onPageFinished: (_) {
             if (widget.visitor != null) {
               _setUser(widget.visitor);
+              _setClientID(widget.visitor);
             }
             if (widget.onLoad != null) {
               widget.onLoad();

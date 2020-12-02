@@ -17,7 +17,6 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 import 'dart:convert';
 
-
 class TawkToScreen extends StatefulWidget {
   @override
   _TawkToScreenState createState() => _TawkToScreenState();
@@ -51,6 +50,20 @@ class _TawkToScreenState extends State<TawkToScreen> {
       print(name);
       print(email);
     });
+  }
+
+  void _setClientID() async {
+    await ClientController().getClientBasic();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final json = jsonEncode(prefs.getString(PrefHelper.Pref_CLIENT_ID));
+    print('onlink ' + json);
+
+    final javascriptString =
+        'Tawk_API = Tawk_API || {};Tawk_API.onPrechatSubmit = function($json){return $json;};';
+
+    print(javascriptString);
+    await _controller.evaluateJavascript(javascriptString);
   }
 
   @override
@@ -123,6 +136,11 @@ class _TawkToScreenState extends State<TawkToScreen> {
                   'https://tawk.to/chat/57f4447c8598f1538109cc15/default',
               visitor:
                   TawkVisitor(name: name, email: email, ClientID: clientID),
+              onLinkTap: (s) {
+                _setClientID();
+
+                print(s);
+              },
             ),
           ),
         ),
