@@ -279,9 +279,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                   .geTransactionList.length,
                                               itemBuilder: (ctx, index) {
                                                 var transaction =
-                                                transactionData
-                                                    .geTransactionList[
-                                                index];
+                                                    transactionData
+                                                            .geTransactionList[
+                                                        index];
 
                                                 return Padding(
                                                   padding: const EdgeInsets
@@ -290,16 +290,16 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                       transaction),
                                                 );
                                               }),
+                                        ),
                                       ),
-                                ),
-                              );
-                            }
-                          }
-                        }),
-                  )
+                                    );
+                                  }
+                                }
+                              }),
+                        )
                       : Container(
-                    child: Text('No Transaction Found'),
-                  ),
+                          child: Text('No Transaction Found'),
+                        ),
                   SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
