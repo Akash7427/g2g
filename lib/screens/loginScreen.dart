@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:g2g/components/progressDialog.dart';
@@ -5,6 +7,7 @@ import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
+import 'package:g2g/screens/applyNow_CalcScreen.dart';
 import 'package:g2g/screens/homeScreen.dart';
 import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
@@ -56,6 +59,39 @@ class _LoginScreenState extends State<LoginScreen>
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     return Scaffold(
       backgroundColor: Colors.white,
+
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('images/bg.jpg'), fit: BoxFit.cover)),
+        child: SafeArea(
+            child: GestureDetector(
+          onPanDown: (_) {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 60, bottom: 20, left: 20, right: 20.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  color: Colors.white,
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.asset(
+                        'images/logo2.png',
+                        height: _isLarge ? 400 : 150,
+                      ),
+                      Text(
+                        'Log in to your account',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 28,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+
       body: Stack(
         children: [
           Container(
@@ -85,6 +121,7 @@ class _LoginScreenState extends State<LoginScreen>
                         Image.asset(
                           'images/logo2.png',
                           height: _isLarge ? 400 : 150,
+
                         ),
                         Text(
                           'Log in to your account',
@@ -137,6 +174,79 @@ class _LoginScreenState extends State<LoginScreen>
                                           });
 
                                           Provider.of<ClientController>(context,
+
+                                                  listen: false)
+                                              .authenticateClient(clientID.text,
+                                                  password.text, false)
+                                              .then(
+                                            (user) async {
+                                              if (user == null) {
+                                                pr.hide();
+                                                Alert(
+                                                    context: context,
+                                                    title: '',
+                                                    content: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          ClipOval(
+                                                            child: Material(
+                                                              color: Colors.red,
+                                                              // button color
+                                                              child: SizedBox(
+                                                                  width: 56,
+                                                                  height: 56,
+                                                                  child: Icon(
+                                                                      Icons
+                                                                          .close,
+                                                                      color: Colors
+                                                                          .white)),
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 20),
+                                                          Text(
+                                                              'Invalid Password'),
+                                                        ]),
+                                                    buttons: [
+                                                      DialogButton(
+                                                        child: Text(
+                                                          "Close",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: _isLarge
+                                                                  ? 24
+                                                                  : 18),
+                                                        ),
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context),
+                                                        color: kPrimaryColor,
+                                                        radius: BorderRadius
+                                                            .circular(0.0),
+                                                      ),
+                                                    ],
+                                                    style: AlertStyle(
+                                                      animationType:
+                                                          AnimationType.fromTop,
+                                                      isCloseButton: false,
+                                                      isOverlayTapDismiss:
+                                                          false,
+                                                      titleStyle: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: _isLarge
+                                                              ? 24
+                                                              : 18),
+                                                    )).show();
+                                              } else {
+                                                Provider.of<AccountsController>(
+                                                        context,
+                                                        listen: false)
+                                                    .getAccounts(user.userID,
+                                                        user.sessionToken)
+                                                    .then((accounts) {
                                               listen: false)
                                               .authenticateUser()
                                               .then((value) async {
@@ -155,6 +265,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                 .then(
                                                   (user) async {
                                                 if (user == null) {
+
                                                   pr.hide();
                                                   Alert(
                                                       context: context,
@@ -205,6 +316,26 @@ class _LoginScreenState extends State<LoginScreen>
                                                 } else {
                                                   Provider.of<AccountsController>(
                                                       context,
+
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              HomeScreen(),
+                                                          settings:
+                                                              RouteSettings(
+                                                            arguments: 1,
+                                                          )),
+                                                      (route) => false);
+                                                });
+                                              }
+                                            },
+                                          );
+                                        });
+                                      } else {
+                                        setState(() {
+                                          _autoValidate = true;
+                                        });
+                                      }
+                                    },
                                                       listen: false)
                                                       .getAccounts(user.userID,
                                                       user.sessionToken)
@@ -232,27 +363,14 @@ class _LoginScreenState extends State<LoginScreen>
                                         }
                                       },
                                     ),
+
                                   ),
                                 ],
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
-                        FlatButton(
-                          onPressed: (){
-                            Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ResetPassword()));
 
-                          },
-                          child: Text(
-                            'Forgot Password?',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                decoration: TextDecoration.underline,
-                                fontSize: 20
-                            ),
-                          ),
                         ),
                         SizedBox(height: 20),
                       ],
@@ -260,10 +378,49 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                 ),
 
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ApplyNowForLoan()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          // borderRadius: BorderRadius.all(Radius.circular(15)),
+                          color: Color(0xFF27A1E1),
+                        ),
+                        padding: EdgeInsets.only(
+                            top: 15, bottom: 15, left: 30, right: 30),
+                        child: Text(
+                          'Apply Now'.toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            letterSpacing: 1.0,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      )),
+                ],
+              ),
+              SizedBox(
+                height: 40,
+              )
+            ],
+          ),
+        )),
+
+
               ],
             ),),
           )
-        ],
+        ]
       ),
     );
   }
@@ -277,8 +434,8 @@ class _LoginScreenState extends State<LoginScreen>
         inputFormatters: obscureText
             ? null
             : [
-                LowerCaseTextFormatter(),
-              ],
+          LowerCaseTextFormatter(),
+        ],
 
         validator: (value) {
           if (value.isEmpty)
@@ -286,7 +443,7 @@ class _LoginScreenState extends State<LoginScreen>
           return null;
         },
         textInputAction:
-            nextNode != null ? TextInputAction.next : TextInputAction.done,
+        nextNode != null ? TextInputAction.next : TextInputAction.done,
         // textCapitalization: obscureText
         //     ? TextCapitalization.sentences
         //     : TextCapitalization.characters,
@@ -306,10 +463,10 @@ class _LoginScreenState extends State<LoginScreen>
               borderSide: BorderSide(color: Colors.black),
             ),
             prefixIcon:
-                Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
+            Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
             hintText: labelText,
             hintStyle:
-                TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
+            TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
         style: TextStyle(
           fontSize: _isLarge ? 24 : 18,
           color: Colors.black,
@@ -325,8 +482,8 @@ class _LoginScreenState extends State<LoginScreen>
 
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text?.toUpperCase(),
       selection: newValue.selection,
@@ -336,8 +493,8 @@ class UpperCaseTextFormatter extends TextInputFormatter {
 
 class LowerCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text?.toLowerCase(),
       selection: newValue.selection,

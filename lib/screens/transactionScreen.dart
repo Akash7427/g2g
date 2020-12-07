@@ -8,13 +8,10 @@ import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
 import 'package:g2g/responsive_ui.dart';
-import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:g2g/widgets/custom_trans_item.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'homeScreen.dart';
@@ -37,7 +34,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   bool _isLarge;
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     // monitor network fetch
@@ -55,7 +52,6 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +107,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 'My Loans',
                 style: TextStyle(
                   fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                    ),
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -144,9 +140,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               child: Text(
                 'Connect',
                 style: TextStyle(
-                    fontSize: _isLarge ? 22 : 18,
-                    color: kSecondaryColor,
-                   ),
+                  fontSize: _isLarge ? 22 : 18,
+                  color: kSecondaryColor,
+                ),
               ),
             ),
           ),
@@ -203,60 +199,72 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             ),
           ),
           new Positioned(
+
+
               top: MediaQuery.of(context).size.height*0.1,
+
             left: 0.0,
             bottom: 0.0,
             right: 0.0,
             //here the body
-            child:
-            Padding(
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Card(
-                child: Column(
-                    children: [
-                      buildHeader(),
-                      SizedBox(height: 24,),
-                      buildListHeader(),
-                      Expanded(
-                        child: FutureBuilder(
-                          future: Provider.of<TransactionsController>(context,
-                                  listen: false)
-                              .getTransactions(widget.account.accountID),
-                          builder: (ctx, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(
-                                child: SpinKitThreeBounce(color: Theme
-                                    .of(context)
-                                    .accentColor, size: _width * 0.14,),
-                              );
-                            } else {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: Text('No Transaction Found'),
-                                );
-                              }
-                              else {
-                                return MediaQuery.removePadding(
-                                  removeTop: true,
-                                  context: ctx,
-                                  child: Consumer<TransactionsController>(
-                                    builder: (ctx, transactionData, _) =>
-                                        SmartRefresher(
+                child: Column(children: [
+                  buildHeader(),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  buildListHeader(),
+                  widget.account.balance.toString() != '0.0'
+                      ? Expanded(
+                          child: FutureBuilder(
+                              future: Provider.of<TransactionsController>(
+                                      context,
+                                      listen: false)
+                                  .getTransactions(widget.account.accountID),
+                              builder: (ctx, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: SpinKitThreeBounce(
+                                      color: Theme.of(context).accentColor,
+                                      size: _width * 0.14,
+                                    ),
+                                  );
+                                } else {
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: Text('No Transaction Found'),
+                                    );
+                                  } else {
+                                    return MediaQuery.removePadding(
+                                      removeTop: true,
+                                      context: ctx,
+                                      child: Consumer<TransactionsController>(
+                                        builder: (ctx, transactionData, _) =>
+                                            SmartRefresher(
                                           enablePullDown: true,
                                           enablePullUp: false,
                                           header: WaterDropHeader(),
                                           footer: CustomFooter(
-                                            builder: (BuildContext context, LoadStatus mode) {
+                                            builder: (BuildContext context,
+                                                LoadStatus mode) {
                                               Widget body;
                                               if (mode == LoadStatus.idle) {
                                                 body = Text("pull up load");
-                                              } else if (mode == LoadStatus.loading) {
-                                                body = CupertinoActivityIndicator();
-                                              } else if (mode == LoadStatus.failed) {
-                                                body = Text("Load Failed!Click retry!");
-                                              } else if (mode == LoadStatus.canLoading) {
-                                                body = Text("release to load more");
+                                              } else if (mode ==
+                                                  LoadStatus.loading) {
+                                                body =
+                                                    CupertinoActivityIndicator();
+                                              } else if (mode ==
+                                                  LoadStatus.failed) {
+                                                body = Text(
+                                                    "Load Failed!Click retry!");
+                                              } else if (mode ==
+                                                  LoadStatus.canLoading) {
+                                                body = Text(
+                                                    "release to load more");
                                               } else {
                                                 body = Text("No more Data");
                                               }
@@ -273,57 +281,59 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                               itemCount: transactionData
                                                   .geTransactionList.length,
                                               itemBuilder: (ctx, index) {
-                                                var transaction = transactionData
-                                                    .geTransactionList[index];
+                                                var transaction =
+                                                    transactionData
+                                                            .geTransactionList[
+                                                        index];
 
                                                 return Padding(
                                                   padding: const EdgeInsets
-                                                      .symmetric(
-                                                      vertical: 3.0),
-                                                  child:
-                                                  buildTransactionCard(
+                                                      .symmetric(vertical: 3.0),
+                                                  child: buildTransactionCard(
                                                       transaction),
                                                 );
                                               }),
                                         ),
-                                  ),
-                                );
-                              }
-                            }
-                          }),
-                      ),
-                      SizedBox(height: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                                color: kSecondaryColor,
-
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_back,color:Colors.white),
-                                      SizedBox(width: 4,),
-                                      Text('BACK',
-
-                                          style: TextStyle(
-                                              fontSize: _isLarge ? 25 : 18,
-                                              color: Colors.white),
-                                          textAlign: TextAlign.center
                                       ),
-                                    ],
+                                    );
+                                  }
+                                }
+                              }),
+                        )
+                      : Container(
+                          child: Text('No Transaction Found'),
+                        ),
+                  SizedBox(height: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                            color: kSecondaryColor,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.arrow_back, color: Colors.white),
+                                  SizedBox(
+                                    width: 4,
                                   ),
-                                )),
-                          ),
-                        ],
+                                  Text('BACK',
+                                      style: TextStyle(
+                                          fontSize: _isLarge ? 25 : 18,
+                                          color: Colors.white),
+                                      textAlign: TextAlign.center),
+                                ],
+                              ),
+                            )),
                       ),
-                    ]),
+                    ],
+                  ),
+                ]),
               ),
             ),
           ),
@@ -337,7 +347,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
@@ -353,7 +363,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   flex: 2,
                   child: AutoSizeText('REFERENCE',
                       style: TextStyle(
-                        color: Colors.grey,
+                          color: Colors.grey,
                           fontSize: _isLarge ? 16 : 14,
                           fontWeight: FontWeight.bold)),
                 ),
@@ -440,8 +450,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     // );
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         children: [
           Row(
