@@ -404,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen>
                 // ),
                 ),
             new Positioned(
-              top: 110.0,
+              top: MediaQuery.of(context).size.height*0.1,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
