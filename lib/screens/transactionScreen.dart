@@ -8,13 +8,10 @@ import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
 import 'package:g2g/responsive_ui.dart';
-import 'package:g2g/screens/loginScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:g2g/widgets/custom_trans_item.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'homeScreen.dart';
@@ -218,58 +215,56 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   buildListHeader(),
                   widget.account.balance.toString() != '0.0'
                       ? Expanded(
-                    child: FutureBuilder(
-                        future: Provider.of<TransactionsController>(
-                            context,
-                            listen: false)
-                            .getTransactions(widget.account.accountID),
-                        builder: (ctx, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(
-                              child: SpinKitThreeBounce(
-                                color: Theme
-                                    .of(context)
-                                    .accentColor,
-                                size: _width * 0.14,
-                              ),
-                            );
-                          } else {
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: Text('No Transaction Found'),
-                              );
-                            } else {
-                              return MediaQuery.removePadding(
-                                removeTop: true,
-                                context: ctx,
-                                child: Consumer<TransactionsController>(
-                                  builder: (ctx, transactionData, _) =>
-                                      SmartRefresher(
-                                        enablePullDown: true,
-                                        enablePullUp: false,
-                                        header: WaterDropHeader(),
-                                        footer: CustomFooter(
-                                          builder: (BuildContext context,
-                                              LoadStatus mode) {
-                                            Widget body;
-                                            if (mode == LoadStatus.idle) {
-                                              body = Text("pull up load");
-                                            } else if (mode ==
-                                                LoadStatus.loading) {
-                                              body =
-                                                  CupertinoActivityIndicator();
-                                            } else if (mode ==
-                                                LoadStatus.failed) {
-                                              body = Text(
-                                                  "Load Failed!Click retry!");
-                                            } else if (mode ==
-                                                LoadStatus.canLoading) {
-                                              body = Text(
-                                                  "release to load more");
-                                            } else {
-                                              body = Text("No more Data");
-                                            }
+                          child: FutureBuilder(
+                              future: Provider.of<TransactionsController>(
+                                      context,
+                                      listen: false)
+                                  .getTransactions(widget.account.accountID),
+                              builder: (ctx, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: SpinKitThreeBounce(
+                                      color: Theme.of(context).accentColor,
+                                      size: _width * 0.14,
+                                    ),
+                                  );
+                                } else {
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: Text('No Transaction Found'),
+                                    );
+                                  } else {
+                                    return MediaQuery.removePadding(
+                                      removeTop: true,
+                                      context: ctx,
+                                      child: Consumer<TransactionsController>(
+                                        builder: (ctx, transactionData, _) =>
+                                            SmartRefresher(
+                                          enablePullDown: true,
+                                          enablePullUp: false,
+                                          header: WaterDropHeader(),
+                                          footer: CustomFooter(
+                                            builder: (BuildContext context,
+                                                LoadStatus mode) {
+                                              Widget body;
+                                              if (mode == LoadStatus.idle) {
+                                                body = Text("pull up load");
+                                              } else if (mode ==
+                                                  LoadStatus.loading) {
+                                                body =
+                                                    CupertinoActivityIndicator();
+                                              } else if (mode ==
+                                                  LoadStatus.failed) {
+                                                body = Text(
+                                                    "Load Failed!Click retry!");
+                                              } else if (mode ==
+                                                  LoadStatus.canLoading) {
+                                                body = Text(
+                                                    "release to load more");
+                                              } else {
+                                                body = Text("No more Data");
+                                              }
                                               return Container(
                                                 height: 55.0,
                                                 child: Center(child: body),
