@@ -255,6 +255,37 @@ class _LoginScreenState extends State<LoginScreen>
                           ),
                         ),
                         SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => ApplyNowForLoan()));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                    // borderRadius: BorderRadius.all(Radius.circular(15)),
+                                    color: Color(0xFF27A1E1),
+                                  ),
+                                  padding: EdgeInsets.only(
+                                      top: 15, bottom: 15, left: 30, right: 30),
+                                  child: Text(
+                                    'Apply Now'.toUpperCase(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      letterSpacing: 1.0,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                )),
+                          ],
+                        )
                       ],
                     ),
                   ),
