@@ -11,6 +11,7 @@ import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:g2g/screens/apply_now.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -71,77 +72,75 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           Align(
             alignment: Alignment.center,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10, bottom: 10, left: 20, right: 20.0),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      color: Colors.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Image.asset(
-                            'images/logo2.png',
-                            height: _isLarge ? 400 : 150,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Log in to your account',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 28,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
+
+            child: SingleChildScrollView(child:  Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, bottom: 10, left: 20, right: 20.0),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 8),
+                        Image.asset(
+                          'images/logo2.png',
+                          height: _isLarge ? 400 : 150,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Log in to your account',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 20),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            child: Form(
-                              autovalidate: _autoValidate,
-                              key: _loginFormKey,
-                              child: Card(
-                                elevation: 0,
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    buildFormField(Icons.person_outline,
-                                        clientID, 'Email', userIDNode, pwdNode),
-                                    SizedBox(height: 15),
-                                    buildFormField(Icons.lock, password,
-                                        'Password', pwdNode, null,
-                                        obscureText: true),
-                                    SizedBox(height: 40),
-                                    Container(
-                                      child: RaisedButton(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10, vertical: 16),
-                                        child: Text(
-                                          'Login'.toUpperCase(),
-                                          style: TextStyle(
-                                              fontSize: _isLarge ? 26 : 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                        color: kPrimaryColor,
-                                        // padding: EdgeInsets.only(
-                                        //     top: 15, bottom: 15, left: 15, right: 15),
-                                        onPressed: () async {
-                                          if (_loginFormKey.currentState
-                                              .validate()) {
-                                            final pr = ProgressDialog(context,
-                                                isLogin: true);
-                                            setState(() {
-                                              pr.show();
-                                            });
-
+                        ),
+                        SizedBox(height: 8),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: Form(
+                            autovalidate: _autoValidate,
+                            key: _loginFormKey,
+                            child: Card(
+                              elevation: 0,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  buildFormField(Icons.person_outline, clientID,
+                                      'Email', userIDNode, pwdNode),
+                                  SizedBox(height: 15),
+                                  buildFormField(Icons.lock, password, 'Password',
+                                      pwdNode, null,
+                                      obscureText: true),
+                                  SizedBox(height: 40),
+                                  Container(
+                                    child: RaisedButton(
+                                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 16),
+                                      child: Text(
+                                        'Login'.toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: _isLarge ? 26 : 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      color: kPrimaryColor,
+                                      // padding: EdgeInsets.only(
+                                      //     top: 15, bottom: 15, left: 15, right: 15),
+                                      onPressed: () async {
+                                        if (_loginFormKey.currentState
+                                            .validate()) {
+                                          final pr = ProgressDialog(context,
+                                              isLogin: true);
+                                          setState(() {
+                                            pr.show();
+                                          });
                                             Provider.of<ClientController>(
                                                     context,
                                                     listen: false)
@@ -271,60 +270,58 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                             ),
                           ),
-                          SizedBox(height: 4),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ResetPassword()));
-                            },
-                            child: Text(
-                              'Forgot Password?',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 20),
+
+                        ),
+                        SizedBox(height: 4),
+                        FlatButton(
+                          onPressed: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ResetPassword()));
+
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.grey,
+                                decoration: TextDecoration.underline,
+                                fontSize: 20
                             ),
                           ),
-                          SizedBox(height: 4),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ApplyNowForLoan()));
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      // borderRadius: BorderRadius.all(Radius.circular(15)),
-                                      color: Color(0xFF27A1E1),
+                        ),
+                        SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ApplyNowScreen()));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    // borderRadius: BorderRadius.all(Radius.circular(15)),
+                                    color: Color(0xFF17477A),
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 16),
+                                  child: Text(
+                                    'Apply Now'.toUpperCase(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: _isLarge ? 26 : 20,
+                                      letterSpacing: 1.0,
+                                      fontWeight: FontWeight.w900,
                                     ),
-                                    padding: EdgeInsets.only(
-                                        top: 16,
-                                        bottom: 16,
-                                        left: 30,
-                                        right: 30),
-                                    child: Text(
-                                      'Apply Now'.toUpperCase(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                        letterSpacing: 1.0,
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
-                                  )),
-                            ],
-                          )
-                        ],
-                      ),
+                                  ),
+                                )),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                      ],
                     ),
                   ),
                 ],
