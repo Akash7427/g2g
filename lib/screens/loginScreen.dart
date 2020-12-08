@@ -5,6 +5,7 @@ import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
+import 'package:g2g/screens/applyNow_CalcScreen.dart';
 import 'package:g2g/screens/homeScreen.dart';
 import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
@@ -63,8 +64,7 @@ class _LoginScreenState extends State<LoginScreen>
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('images/bg.jpg'), fit: BoxFit.cover)),
-            child: SafeArea(
-                child: GestureDetector(
+            child: SafeArea(child: GestureDetector(
               onPanDown: (_) {
                 FocusScope.of(context).requestFocus(FocusNode());
               },
@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen>
           ),
           Align(
             alignment: Alignment.center,
+
             child: SingleChildScrollView(child:  Column(
               children: [
                 Padding(
@@ -140,108 +141,136 @@ class _LoginScreenState extends State<LoginScreen>
                                           setState(() {
                                             pr.show();
                                           });
-
-                                          Provider.of<ClientController>(context,
-                                              listen: false)
-                                              .authenticateUser()
-                                              .then((value) async {
-                                            if (value == null) {
-                                              Scaffold.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                content: Text(
-                                                    'Something went wrong please try again!'),
-                                              ));
-                                              return;
-                                            }
-                                            Provider.of<ClientController>(context,
-                                                listen: false)
-                                                .authenticateClient(clientID.text,
-                                                password.text, false)
-                                                .then(
-                                                  (user) async {
-                                                if (user == null) {
-                                                  pr.hide();
-                                                  Alert(
-                                                      context: context,
-                                                      title: '',
-                                                      content: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          children: <Widget>[
-                                                            ClipOval(
-                                                              child: Material(
-                                                                color: Colors.red, // button color
-                                                                child: SizedBox(width: 56, height: 56, child: Icon(Icons.close,color:Colors.white)),
-                                                              ),
-                                                            ),
-                                                            SizedBox(height:20),
-                                                            Text('Invalid Password'),]),
-                                                      buttons: [
-                                                        DialogButton(
-                                                          child: Text(
-                                                            "Close",
-                                                            style: TextStyle(
-                                                                color:
-                                                                Colors.white,
-                                                                fontSize: _isLarge
-                                                                    ? 24
-                                                                    : 18),
-                                                          ),
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context),
-                                                          color: kPrimaryColor,
-                                                          radius: BorderRadius
-                                                              .circular(0.0),
-                                                        ),
-                                                      ],
-                                                      style: AlertStyle(
-                                                        animationType:
-                                                        AnimationType.fromTop,
-                                                        isCloseButton: false,
-                                                        isOverlayTapDismiss:
-                                                        false,
-                                                        titleStyle: TextStyle(
-                                                            fontWeight:
-                                                            FontWeight.bold,
-                                                            fontSize: _isLarge
-                                                                ? 24
-                                                                : 18),
-                                                      )).show();
-                                                } else {
-                                                  Provider.of<AccountsController>(
+                                            Provider.of<ClientController>(
+                                                    context,
+                                                    listen: false)
+                                                .authenticateUser()
+                                                .then((value) async {
+                                              if (value == null) {
+                                                Scaffold.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      'Something went wrong please try again!'),
+                                                ));
+                                                return;
+                                              }
+                                              Provider.of<ClientController>(
                                                       context,
                                                       listen: false)
-                                                      .getAccounts(user.userID,
-                                                      user.sessionToken)
-                                                      .then((accounts) {
+                                                  .authenticateClient(
+                                                      clientID.text,
+                                                      password.text,
+                                                      false)
+                                                  .then(
+                                                (user) async {
+                                                  if (user == null) {
                                                     pr.hide();
-                                                    Navigator.pushAndRemoveUntil(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-
-                                                                HomeScreen(),settings: RouteSettings(
-                                                          arguments: 1,
-                                                        )),
-                                                            (route) => false);
-
-                                                  });
-                                                }
-                                              },
-                                            );
-                                          });
-                                        } else {
-                                          setState(() {
-                                            _autoValidate = true;
-                                          });
-                                        }
-                                      },
+                                                    Alert(
+                                                        context: context,
+                                                        title: '',
+                                                        content: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: <Widget>[
+                                                              ClipOval(
+                                                                child: Material(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  // button color
+                                                                  child: SizedBox(
+                                                                      width: 56,
+                                                                      height:
+                                                                          56,
+                                                                      child: Icon(
+                                                                          Icons
+                                                                              .close,
+                                                                          color:
+                                                                              Colors.white)),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                  height: 20),
+                                                              Text(
+                                                                  'Invalid Password'),
+                                                            ]),
+                                                        buttons: [
+                                                          DialogButton(
+                                                            child: Text(
+                                                              "Close",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      _isLarge
+                                                                          ? 24
+                                                                          : 18),
+                                                            ),
+                                                            onPressed: () =>
+                                                                Navigator.pop(
+                                                                    context),
+                                                            color:
+                                                                kPrimaryColor,
+                                                            radius: BorderRadius
+                                                                .circular(0.0),
+                                                          ),
+                                                        ],
+                                                        style: AlertStyle(
+                                                          animationType:
+                                                              AnimationType
+                                                                  .fromTop,
+                                                          isCloseButton: false,
+                                                          isOverlayTapDismiss:
+                                                              false,
+                                                          titleStyle: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: _isLarge
+                                                                  ? 24
+                                                                  : 18),
+                                                        )).show();
+                                                  } else {
+                                                    Provider.of<AccountsController>(
+                                                            context,
+                                                            listen: false)
+                                                        .getAccounts(
+                                                            user.userID,
+                                                            user.sessionToken)
+                                                        .then((accounts) {
+                                                      pr.hide();
+                                                      Navigator
+                                                          .pushAndRemoveUntil(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          HomeScreen(),
+                                                                  settings:
+                                                                      RouteSettings(
+                                                                    arguments:
+                                                                        1,
+                                                                  )),
+                                                              (route) => false);
+                                                    });
+                                                  }
+                                                },
+                                              );
+                                            });
+                                          } else {
+                                            setState(() {
+                                              _autoValidate = true;
+                                            });
+                                          }
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
+
                         ),
                         SizedBox(height: 4),
                         FlatButton(
@@ -295,10 +324,9 @@ class _LoginScreenState extends State<LoginScreen>
                       ],
                     ),
                   ),
-                ),
-
-              ],
-            ),),
+                ],
+              ),
+            ),
           )
         ],
       ),
@@ -362,8 +390,8 @@ class _LoginScreenState extends State<LoginScreen>
 
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text?.toUpperCase(),
       selection: newValue.selection,
@@ -373,8 +401,8 @@ class UpperCaseTextFormatter extends TextInputFormatter {
 
 class LowerCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text?.toLowerCase(),
       selection: newValue.selection,
