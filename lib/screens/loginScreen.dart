@@ -10,6 +10,7 @@ import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:g2g/screens/apply_now.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -82,20 +83,24 @@ class _LoginScreenState extends State<LoginScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        SizedBox(height: 8),
                         Image.asset(
                           'images/logo2.png',
                           height: _isLarge ? 400 : 150,
                         ),
-                        Text(
-                          'Log in to your account',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Log in to your account',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        SizedBox(height: 40),
+                        SizedBox(height: 8),
                         Container(
                           padding: EdgeInsets.all(10),
                           child: Form(
@@ -113,10 +118,10 @@ class _LoginScreenState extends State<LoginScreen>
                                   buildFormField(Icons.lock, password, 'Password',
                                       pwdNode, null,
                                       obscureText: true),
-                                  SizedBox(height: 10),
+                                  SizedBox(height: 40),
                                   Container(
                                     child: RaisedButton(
-                                      padding: EdgeInsets.all(10),
+                                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 16),
                                       child: Text(
                                         'Login'.toUpperCase(),
                                         style: TextStyle(
@@ -238,7 +243,7 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 4),
                         FlatButton(
                           onPressed: (){
                             Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ResetPassword()));
@@ -254,38 +259,39 @@ class _LoginScreenState extends State<LoginScreen>
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 4),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             InkWell(
                                 onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => ApplyNowForLoan()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ApplyNowScreen()));
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.all(20),
+                                  margin: EdgeInsets.all(16),
                                   decoration: BoxDecoration(
                                     // borderRadius: BorderRadius.all(Radius.circular(15)),
-                                    color: Color(0xFF27A1E1),
+                                    color: Color(0xFF17477A),
                                   ),
-                                  padding: EdgeInsets.only(
-                                      top: 15, bottom: 15, left: 30, right: 30),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 16),
                                   child: Text(
                                     'Apply Now'.toUpperCase(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 25,
+                                      fontSize: _isLarge ? 26 : 20,
                                       letterSpacing: 1.0,
                                       fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 )),
                           ],
-                        )
+                        ),
+                        SizedBox(height: 8),
                       ],
                     ),
                   ),
