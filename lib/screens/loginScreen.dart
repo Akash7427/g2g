@@ -5,12 +5,13 @@ import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
+import 'package:g2g/screens/applyNow_CalcScreen.dart';
 import 'package:g2g/screens/homeScreen.dart';
 import 'package:g2g/screens/resetPassword.dart';
 import 'package:g2g/utility/hashSha256.dart';
 import 'package:provider/provider.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:g2g/screens/apply_now.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -268,7 +269,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ApplyNowScreen()));
+                                          builder: (context) => ApplyNowForLoan()));
                                 },
                                 child: Container(
                                   margin: EdgeInsets.all(16),
