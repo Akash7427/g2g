@@ -317,8 +317,8 @@ class _LoginScreenState extends State<LoginScreen>
         inputFormatters: obscureText
             ? null
             : [
-          LowerCaseTextFormatter(),
-        ],
+                LowerCaseTextFormatter(),
+              ],
 
         validator: (value) {
           if (value.isEmpty)
@@ -326,7 +326,7 @@ class _LoginScreenState extends State<LoginScreen>
           return null;
         },
         textInputAction:
-        nextNode != null ? TextInputAction.next : TextInputAction.done,
+            nextNode != null ? TextInputAction.next : TextInputAction.done,
         // textCapitalization: obscureText
         //     ? TextCapitalization.sentences
         //     : TextCapitalization.characters,
@@ -346,10 +346,10 @@ class _LoginScreenState extends State<LoginScreen>
               borderSide: BorderSide(color: Colors.black),
             ),
             prefixIcon:
-            Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
+                Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
             hintText: labelText,
             hintStyle:
-            TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
+                TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
         style: TextStyle(
           fontSize: _isLarge ? 24 : 18,
           color: Colors.black,
