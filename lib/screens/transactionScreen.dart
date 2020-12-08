@@ -497,11 +497,11 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     color: widget.account.status.toUpperCase() == 'OPEN'
                         ? kPrimaryColor
                         : (widget.account.status.toUpperCase() == 'QUOTE'
-                        ? Colors.amber[300]
-                        : Colors.red),
+                            ? Colors.amber[300]
+                            : Colors.red),
                     child: Padding(
                       padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
                       child: AutoSizeText(widget.account.status.toUpperCase(),
                           style: TextStyle(
                               fontSize: _isLarge ? 16 : 12,
