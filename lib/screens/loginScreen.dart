@@ -264,6 +264,7 @@ class _LoginScreenState extends State<LoginScreen>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Text('Are you a new Customer?',style: TextStyle(fontSize: _isLarge ? 26 : 20,fontWeight: FontWeight.w900,color: Colors.black54),),
                             InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -272,18 +273,18 @@ class _LoginScreenState extends State<LoginScreen>
                                           builder: (context) => ApplyNowForLoan()));
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
+                                  margin: EdgeInsets.symmetric(horizontal: 4),
+                                 /* decoration: BoxDecoration(
                                     // borderRadius: BorderRadius.all(Radius.circular(15)),
                                     color: Color(0xFF17477A),
-                                  ),
+                                  ),*/
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 16),
+                                      horizontal: 4, vertical: 16),
                                   child: Text(
                                     'Apply Now'.toUpperCase(),
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color:Color(0xFF17477A),
                                       fontSize: _isLarge ? 26 : 20,
                                       letterSpacing: 1.0,
                                       fontWeight: FontWeight.w900,
