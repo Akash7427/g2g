@@ -123,7 +123,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height*0.1,
+            top: MediaQuery.of(context).size.height * 0.15,
             left: 0.0,
             bottom: 0.0,
             right: 0.0,
