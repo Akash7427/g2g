@@ -157,7 +157,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                   ),
                                 ),
                                 SliderTheme(
-                                  data: SliderTheme.of(context).copyWith(
+                                  data: SliderThemeData(
                                     trackHeight: 4.0,
                                     valueIndicatorColor: Colors.blue,
                                     showValueIndicator: ShowValueIndicator.always
@@ -176,7 +176,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                       });
                                     },
                                     label:
-                                        '\$ ${selected_amount.toInt()}',
+                                        '\$ ${selected_amount.toStringAsFixed(0)}',
                                     min: minSliderAmount,
                                     max: maxSliderAmount,
                                     divisions: sliderDivision.toInt(),
