@@ -27,8 +27,8 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
   var loan_fees = 400;
   var frequency = 365; // frequency for reducible interest calculated i.e. daily
   var payment_frequency = 104;
-  var total;
-  var weekly;
+  double total;
+  double weekly;
   var final_output;
   var interest_rate = 0.00907;
   var payment_montly;
@@ -36,6 +36,13 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
   double _width;
   double _pixelRatio;
   bool _isLarge;
+
+
+  double minSliderAmount = 500;
+  double maxSliderAmount = 5000;
+  double sliderDivision = 0;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +54,12 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
     double progress = selected_duration_end > selected_duration
         ? selected_duration
         : selected_duration_end;
+
+   sliderDivision =  (maxSliderAmount-minSliderAmount)/100;
+
+    WeeklyRepayments();
+
+
 
     return SafeArea(
       child: Scaffold(
@@ -146,13 +159,14 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                 SliderTheme(
                                   data: SliderTheme.of(context).copyWith(
                                     trackHeight: 4.0,
+                                    valueIndicatorColor: Colors.blue,
+                                    showValueIndicator: ShowValueIndicator.always
 
                                   ),
                                   child: Slider(
                                     activeColor: Color(0xFF64A000),
                                     inactiveColor:
                                         Color(0xFF64A000),
-                                    mouseCursor: MouseCursor.defer,
                                     value: selected_amount,
                                     onChanged: (v) {
                                       setState(() {
@@ -163,9 +177,10 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                     },
                                     label:
                                         '\$ ${selected_amount.toInt()}',
-                                    min: 500,
-                                    max: 5000,
-                                    divisions: 100,
+                                    min: minSliderAmount,
+                                    max: maxSliderAmount,
+                                    divisions: sliderDivision.toInt(),
+
                                   ),
                                 ),
                                 Padding(
@@ -178,13 +193,13 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                             .spaceBetween,
                                     children: [
                                       Text(
-                                        '\$ ${selected_amount.toInt()}',
+                                        '\$ ${minSliderAmount.toInt()}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6,
                                       ),
                                       Text(
-                                        '\$ 5000',
+                                        '\$ ${maxSliderAmount.toInt()}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6,
@@ -218,6 +233,8 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                 SliderTheme(
                                   data: SliderTheme.of(context).copyWith(
                                     trackHeight: 4.0,
+                                      valueIndicatorColor: Colors.blue,
+                                      showValueIndicator: ShowValueIndicator.always
                                   ),
                                   child: Slider(
                                     activeColor: Color(0xFF64A000),
@@ -268,7 +285,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                             .spaceBetween,
                                     children: [
                                       Text(
-                                        '${selected_duration.toInt()} Weeks',
+                                        '4 Weeks',
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6
@@ -354,7 +371,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                               EdgeInsets.symmetric(vertical:15),
                                           color: Color(0xFFC2E8F7),
                                           child: Text(
-                                            '\$ ${(amountinTwo(weekly)) == '0.0' ? '155.0' : (amountinTwo(weekly))}',
+                                            '\$ ${weekly?.toStringAsFixed(2) == '0.0' ? '155.0' : weekly?.toStringAsFixed(2)}',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline6
@@ -376,7 +393,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                           color: Color(0xFFC2E8F7),
                                           child: Text(
 
-                                            '\$ ${(amountinTwo(total)) == '0.0' ? '620.0' : (amountinTwo(total))}',
+                                            '\$ ${total?.toStringAsFixed(2) == '0.0' ? '620.0' : total?.toStringAsFixed(2)}',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline6
@@ -523,13 +540,13 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
     });
   }
 
-  String amountinTwo(content) {
-    int decimals = 2;
-    int fac = pow(10, decimals);
-    double d = content ?? 0;
-    d = (d * fac).round() / fac;
-    print("d: $d");
-
-    return d.toString();
-  }
+  // String amountinTwo(content) {
+  //   int decimals = 2;
+  //   int fac = pow(10, decimals);
+  //   double d = content ?? 0;
+  //   d = (d * fac).round() / fac;
+  //   print("d: $d");
+  //
+  //   return d.toString();
+  // }
 }
