@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/constants.dart';
@@ -8,6 +10,7 @@ import 'package:g2g/tawk/tawk_widget.dart';
 import 'package:g2g/utility/pref_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 
 
@@ -18,6 +21,8 @@ class TawkToScreen extends StatefulWidget {
 }
 
 class _TawkToScreenState extends State<TawkToScreen> {
+  WebViewController _controller;
+
   final _connectScreenKey = GlobalKey<ScaffoldState>();
   double _width;
   double _pixelRatio;

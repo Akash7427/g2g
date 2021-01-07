@@ -82,7 +82,7 @@ class ApplyLoansWebViewScreenState extends State<ApplyLoansWebViewScreen> {
         ),
       ),
       Positioned(
-        top: MediaQuery.of(context).size.height * 1.5,
+        top: MediaQuery.of(context).size.height * 0.1,
         left: 0.0,
         bottom: 0.0,
         right: 0.0,
@@ -91,7 +91,7 @@ class ApplyLoansWebViewScreenState extends State<ApplyLoansWebViewScreen> {
             padding: const EdgeInsets.all(10.0),
             child: WebView(
               initialUrl:
-                  'https://www.goodtogoloans.com.au/application-form/?amount=${widget.amount}&term=${widget.term}',
+              'https://www.goodtogoloans.com.au/application-form/?amount=${widget.amount}&term=${widget.term}',
               javascriptMode: JavascriptMode.unrestricted,
               onWebViewCreated: (WebViewController c) {},
               onPageStarted: (String url) {
