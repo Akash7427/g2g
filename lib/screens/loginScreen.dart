@@ -4,6 +4,7 @@ import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
+import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/applyNow_CalcScreen.dart';
 import 'package:g2g/screens/homeScreen.dart';
@@ -165,36 +166,30 @@ class _LoginScreenState extends State<LoginScreen>
                                                   false)
                                                   .then(
                                                     (user) async {
-                                                  if (user == null) {
+                                                  if (user.runtimeType != Client) {
+                                                    var message = 'Invalid session, Please try again!';
+                                                    if(user.toString().startsWith('Client with web user Id of'))
+                                                      message = 'Username not found!';
+                                                    else if(user.toString().startsWith('Invalid Password'))
+                                                      message = 'Invalid Password';
+                                                    
                                                     pr.hide();
                                                     Alert(
                                                         context: context,
                                                         title: '',
-                                                        content: Column(
-                                                            crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                            children: <Widget>[
-                                                              ClipOval(
-                                                                child: Material(
-                                                                  color: Colors
-                                                                      .red, // button color
-                                                                  child: SizedBox(
-                                                                      width: 56,
-                                                                      height:
-                                                                      56,
-                                                                      child: Icon(
-                                                                          Icons
-                                                                              .close,
-                                                                          color:
-                                                                          Colors.white)),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                  height: 20),
-                                                              Text(
-                                                                  'Invalid Password'),
-                                                            ]),
+                                                        content: Container(
+                                                          child: Column(
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                              children: <Widget>[
+                                                                Image.asset('images/alert_icon.png'),
+                                                                SizedBox(
+                                                                    height: 20),
+                                                                Text(
+                                                                    message,style: TextStyle(color: Colors.black45,fontWeight: FontWeight.bold,fontSize: 20),),
+                                                              ]),
+                                                        ),
                                                         buttons: [
                                                           DialogButton(
                                                             child: Text(
@@ -217,6 +212,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                           ),
                                                         ],
                                                         style: AlertStyle(
+
                                                           animationType:
                                                           AnimationType
                                                               .fromTop,

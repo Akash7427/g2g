@@ -198,6 +198,7 @@ class _EditProfileState extends State<EditProfile> {
             Padding(
               padding: const EdgeInsets.only(top: 10.0, left: 10.0),
               child: AppBar(
+                centerTitle: true,
                 leading: CircleAvatar(
                   radius: 25,
                   backgroundColor: Color(0xffccebf2),
