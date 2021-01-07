@@ -111,7 +111,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
               ),
             ),
             Positioned.fill(
-              top: MediaQuery.of(context).size.height * 1.5,
+              top: MediaQuery.of(context).size.height * 0.1,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
