@@ -8,14 +8,9 @@ import 'package:g2g/tawk/tawk_widget.dart';
 import 'package:g2g/utility/pref_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
-import 'package:g2g/components/navigationDrawer.dart';
-import 'package:g2g/controllers/clientController.dart';
 
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-import 'dart:convert';
 
 class TawkToScreen extends StatefulWidget {
   @override
@@ -24,8 +19,6 @@ class TawkToScreen extends StatefulWidget {
 
 class _TawkToScreenState extends State<TawkToScreen> {
   final _connectScreenKey = GlobalKey<ScaffoldState>();
-  WebViewController _controller;
-  double _height;
   double _width;
   double _pixelRatio;
   bool _isLarge;
@@ -68,7 +61,6 @@ class _TawkToScreenState extends State<TawkToScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery.of(context).size.height;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
@@ -125,7 +117,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height*0.1,
+          top: MediaQuery.of(context).size.height * 0.15,
           left: 0.0,
           bottom: 0.0,
           right: 0.0,

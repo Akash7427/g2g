@@ -3,15 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
-import 'package:g2g/controllers/accountsController.dart';
-import 'package:g2g/controllers/clientController.dart';
-import 'package:g2g/controllers/resetController.dart';
 import 'package:g2g/controllers/updatePasswordController.dart';
-import 'package:g2g/models/updatePasswordModel.dart';
 import 'package:g2g/responsive_ui.dart';
-import 'package:g2g/screens/homeScreen.dart';
-import 'package:g2g/screens/loginScreen.dart';
-import 'package:g2g/screens/splashScreen.dart';
 import 'package:g2g/utility/hashSha256.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,11 +32,9 @@ class _UpdatePasswordState extends State<UpdatePassword>
   final emailIDNode = FocusNode();
   final mobileNode = FocusNode();
   final pwdNode = FocusNode();
-  double _height;
   double _width;
   double _pixelRatio;
   bool _isLarge;
-  bool _loading = false;
 
   @override
   void initState() {
@@ -63,7 +54,6 @@ class _UpdatePasswordState extends State<UpdatePassword>
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery.of(context).size.height;
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
@@ -123,7 +113,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
             ),
           ),
           Positioned(
-            top: MediaQuery.of(context).size.height*0.1,
+            top: MediaQuery.of(context).size.height * 0.15,
             left: 0.0,
             bottom: 0.0,
             right: 0.0,

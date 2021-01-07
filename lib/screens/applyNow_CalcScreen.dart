@@ -27,8 +27,8 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
   var loan_fees = 400;
   var frequency = 365; // frequency for reducible interest calculated i.e. daily
   var payment_frequency = 104;
-  var total;
-  var weekly;
+  double total;
+  double weekly;
   var final_output;
   var interest_rate = 0.00907;
   var payment_montly;
@@ -36,6 +36,13 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
   double _width;
   double _pixelRatio;
   bool _isLarge;
+
+
+  double minSliderAmount = 500;
+  double maxSliderAmount = 5000;
+  double sliderDivision = 0;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +54,12 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
     double progress = selected_duration_end > selected_duration
         ? selected_duration
         : selected_duration_end;
+
+   sliderDivision =  (maxSliderAmount-minSliderAmount)/100;
+
+    WeeklyRepayments();
+
+
 
     return SafeArea(
       child: Scaffold(
@@ -97,418 +110,399 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                 elevation: 0.0,
               ),
             ),
-            Positioned(
+            Positioned.fill(
               top: MediaQuery.of(context).size.height * 0.1,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, right: 10.0, left: 10.0),
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Stack(
+              child: Container(
+                alignment: Alignment.center,
+                color: Colors.white,
+                margin: const EdgeInsets.only(
+                    top: 10.0,bottom: 20, right: 10.0, left: 10.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: 20, left: 10.0, right: 10.0),
+                        child: Column(
+                          mainAxisAlignment:
+                              MainAxisAlignment.center,
                           children: [
-                            Container(
-                              alignment: Alignment.center,
-                              color: Colors.white,
-                              height: MediaQuery.of(context).size.height * 0.80,
-                              child: SingleChildScrollView(
-                                child: Column(
+                            Image.asset(
+                              'images/logo2.png',
+                              height: _isLarge ? 400 : 120,
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding:
+                                  const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  child: Text(
+                                    'How much would you like to borrow?',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .copyWith(
+                                            fontWeight:
+                                                FontWeight.bold,
+                                            fontSize: 19.5),
+                                  ),
+                                ),
+                                SliderTheme(
+                                  data: SliderThemeData(
+                                    trackHeight: 4.0,
+                                    valueIndicatorColor: Colors.blue,
+                                    showValueIndicator: ShowValueIndicator.always
+
+                                  ),
+                                  child: Slider(
+                                    activeColor: Color(0xFF64A000),
+                                    inactiveColor:
+                                        Color(0xFF64A000),
+                                    value: selected_amount,
+                                    onChanged: (v) {
+                                      setState(() {
+                                        selected_amount = v;
+
+                                        WeeklyRepayments();
+                                      });
+                                    },
+                                    label:
+                                        '\$ ${selected_amount.toStringAsFixed(0)}',
+                                    min: minSliderAmount,
+                                    max: maxSliderAmount,
+                                    divisions: sliderDivision.toInt(),
+
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .spaceBetween,
+                                    children: [
+                                      Text(
+                                        '\$ ${minSliderAmount.toInt()}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
+                                      ),
+                                      Text(
+                                        '\$ ${maxSliderAmount.toInt()}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 22,
+                                ),
+                                Row(
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 5, left: 10.0, right: 10.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            'images/logo2.png',
-                                            height: _isLarge ? 400 : 120,
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                child: Text(
-                                                  'How much would you like to borrow?',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline6
-                                                      .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 19.5),
-                                                ),
-                                              ),
-                                              Slider(
-                                                activeColor: Color(0xFF64A000),
-                                                inactiveColor:
-                                                    Color(0xFF64A000),
-                                                mouseCursor: MouseCursor.defer,
-                                                value: selected_amount,
-                                                onChanged: (v) {
-                                                  setState(() {
-                                                    selected_amount = v;
-
-                                                    WeeklyRepayments();
-                                                  });
-                                                },
-                                                label:
-                                                    '\$ ${selected_amount.toInt()}',
-                                                min: 500,
-                                                max: 5000,
-                                                divisions: 100,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 15),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      '\$ ${selected_amount.toInt()}',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline6,
-                                                    ),
-                                                    Text(
-                                                      '\$ 5000',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline6,
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 22,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 15),
-                                                    child: Text(
-                                                      'For how long?',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline6
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 19.5),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Slider(
-                                                activeColor: Color(0xFF64A000),
-                                                inactiveColor:
-                                                    Color(0xFF64A000),
-                                                mouseCursor: MouseCursor.defer,
-                                                value: progress,
-                                                onChanged: (v) {
-                                                  setState(() {
-                                                    WeeklyRepayments();
-                                                  });
-                                                  setState(() {
-                                                    selected_duration = v;
-                                                  });
-                                                },
-                                                label:
-                                                    '${selected_duration.toInt()} Weeks',
-                                                min: 4,
-                                                max: maxValue,
-                                                divisions: 48,
-                                                onChangeStart: (value) {
-                                                  setState(() {
-                                                    if (selected_amount >=
-                                                        2001) {
-                                                      setState(() {
-                                                        selected_duration_end =
-                                                            104;
-                                                      });
-                                                    } else {
-                                                      setState(() {
-                                                        selected_duration_end =
-                                                            52;
-                                                      });
-                                                    }
-                                                    WeeklyRepayments();
-                                                  });
-                                                },
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 15),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      '${selected_duration.toInt()} Weeks',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline6
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                    ),
-                                                    Text(
-                                                      '${selected_duration_end.toInt()} Weeks',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline6
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 15),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      'Weekly Repayments',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 17,
-                                                              color:
-                                                                  Colors.black),
-                                                    ),
-                                                    Text(
-                                                      'Total Repayments',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .caption
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 17,
-                                                              color:
-                                                                  Colors.black),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 30),
-                                                child: Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.all(15),
-                                                      color: Color(0xFFC2E8F7),
-                                                      child: Text(
-                                                        '\$ ${(amountinTwo(weekly)) == '0.0' ? '155.0' : (amountinTwo(weekly))}',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headline6
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.all(15),
-                                                      color: Color(0xFFC2E8F7),
-                                                      child: Text(
-                                                        '\$ ${(amountinTwo(total)) == '0.0' ? '620.0' : (amountinTwo(total))}',
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headline6
-                                                            .copyWith(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 25),
-                                          child: InkWell(
-                                            child: Text(
-                                              'Comparison Rate',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .caption
-                                                  .copyWith(
-                                                      color: Color(0xFF27A1E1),
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                            ),
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Comparision_Rate_WebView()));
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    RaisedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ApplyLoansWebViewScreen(
-                                              amount: selected_amount
-                                                  .toInt()
-                                                  .toString(),
-                                              term: selected_duration
-                                                      .toInt()
-                                                      .toString() ??
-                                                  '4',
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      color: Color(0xFF27A1E1),
-                                      padding: EdgeInsets.only(
-                                          top: 10,
-                                          bottom: 10,
-                                          left: 30,
-                                          right: 30),
-                                      child: Container(
-                                        child: Text(
-                                          'Next'.toUpperCase(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 25,
-                                            letterSpacing: 1.0,
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(
-                                          top: 5.0, right: 5.0, left: 5.0),
-                                      color: Color(0xFFF2F2F2),
+                                      padding: const EdgeInsets
+                                              .symmetric(
+                                          horizontal: 15),
                                       child: Text(
-                                        'NOTE: The figures represented in this calculator are an example only and may not represent actual repayments contractual or otherwise.',
-                                        style:
-                                            Theme.of(context).textTheme.caption,
+                                        'For how long?',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            .copyWith(
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                fontSize: 19.5),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
+                                SliderTheme(
+                                  data: SliderTheme.of(context).copyWith(
+                                    trackHeight: 4.0,
+                                      valueIndicatorColor: Colors.blue,
+                                      showValueIndicator: ShowValueIndicator.always
+                                  ),
+                                  child: Slider(
+                                    activeColor: Color(0xFF64A000),
+                                    inactiveColor:
+                                        Color(0xFF64A000),
+
+                                    mouseCursor: MouseCursor.defer,
+                                    value: progress,
+                                    onChanged: (v) {
+                                      setState(() {
+                                        WeeklyRepayments();
+                                      });
+                                      setState(() {
+                                        selected_duration = v;
+                                      });
+                                    },
+                                    label:
+                                        '${selected_duration.toInt()} Weeks',
+                                    min: 4,
+                                    max: maxValue,
+                                    divisions: 48,
+                                    onChangeStart: (value) {
+                                      setState(() {
+                                        if (selected_amount >=
+                                            2001) {
+                                          setState(() {
+                                            selected_duration_end =
+                                                104;
+                                          });
+                                        } else {
+                                          setState(() {
+                                            selected_duration_end =
+                                                52;
+                                          });
+                                        }
+                                        WeeklyRepayments();
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment
+                                            .spaceBetween,
+                                    children: [
+                                      Text(
+                                        '4 Weeks',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            .copyWith(
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold),
+                                      ),
+                                      Text(
+                                        '${selected_duration_end.toInt()} Weeks',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6
+                                            .copyWith(
+                                                fontWeight:
+                                                    FontWeight
+                                                        .bold),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                  child: Row(
+
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'Weekly Repayments',
+                                          textAlign: TextAlign.start,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption
+                                              .copyWith(
+                                                  fontWeight:
+                                                      FontWeight
+                                                          .bold,
+                                                  fontSize: 17,
+                                                  color:
+                                                      Colors.black),
+                                        ),
+                                      ),
+                                      SizedBox(width:10),
+                                      Expanded(
+                                        child: Text(
+                                          'Total Repayments',
+                                          textAlign: TextAlign.end,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption
+                                              .copyWith(
+                                                  fontWeight:
+                                                      FontWeight
+                                                          .bold,
+                                                  fontSize: 17,
+                                                  color:
+                                                      Colors.black),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          padding:
+                                              EdgeInsets.symmetric(vertical:15),
+                                          color: Color(0xFFC2E8F7),
+                                          child: Text(
+                                            '\$ ${weekly?.toStringAsFixed(2) == '0.0' ? '155.0' : weekly?.toStringAsFixed(2)}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6
+                                                .copyWith(
+                                                    fontWeight:
+                                                        FontWeight
+                                                            .w900),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+
+                                      SizedBox(width:100),
+
+                                      Expanded(
+                                        child: Container(
+                                          padding:
+                                          EdgeInsets.symmetric(vertical:15),
+                                          color: Color(0xFFC2E8F7),
+                                          child: Text(
+
+                                            '\$ ${total?.toStringAsFixed(2) == '0.0' ? '620.0' : total?.toStringAsFixed(2)}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline6
+                                                .copyWith(
+                                                    fontWeight:
+                                                        FontWeight
+                                                            .w900),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        // SizedBox(
-                        //   height: 20,
-                        // ),
-                        // RaisedButton(
-                        //   onPressed: () {
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) => ApplyLoansWebViewScreen(
-                        //           amount: selected_amount.toInt().toString(),
-                        //           term:
-                        //               selected_duration.toInt().toString() ??
-                        //                   '4',
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        //   color: Color(0xFF27A1E1),
-                        //   padding: EdgeInsets.only(
-                        //       top: 15, bottom: 15, left: 30, right: 30),
-                        //   child: Container(
-                        //     child: Text(
-                        //       'Next',
-                        //       textAlign: TextAlign.center,
-                        //       style: TextStyle(
-                        //         color: Colors.white,
-                        //         fontSize: 25,
-                        //         letterSpacing: 1.0,
-                        //         fontWeight: FontWeight.w900,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(right: 25),
+                            child: InkWell(
+                              child: Text(
+                                'Comparison Rate',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption
+                                    .copyWith(
+                                        color: Color(0xFF27A1E1),
+                                        fontSize: 16,
+                                        fontWeight:
+                                            FontWeight.bold),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Comparision_Rate_WebView()));
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ApplyLoansWebViewScreen(
+                                amount: selected_amount
+                                    .toInt()
+                                    .toString(),
+                                term: selected_duration
+                                        .toInt()
+                                        .toString() ??
+                                    '4',
+                              ),
+                            ),
+                          );
+                        },
+                        color: Color(0xFF17477A),
+                        padding: EdgeInsets.only(
+                            top: 10,
+                            bottom: 10,
+                            left: 30,
+                            right: 30),
+                        child: Container(
+                          child: Text(
+                            'Next'.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              letterSpacing: 1.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10,vertical:10),
+                        color: Color(0xFFF2F2F2),
+                        child: Text(
+                          'NOTE: The figures represented in this calculator are an example only and may not represent actual repayments contractual or otherwise.',
+                          style:
+                              Theme.of(context).textTheme.caption,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ],
@@ -546,13 +540,13 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
     });
   }
 
-  String amountinTwo(content) {
-    int decimals = 2;
-    int fac = pow(10, decimals);
-    double d = content ?? 0;
-    d = (d * fac).round() / fac;
-    print("d: $d");
-
-    return d.toString();
-  }
+  // String amountinTwo(content) {
+  //   int decimals = 2;
+  //   int fac = pow(10, decimals);
+  //   double d = content ?? 0;
+  //   d = (d * fac).round() / fac;
+  //   print("d: $d");
+  //
+  //   return d.toString();
+  // }
 }

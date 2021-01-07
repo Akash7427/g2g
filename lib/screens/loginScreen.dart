@@ -4,6 +4,7 @@ import 'package:g2g/components/progressDialog.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/accountsController.dart';
 import 'package:g2g/controllers/clientController.dart';
+import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/applyNow_CalcScreen.dart';
 import 'package:g2g/screens/homeScreen.dart';
@@ -83,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          SizedBox(height: 8),
                           Image.asset(
                             'images/logo2.png',
                             height: _isLarge ? 400 : 150,
@@ -99,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen>
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          SizedBox(height: 8),
                           Container(
                             padding: EdgeInsets.all(10),
                             child: Form(
@@ -109,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 elevation: 0,
                                 child: Column(
                                   crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
+                                  CrossAxisAlignment.stretch,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     buildFormField(Icons.person_outline,
@@ -143,8 +145,8 @@ class _LoginScreenState extends State<LoginScreen>
                                             });
 
                                             Provider.of<ClientController>(
-                                                    context,
-                                                    listen: false)
+                                                context,
+                                                listen: false)
                                                 .authenticateUser()
                                                 .then((value) async {
                                               if (value == null) {
@@ -156,45 +158,38 @@ class _LoginScreenState extends State<LoginScreen>
                                                 return;
                                               }
                                               Provider.of<ClientController>(
-                                                      context,
-                                                      listen: false)
+                                                  context,
+                                                  listen: false)
                                                   .authenticateClient(
-                                                      clientID.text,
-                                                      password.text,
-                                                      false)
+                                                  clientID.text,
+                                                  password.text,
+                                                  false)
                                                   .then(
-                                                (user) async {
-                                                  if (user == null) {
+                                                    (user) async {
+                                                  if (user.runtimeType != Client) {
+                                                    var message = 'Invalid session, Please try again!';
+                                                    if(user.toString().startsWith('Client with web user Id of'))
+                                                      message = 'Username not found!';
+                                                    else if(user.toString().startsWith('Invalid Password'))
+                                                      message = 'Invalid Password';
+                                                    
                                                     pr.hide();
                                                     Alert(
                                                         context: context,
                                                         title: '',
-                                                        content: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: <Widget>[
-                                                              ClipOval(
-                                                                child: Material(
-                                                                  color: Colors
-                                                                      .red,
-                                                                  // button color
-                                                                  child: SizedBox(
-                                                                      width: 56,
-                                                                      height:
-                                                                          56,
-                                                                      child: Icon(
-                                                                          Icons
-                                                                              .close,
-                                                                          color:
-                                                                              Colors.white)),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                  height: 20),
-                                                              Text(
-                                                                  'Invalid Password'),
-                                                            ]),
+                                                        content: Container(
+                                                          child: Column(
+                                                              crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                              children: <Widget>[
+                                                                Image.asset('images/alert_icon.png'),
+                                                                SizedBox(
+                                                                    height: 20),
+                                                                Text(
+                                                                    message,style: TextStyle(color: Colors.black45,fontWeight: FontWeight.bold,fontSize: 20),),
+                                                              ]),
+                                                        ),
                                                         buttons: [
                                                           DialogButton(
                                                             child: Text(
@@ -203,55 +198,56 @@ class _LoginScreenState extends State<LoginScreen>
                                                                   color: Colors
                                                                       .white,
                                                                   fontSize:
-                                                                      _isLarge
-                                                                          ? 24
-                                                                          : 18),
+                                                                  _isLarge
+                                                                      ? 24
+                                                                      : 18),
                                                             ),
                                                             onPressed: () =>
                                                                 Navigator.pop(
                                                                     context),
                                                             color:
-                                                                kPrimaryColor,
+                                                            kPrimaryColor,
                                                             radius: BorderRadius
                                                                 .circular(0.0),
                                                           ),
                                                         ],
                                                         style: AlertStyle(
+
                                                           animationType:
-                                                              AnimationType
-                                                                  .fromTop,
+                                                          AnimationType
+                                                              .fromTop,
                                                           isCloseButton: false,
                                                           isOverlayTapDismiss:
-                                                              false,
+                                                          false,
                                                           titleStyle: TextStyle(
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              FontWeight
+                                                                  .bold,
                                                               fontSize: _isLarge
                                                                   ? 24
                                                                   : 18),
                                                         )).show();
                                                   } else {
                                                     Provider.of<AccountsController>(
-                                                            context,
-                                                            listen: false)
+                                                        context,
+                                                        listen: false)
                                                         .getAccounts(
-                                                            user.userID,
-                                                            user.sessionToken)
+                                                        user.userID,
+                                                        user.sessionToken)
                                                         .then((accounts) {
                                                       pr.hide();
                                                       Navigator
                                                           .pushAndRemoveUntil(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          HomeScreen(),
-                                                                  settings:
-                                                                      RouteSettings(
-                                                                    arguments:
-                                                                        1,
-                                                                  )),
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                  HomeScreen(),
+                                                              settings:
+                                                              RouteSettings(
+                                                                arguments:
+                                                                1,
+                                                              )),
                                                               (route) => false);
                                                     });
                                                   }
@@ -289,8 +285,20 @@ class _LoginScreenState extends State<LoginScreen>
                           ),
                           SizedBox(height: 4),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              Container(
+                                padding:
+                                const EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  'Are you a new Customer?',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: _isLarge ? 20 : 14,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.black54),
+                                ),
+                              ),
                               InkWell(
                                   onTap: () {
                                     Navigator.push(
@@ -300,29 +308,27 @@ class _LoginScreenState extends State<LoginScreen>
                                                 ApplyNowForLoan()));
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      // borderRadius: BorderRadius.all(Radius.circular(15)),
-                                      color: Color(0xFF27A1E1),
-                                    ),
-                                    padding: EdgeInsets.only(
-                                        top: 16,
-                                        bottom: 16,
-                                        left: 30,
-                                        right: 30),
+                                    // margin: EdgeInsets.symmetric(horizontal: 4),
+                                    /* decoration: BoxDecoration(
+                                    // borderRadius: BorderRadius.all(Radius.circular(15)),
+                                    color: Color(0xFF17477A),
+                                  ),*/
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 4, vertical: 16),
                                     child: Text(
                                       'Apply Now'.toUpperCase(),
-                                      textAlign: TextAlign.center,
+                                      textAlign: TextAlign.start,
                                       style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
+                                        color: Color(0xFF17477A),
+                                        fontSize: _isLarge ? 20 : 14,
                                         letterSpacing: 1.0,
                                         fontWeight: FontWeight.w900,
                                       ),
                                     ),
                                   )),
                             ],
-                          )
+                          ),
+                          SizedBox(height: 8),
                         ],
                       ),
                     ),
@@ -345,8 +351,8 @@ class _LoginScreenState extends State<LoginScreen>
         inputFormatters: obscureText
             ? null
             : [
-                LowerCaseTextFormatter(),
-              ],
+          LowerCaseTextFormatter(),
+        ],
 
         validator: (value) {
           if (value.isEmpty)
@@ -354,7 +360,7 @@ class _LoginScreenState extends State<LoginScreen>
           return null;
         },
         textInputAction:
-            nextNode != null ? TextInputAction.next : TextInputAction.done,
+        nextNode != null ? TextInputAction.next : TextInputAction.done,
         // textCapitalization: obscureText
         //     ? TextCapitalization.sentences
         //     : TextCapitalization.characters,
@@ -374,10 +380,10 @@ class _LoginScreenState extends State<LoginScreen>
               borderSide: BorderSide(color: Colors.black),
             ),
             prefixIcon:
-                Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
+            Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
             hintText: labelText,
             hintStyle:
-                TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
+            TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
         style: TextStyle(
           fontSize: _isLarge ? 24 : 18,
           color: Colors.black,
@@ -404,8 +410,8 @@ class UpperCaseTextFormatter extends TextInputFormatter {
 
 class LowerCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
-      TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text?.toLowerCase(),
       selection: newValue.selection,

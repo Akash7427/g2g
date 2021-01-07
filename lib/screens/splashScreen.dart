@@ -82,8 +82,15 @@ class _SplashScreenState extends State<SplashScreen> {
             await Provider.of<ClientController>(context,listen: false).authenticateUser();
             String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
             user=await Provider.of<ClientController>(context,listen: false).authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
-            if(user==null)
-              showAlert();
+            if (user.runtimeType != Client) {
+              var message = 'Invalid session, Please try again!';
+              if (user.toString().startsWith('Client with web user Id of'))
+                message = 'Username not found!';
+              else if (user.toString().startsWith('Invalid Password'))
+                message = 'Invalid Password';
+              showAlert(message);
+              return;
+            }
             accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
 
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(),settings: RouteSettings(
@@ -132,21 +139,18 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<bool> showAlert(){
+  Future<bool> showAlert(var message){
     return new Alert(
         context: context,
       title: '',
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          ClipOval(
-            child: Material(
-              color: Colors.red, // button color
-              child: SizedBox(width: 56, height: 56, child: Icon(Icons.close,color:Colors.white)),
-            ),
-          ),
-          SizedBox(height:20),
-          Text('Invalid Password')
+          Image.asset('images/alert_icon.png'),
+          SizedBox(
+              height: 20),
+          Text(
+            message,style: TextStyle(color: Colors.black45,fontWeight: FontWeight.bold,fontSize: 20),),
 
         ],
       ),

@@ -45,7 +45,7 @@ class ClientController with ChangeNotifier {
     return null;
   }
 
-  Future<Client> authenticateClient(
+  Future<dynamic> authenticateClient(
       String clientID, String password, bool isWebAuthenticated) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final storage = new FlutterSecureStorage();
@@ -80,7 +80,7 @@ class ClientController with ChangeNotifier {
     //   innerJson = _getValue(item.findElements("SessionDetails"));
     // }).toList();
     if (jsonDecode(json)['ClientAuthentication']['SessionError'] != null) {
-      return null;
+      return jsonDecode(json)['ClientAuthentication']['SessionError'];
      // return await authenticateClient(clientID, password, isWebAuthenticated);
       //  CustomDialog.showMyDialog(context, 'ClientLogin', jsonDecode(json)['ClientAuthentication']['SessionError'], 'Retry', authenticateClient(context,clientID, password, isWebAuthenticated));
     } else if (innerJson['SessionToken'] != null) {

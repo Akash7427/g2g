@@ -22,6 +22,7 @@ class Comparision_Rate_WebViewState extends State<Comparision_Rate_WebView> {
   bool _isLarge;
   WebViewController _controller;
 
+
   @override
   void initState() {
     super.initState();
@@ -94,39 +95,37 @@ class Comparision_Rate_WebViewState extends State<Comparision_Rate_WebView> {
         ),
       ),
       Positioned(
-        top: MediaQuery.of(context).size.height * 0.1,
+        top: MediaQuery.of(context).size.height * 1.5,
         left: 0.0,
         bottom: 0.0,
         right: 0.0,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: WebView(
-              initialUrl: 'https://www.goodtogoloans.com.au/cash-loans/',
-              javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (WebViewController c) async {
-                setState(() {
-                  _controller = c;
-                });
-                var a, b;
+            child: Stack(
+              children: [
+                WebView(
+                  initialUrl: 'https://www.goodtogoloans.com.au/cash-loans/',
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onWebViewCreated: (WebViewController c) async {
+                    // setState(() {
+                    //   _controller = c;
+                    // });
+                    _controller = c;
 
-                await _controller.getScrollX().then((value) {
-                  setState(() {
-                    a = value;
-                    print('x' + value.toString());
-                  });
-                });
-                await _controller.getScrollY().then((value) {
-                  setState(() {
-                    b = value;
-                    print('Y' + value.toString());
-                  });
-                });
-                await _controller.scrollBy(1000, 3600);
-              },
-              onPageStarted: (String url) {
-                if (url.startsWith('tel:')) launch("tel://1300197727");
-              },
+                  },
+                  onPageStarted: (String url) async {
+
+                    if (url.startsWith('tel:')) launch("tel://1300197727");
+                  },
+                  onPageFinished: (String url) async{
+                    await _controller.evaluateJavascript('window.scrollTo({top: 2500, behavior: "smooth"});');
+                  },
+                ),
+
+
+
+              ],
             ),
           ),
         ),
