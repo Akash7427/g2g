@@ -15,7 +15,6 @@ import 'package:g2g/widgets/custom_loandoc_item.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-
 import 'package:url_launcher/url_launcher.dart';
 
 import 'homeScreen.dart';
@@ -36,25 +35,19 @@ class _LoanDocumentsState extends State<LoanDocuments> {
   RefreshController _refreshController =
   RefreshController(initialRefresh: false);
 
-  void _onRefresh() async{
+  void _onRefresh() async {
     // monitor network fetch
 
     // if failed,use refreshFailed()
-    if(mounted)
-      setState(() {
-
-      });
+    if (mounted) setState(() {});
 
     _refreshController.refreshCompleted();
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // monitor network fetch
 
-    if(mounted)
-      setState(() {
-
-      });
+    if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
 
@@ -64,8 +57,6 @@ class _LoanDocumentsState extends State<LoanDocuments> {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-
-
 
     return Scaffold(
       drawer: NavigationDrawer(),
@@ -83,23 +74,22 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                       settings: RouteSettings(
                         arguments: 0,
                       )));
-              break;// Create this function, it should return your first page as a widget
+              break; // Create this function, it should return your first page as a widget
             case 1:
-            // Navigator.pushAndRemoveUntil(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => ApplyNowScreen()),
-            //         (r) => r.isFirst);
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ApplyNowScreen()),
+              //         (r) => r.isFirst);
               launch('https://www.goodtogoloans.com.au/');
-              break;// Create this function, it should return your second page as a widget
+              break; // Create this function, it should return your second page as a widget
             case 2:
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => TawkToScreen()),
-                      (r) => r.isFirst);
-              break;// Create this function, it should return your third page as a widget
-          // Create this function, it should return your fourth page as a widget
+                  MaterialPageRoute(builder: (context) => TawkToScreen()),
+                  (r) => r.isFirst);
+              break; // Create this function, it should return your third page as a widget
+            // Create this function, it should return your fourth page as a widget
           }
         }),
         items: <BottomNavigationBarItem>[
@@ -157,7 +147,6 @@ class _LoanDocumentsState extends State<LoanDocuments> {
         ],
       ),
       body: Stack(
-
         children: <Widget>[
           new Container(
             decoration: BoxDecoration(
@@ -208,7 +197,10 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             ),
           ),
           new Positioned(
-              top: MediaQuery.of(context).size.height * 0.15,
+            top: MediaQuery
+                .of(context)
+                .size
+                .height * 0.18,
             left: 0.0,
             bottom: 0.0,
             right: 0.0,
@@ -216,115 +208,122 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Card(
-                child: Column(
-                    children: [
-                      buildHeader(),
-                      SizedBox(height: 24,),
-                      buildListHeader(),
-                      Expanded(
-                                            child: FutureBuilder(
-                          future:
-                              Provider.of<LoanDocController>(context, listen: false)
-                                  .fetchLoanDocList(widget.account.accountID),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<dynamic> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(
-                                child: SpinKitThreeBounce(color: Theme.of(context).accentColor,size: _width*0.14,),
-                              );
-                            } else {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: Text('No Documents Found'),
-                                );
-                              } else {
-                                return Consumer<LoanDocController>(
-                                    builder: (ctx, docData, _) =>
-                                        MediaQuery.removePadding(
-                                          context: ctx,
-                                          removeTop: true,
-                                          child: SmartRefresher(
-                                            enablePullDown: true,
-                                            enablePullUp: false,
-                                            header: WaterDropHeader(),
-                                            footer: CustomFooter(
-                                              builder: (BuildContext context,LoadStatus mode){
-                                                Widget body ;
-                                                if(mode==LoadStatus.idle){
-                                                  body =  Text("pull up load");
-                                                }
-                                                else if(mode==LoadStatus.loading){
-                                                  body =  CupertinoActivityIndicator();
-                                                }
-                                                else if(mode == LoadStatus.failed){
-                                                  body = Text("Load Failed!Click retry!");
-                                                }
-                                                else if(mode == LoadStatus.canLoading){
-                                                  body = Text("release to load more");
-                                                }
-                                                else{
-                                                  body = Text("No more Data");
-                                                }
-                                                return Container(
-                                                  height: 55.0,
-                                                  child: Center(child:body),
-                                                );
-                                              },
-                                            ),
-                                            controller: _refreshController,
-                                            onRefresh: _onRefresh,
-                                            onLoading: _onLoading,
-                                            child: ListView.builder(
-                                              itemBuilder: (ctx, index) {
-                                                return CustomLoandocItem(
-                                                  widget.account.accountID,
-                                                    docData.getLoanDocList[index],
-                                                    _isLarge);
-                                              },
-                                              itemCount:
-                                                  docData.getLoanDocList.length,
-                                            ),
-                                          ),
-                                        )
-                                );
-                              }
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                                color: kSecondaryColor,
-
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_back,color:Colors.white),
-                                      SizedBox(width: 4,),
-                                      Text('Back',
-
-                                          style: TextStyle(
-                                              fontSize: _isLarge ? 25 : 18,
-                                              color: Colors.white),
-                                        textAlign: TextAlign.center
+                child: Column(children: [
+                  buildHeader(),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  buildListHeader(),
+                  Expanded(
+                    child: FutureBuilder(
+                      future:
+                      Provider.of<LoanDocController>(context, listen: false)
+                          .fetchLoanDocList(widget.account.accountID),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: SpinKitThreeBounce(
+                              color: Theme
+                                  .of(context)
+                                  .accentColor,
+                              size: _width * 0.14,
+                            ),
+                          );
+                        } else {
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: Text('No Documents Found'),
+                            );
+                          } else {
+                            return Consumer<LoanDocController>(
+                                builder: (ctx, docData, _) =>
+                                    MediaQuery.removePadding(
+                                      context: ctx,
+                                      removeTop: true,
+                                      child: SmartRefresher(
+                                        enablePullDown: true,
+                                        enablePullUp: false,
+                                        header: WaterDropHeader(),
+                                        footer: CustomFooter(
+                                          builder: (BuildContext context,
+                                              LoadStatus mode) {
+                                            Widget body;
+                                            if (mode == LoadStatus.idle) {
+                                              body = Text("pull up load");
+                                            } else if (mode ==
+                                                LoadStatus.loading) {
+                                              body =
+                                                  CupertinoActivityIndicator();
+                                            } else if (mode ==
+                                                LoadStatus.failed) {
+                                              body = Text(
+                                                  "Load Failed!Click retry!");
+                                            } else if (mode ==
+                                                LoadStatus.canLoading) {
+                                              body =
+                                                  Text("release to load more");
+                                            } else {
+                                              body = Text("No more Data");
+                                            }
+                                            return Container(
+                                              height: 55.0,
+                                              child: Center(child: body),
+                                            );
+                                          },
+                                        ),
+                                        controller: _refreshController,
+                                        onRefresh: _onRefresh,
+                                        onLoading: _onLoading,
+                                        child: ListView.builder(
+                                          itemBuilder: (ctx, index) {
+                                            return CustomLoandocItem(
+                                                widget.account.accountID,
+                                                docData.getLoanDocList[index],
+                                                _isLarge);
+                                          },
+                                          itemCount:
+                                          docData.getLoanDocList.length,
+                                        ),
                                       ),
-                                    ],
+                                    ));
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                            color: kSecondaryColor,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.arrow_back, color: Colors.white),
+                                  SizedBox(
+                                    width: 4,
                                   ),
-                                )),
-                          ),
-                        ],
+                                  Text('Back',
+                                      style: TextStyle(
+                                          fontSize: _isLarge ? 25 : 18,
+                                          color: Colors.white),
+                                      textAlign: TextAlign.center),
+                                ],
+                              ),
+                            )),
                       ),
-                    ]),
+                    ],
+                  ),
+                ]),
               ),
             ),
           ),
@@ -335,13 +334,11 @@ class _LoanDocumentsState extends State<LoanDocuments> {
 
   Container buildListHeader() {
     return Container(
-
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Row(
-
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Expanded(
@@ -379,8 +376,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
 
   Container buildHeader() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         children: [
           Row(
