@@ -106,7 +106,7 @@ class Comparision_Rate_WebViewState extends State<Comparision_Rate_WebView> {
               children: [
                 WebView(
                   initialUrl: 'https://www.goodtogoloans.com.au/cash-loans/',
-                  javascriptMode: JavascriptMode.unrestricted,
+                  javascriptMode: JavascriptMode.disabled,
                   onWebViewCreated: (WebViewController c) async {
                     // setState(() {
                     //   _controller = c;
@@ -118,8 +118,8 @@ class Comparision_Rate_WebViewState extends State<Comparision_Rate_WebView> {
 
                     if (url.startsWith('tel:')) launch("tel://1300197727");
                   },
-                  onPageFinished: (String url) async{
-                    await _controller.evaluateJavascript('window.scrollTo({top: 2500, behavior: "smooth"});');
+                  onPageFinished: (String url) {
+                    _onSmoothScroll(_controller,context);
                   },
                 ),
 
@@ -131,5 +131,10 @@ class Comparision_Rate_WebViewState extends State<Comparision_Rate_WebView> {
         ),
       ),
     ]);
+  }
+
+  void _onSmoothScroll(WebViewController controller, BuildContext context) async {
+    await _controller.evaluateJavascript('window.scrollTo({top: 2500, behavior: "smooth"});');
+    // ignore: deprecated_member_use
   }
 }
