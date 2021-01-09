@@ -12,7 +12,7 @@ import '../constants.dart';
 
 class LoanDocController with ChangeNotifier {
   List<LoanDocModel> loanDocList = [];
-  Future<void> fetchLoanDocList(String accountID) async {
+  Future<List<LoanDocModel>> fetchLoanDocList(String accountID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     print(
         '$apiBaseURL/custom/GetAccountDocuments?AccountID=$accountID&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}');
@@ -34,6 +34,7 @@ class LoanDocController with ChangeNotifier {
     for (Map m in innerJson) loanDocList.add(LoanDocModel.fromJson(m));
 
     notifyListeners();
+    return loanDocList;
   }
 
   List<LoanDocModel> get getLoanDocList {
