@@ -1122,8 +1122,7 @@ class _HomeScreenState extends State<HomeScreen>
                     ),
                     child: ListTile(
                       onTap: () async {
-
-
+                        print(account.balance.toString());
                         Navigator.push(
                             context,
                             MaterialPageRoute(
