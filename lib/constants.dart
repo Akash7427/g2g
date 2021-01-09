@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+List<String> chars = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 const subscriberKey =
     'AB4E8A1D98854846AF16E05F4F3871DFB10448BFECE34B209D470246DF2DB49D6C49E08414E54D209D32DEDABB14B064';
 const subscriberID = 'WEB';

@@ -4,16 +4,20 @@ import 'package:crypto/crypto.dart';
 
 import 'package:g2g/constants.dart';
 import 'package:tripledes/tripledes.dart';
-Map<String, String> hashSHA256(String clientIDAndPassword){
+Map<String, String>  hashSHA256(){
+  String userID = 'WEBSERVICES';
+  String password = 'G2GW3bs3rv1c35';
   String salt='';
-  Random _rnd = Random();
-  salt=String.fromCharCodes(Iterable.generate(10, (_) => chars.codeUnitAt(_rnd.nextInt(chars.length-1))));
+  //Random _rnd = Random();
+  var saltCharList = chars;
+  saltCharList.shuffle();
+  var sublist = saltCharList.sublist(0,10);
+  salt = sublist.join();
+
   print('Salt: '+salt);
-  // final customBase64=Base64Encoder();
-  // String hash=customBase64.convert(sha256.convert(utf8.encode(salt+clientIDAndPassword+subscriberKey)).bytes);
-  
-  // .encode(sha256.convert(utf8.encode(salt+clientIDAndPassword+subscriberKey)).bytes);
-  String hash=base64.encode(sha256.convert(utf8.encode(salt+clientIDAndPassword+subscriberKey)).bytes);
+
+  String hash=  base64.encode(sha256.convert(utf8.encode(salt+userID+password+subscriberKey)).bytes);
+
   print('Hash: '+hash);
 
   return {'salt':salt,'hash':hash};

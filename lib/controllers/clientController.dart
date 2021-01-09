@@ -24,13 +24,18 @@ class ClientController with ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var userID = 'WEBSERVICES';
     var password = 'G2GW3bs3rv1c35';
-    Map hashAndSalt = hashSHA256(userID + password);
-
-    print(
-        '$apiBaseURL/Authentication/AuthenticateUser?subscriberId=$subscriberID&userId=$userID&password=$password&hash=${hashAndSalt['hash']}&hashSalt=${hashAndSalt['salt']}');
-
-    http.Response response = await http.get(
-        '$apiBaseURL/Authentication/AuthenticateUser?subscriberId=$subscriberID&userId=$userID&password=$password&hash=${hashAndSalt['hash']}&hashSalt=${hashAndSalt['salt']}');
+    Map hashAndSalt = hashSHA256();
+    var postbodyMap = {
+      "subscriberId": subscriberID,
+      "userId":userID,
+      "password":password,
+      "hash":hashAndSalt['hash'],
+      "hashSalt":hashAndSalt['salt']
+    };
+    http.Response response = await http.post(
+        '$apiBaseURL/Authentication/AuthenticateUser',headers: <String, String>{
+      'Content-Type': 'application/json',
+    },body: jsonEncode(postbodyMap));
     print(response.body);
     var webUserResponse = jsonDecode(response.body);
     if (webUserResponse['SessionToken'] != null) {
