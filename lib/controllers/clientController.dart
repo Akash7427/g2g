@@ -3,15 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:g2g/constants.dart';
 import 'package:g2g/models/clientBasicModel.dart';
 import 'package:g2g/models/clientModel.dart';
 import 'package:g2g/utility/hashSha256.dart';
-
-import 'package:g2g/constants.dart';
 import 'package:g2g/utility/pref_helper.dart';
-
 import 'package:http/http.dart' as http;
-import 'package:xml/xml.dart' as xml;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xml2json/xml2json.dart';
 
@@ -27,15 +24,17 @@ class ClientController with ChangeNotifier {
     Map hashAndSalt = hashSHA256();
     var postbodyMap = {
       "subscriberId": subscriberID,
-      "userId":userID,
-      "password":password,
-      "hash":hashAndSalt['hash'],
-      "hashSalt":hashAndSalt['salt']
+      "userId": userID,
+      "password": password,
+      "hash": hashAndSalt['hash'],
+      "hashSalt": hashAndSalt['salt']
     };
-    http.Response response = await http.post(
-        '$apiBaseURL/Authentication/AuthenticateUser',headers: <String, String>{
-      'Content-Type': 'application/json',
-    },body: jsonEncode(postbodyMap));
+    http.Response response =
+        await http.post('$apiBaseURL/Authentication/AuthenticateUser',
+            headers: <String, String>{
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(postbodyMap));
     print(response.body);
     var webUserResponse = jsonDecode(response.body);
     if (webUserResponse['SessionToken'] != null) {
@@ -63,9 +62,9 @@ class ClientController with ChangeNotifier {
     http.Response response = await http.post(
       '$apiBaseURL/custom/ClientLogin',
       headers: <String, String>{
-        'Content-Type': 'text/plain',
+        'Content-Type': 'text/xml',
         'Authorization':
-            'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
+        'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
       },
       body: envelope,
     );
@@ -86,7 +85,7 @@ class ClientController with ChangeNotifier {
     // }).toList();
     if (jsonDecode(json)['ClientAuthentication']['SessionError'] != null) {
       return jsonDecode(json)['ClientAuthentication']['SessionError'];
-     // return await authenticateClient(clientID, password, isWebAuthenticated);
+      // return await authenticateClient(clientID, password, isWebAuthenticated);
       //  CustomDialog.showMyDialog(context, 'ClientLogin', jsonDecode(json)['ClientAuthentication']['SessionError'], 'Retry', authenticateClient(context,clientID, password, isWebAuthenticated));
     } else if (innerJson['SessionToken'] != null) {
       prefs.setBool('isLoggedIn', true);
@@ -102,7 +101,7 @@ class ClientController with ChangeNotifier {
       notifyListeners();
       return client;
     } else if (jsonDecode(response.body)["Code"] == "Subscriber.InvalidHash") {
-     // return await authenticateClient(clientID, ePass, isWebAuthenticated);
+      // return await authenticateClient(clientID, ePass, isWebAuthenticated);
       return null;
     } else {
       return null;
