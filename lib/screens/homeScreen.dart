@@ -93,18 +93,18 @@ class _HomeScreenState extends State<HomeScreen>
     return true;
   }
 
-  payURL() async {
+  payURL(Account account) async {
     await ClientController().getClientBasic();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    var name = accounts[0].Name;
+    var name = account.Name;
     List fname = name.split(',');
     print('fname' + fname[1]);
 
     try {
       String url =
-          'https://www.goodtogoloans.com.au/payments/?fname=${fname[1].toString().trim()}&lname=${fname[0]}&email=${prefs.getString(PrefHelper.PREF_EMAIL_ID)}&account_id=${prefs.getString(PrefHelper.PREF_ACCOUNT_ID)}&client_id=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&amount=${accounts[0].balance}';
+          'https://www.goodtogoloans.com.au/payments/?fname=${fname[1].toString().trim()}&lname=${fname[0]}&email=${prefs.getString(PrefHelper.PREF_EMAIL_ID)}&account_id=${account.accountID}&client_id=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&amount=${account.balance}';
       print(url);
       await launch(url);
     } on Exception catch (e) {
@@ -728,7 +728,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   FlatButton(
                                     color: kPrimaryColor,
                                     onPressed: () {
-                                      payURL();
+                                      payURL(account);
                                     },
                                     child: Text(
                                       'Pay ' +
