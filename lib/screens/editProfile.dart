@@ -560,232 +560,239 @@ class _EditProfileState extends State<EditProfile> {
                                       SizedBox(
                                         height: 0,
                                       ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                              child: FormBuilderTextField(
-                                               // focusNode: firstNameNode,
-                                                style: TextStyle(
-                                                  color: Color(0xff222222),
-                                                  fontFamily: "Montserrat",
-                                                ),
-                                                attribute: "first_name",
-                                                decoration:
-                                                buildInputDecoration(
-                                                    context,
-                                                    "First Name",
-                                                    "Enter First Name"),
-                                                autofocus: true,
-                                                onFieldSubmitted: (value) {
-                                                 // lastNameNode.requestFocus();
-                                                  return focusNode.nextFocus();
-                                                },
-                                                textInputAction:
-                                                TextInputAction.next,
-                                                keyboardType:
-                                                TextInputType.text,
-                                                validators: [
-                                                  FormBuilderValidators.min(3),
-                                                  CustomFormBuilderValidators
-                                                      .charOnly(),
-                                                  FormBuilderValidators
-                                                      .maxLength(20),
-                                                  FormBuilderValidators
-                                                      .required(),
-                                                  FormBuilderValidators
-                                                      .minLength(3),
-                                                ],
-                                              )),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                              child: FormBuilderTextField(
-                                               // focusNode: lastNameNode,
-                                                autofocus: true,
-                                                onFieldSubmitted: (value) {
-                                                 // emailNode.requestFocus();
-                                                  return focusNode.nextFocus();
-                                                },
-                                                style: TextStyle(
-                                                  color: Color(0xff222222),
-                                                  fontFamily: "Montserrat",
-                                                ),
-                                                attribute: "last_name",
-                                                textInputAction:
-                                                TextInputAction.next,
-                                                decoration:
-                                                buildInputDecoration(
-                                                    context,
-                                                    "Last Name",
-                                                    "Enter Last Name"),
-                                                keyboardType:
-                                                TextInputType.text,
-                                                validators: [
-                                                  CustomFormBuilderValidators
-                                                      .charOnly(),
-                                                  FormBuilderValidators
-                                                      .minLength(3),
-                                                  FormBuilderValidators
-                                                      .maxLength(20),
-                                                  FormBuilderValidators
-                                                      .required()
-                                                ],
-                                              )),
-                                        ],
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                                child: FormBuilderTextField(
+                                                 // focusNode: firstNameNode,
+                                                  style: TextStyle(
+                                                    color: Color(0xff222222),
+                                                    fontFamily: "Montserrat",
+                                                  ),
+                                                  attribute: "first_name",
+                                                  decoration:
+                                                  buildInputDecoration(
+                                                      context,
+                                                      "First Name",
+                                                      "Enter First Name"),
+                                                  autofocus: true,
+                                                  onFieldSubmitted: (value) {
+                                                   // lastNameNode.requestFocus();
+                                                    return focusNode.nextFocus();
+                                                  },
+                                                  textInputAction:
+                                                  TextInputAction.next,
+                                                  keyboardType:
+                                                  TextInputType.text,
+                                                  validators: [
+                                                    FormBuilderValidators.min(3),
+                                                    CustomFormBuilderValidators
+                                                        .charOnly(),
+                                                    FormBuilderValidators
+                                                        .maxLength(20),
+                                                    FormBuilderValidators
+                                                        .required(),
+                                                    FormBuilderValidators
+                                                        .minLength(3),
+                                                  ],
+                                                )),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                                child: FormBuilderTextField(
+                                                 // focusNode: lastNameNode,
+                                                  autofocus: true,
+                                                  onFieldSubmitted: (value) {
+                                                   // emailNode.requestFocus();
+                                                    return focusNode.nextFocus();
+                                                  },
+                                                  style: TextStyle(
+                                                    color: Color(0xff222222),
+                                                    fontFamily: "Montserrat",
+                                                  ),
+                                                  attribute: "last_name",
+                                                  textInputAction:
+                                                  TextInputAction.next,
+                                                  decoration:
+                                                  buildInputDecoration(
+                                                      context,
+                                                      "Last Name",
+                                                      "Enter Last Name"),
+                                                  keyboardType:
+                                                  TextInputType.text,
+                                                  validators: [
+                                                    CustomFormBuilderValidators
+                                                        .charOnly(),
+                                                    FormBuilderValidators
+                                                        .minLength(3),
+                                                    FormBuilderValidators
+                                                        .maxLength(20),
+                                                    FormBuilderValidators
+                                                        .required()
+                                                  ],
+                                                )),
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(
                                         height: 30,
                                       ),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: FormBuilderTextField(
-                                              textInputAction:
-                                              TextInputAction.next,
-                                              //focusNode: emailNode,
-                                              autofocus: true,
-                                              onFieldSubmitted: (value) {
-                                                //mobileNoNode.requestFocus();
-                                                return focusNode.nextFocus();
-                                              },
-                                              style: TextStyle(
-                                                color: Color(0xff222222),
-                                                fontFamily: "Montserrat",
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: FormBuilderTextField(
+                                                textInputAction:
+                                                TextInputAction.next,
+                                                //focusNode: emailNode,
+                                                autofocus: true,
+                                                onFieldSubmitted: (value) {
+                                                  //mobileNoNode.requestFocus();
+                                                  return focusNode.nextFocus();
+                                                },
+                                                style: TextStyle(
+                                                  color: Color(0xff222222),
+                                                  fontFamily: "Montserrat",
+                                                ),
+                                                attribute: "email",
+                                                decoration:
+                                                buildInputDecoration(
+                                                    context,
+                                                    "Email Address",
+                                                    "Enter Email Address"),
+                                                keyboardType: TextInputType
+                                                    .emailAddress,
+                                                validators: [
+                                                  FormBuilderValidators
+                                                      .email(),
+                                                  FormBuilderValidators
+                                                      .required()
+                                                ],
                                               ),
-                                              attribute: "email",
-                                              decoration:
-                                              buildInputDecoration(
-                                                  context,
-                                                  "Email Address",
-                                                  "Enter Email Address"),
-                                              keyboardType: TextInputType
-                                                  .emailAddress,
-                                              validators: [
-                                                FormBuilderValidators
-                                                    .email(),
-                                                FormBuilderValidators
-                                                    .required()
-                                              ],
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            child: FormBuilderTextField(
-                                              //focusNode: mobileNoNode,
-                                              textInputAction:
-                                              TextInputAction.next,
-                                              autofocus: true,
-                                              onFieldSubmitted: (value) {
-                                              //  homePhoneNoNode.requestFocus();
-                                                return focusNode.nextFocus();
-                                              },
-                                              style: TextStyle(
-                                                color: Color(0xff222222),
-                                                fontFamily: "Montserrat",
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                              child: FormBuilderTextField(
+                                                //focusNode: mobileNoNode,
+                                                textInputAction:
+                                                TextInputAction.next,
+                                                autofocus: true,
+                                                onFieldSubmitted: (value) {
+                                                //  homePhoneNoNode.requestFocus();
+                                                  return focusNode.nextFocus();
+                                                },
+                                                style: TextStyle(
+                                                  color: Color(0xff222222),
+                                                  fontFamily: "Montserrat",
+                                                ),
+                                                attribute: "mobile_no",
+                                                maxLength: 11,
+                                                decoration:
+                                                buildInputDecoration(
+                                                    context,
+                                                    "Mobile Number",
+                                                    "Enter Mobile Number"),
+                                                keyboardType:
+                                                TextInputType.number,
+                                                validators: [
+                                                  FormBuilderValidators
+                                                      .minLength(10),
+                                                  FormBuilderValidators
+                                                      .required()
+                                                ],
                                               ),
-                                              attribute: "mobile_no",
-                                              maxLength: 11,
-                                              decoration:
-                                              buildInputDecoration(
-                                                  context,
-                                                  "Mobile Number",
-                                                  "Enter Mobile Number"),
-                                              keyboardType:
-                                              TextInputType.number,
-                                              validators: [
-                                                FormBuilderValidators
-                                                    .minLength(10),
-                                                FormBuilderValidators
-                                                    .required()
-                                              ],
-                                            ),
-                                          )
-                                        ],
+                                            )
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(height: 30),
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: FormBuilderTextField(
-                                             // focusNode: homePhoneNoNode,
-                                              textInputAction:
-                                              TextInputAction.next,
-                                              autofocus: true,
-                                              onFieldSubmitted: (value) {
-                                               // workPhoneNoNode.requestFocus();
-                                                return focusNode.nextFocus();
-                                              },
-                                              style: TextStyle(
-                                                color: Color(0xff222222),
-                                                fontFamily: "Montserrat",
+                                      
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: FormBuilderTextField(
+                                               // focusNode: homePhoneNoNode,
+                                                textInputAction:
+                                                TextInputAction.next,
+                                                autofocus: true,
+                                                onFieldSubmitted: (value) {
+                                                 // workPhoneNoNode.requestFocus();
+                                                  return focusNode.nextFocus();
+                                                },
+                                                style: TextStyle(
+                                                  color: Color(0xff222222),
+                                                  fontFamily: "Montserrat",
+                                                ),
+                                                attribute: "home_phone_no",
+                                                maxLength: 15,
+                                                inputFormatters: [
+                                                  WhitelistingTextInputFormatter
+                                                      .digitsOnly
+                                                ],
+                                                decoration:
+                                                buildInputDecoration(
+                                                    context,
+                                                    "Ph Home",
+                                                    "Phone Number(Home)"),
+                                                keyboardType:
+                                                TextInputType.number,
+                                                validators: [
+                                                  FormBuilderValidators
+                                                      .numeric(),
+                                                  FormBuilderValidators
+                                                      .minLength(10),
+                                                  FormBuilderValidators
+                                                      .required()
+                                                ],
                                               ),
-                                              attribute: "home_phone_no",
-                                              maxLength: 15,
-                                              inputFormatters: [
-                                                WhitelistingTextInputFormatter
-                                                    .digitsOnly
-                                              ],
-                                              decoration:
-                                              buildInputDecoration(
-                                                  context,
-                                                  "Ph Home",
-                                                  "Phone Number(Home)"),
-                                              keyboardType:
-                                              TextInputType.number,
-                                              validators: [
-                                                FormBuilderValidators
-                                                    .numeric(),
-                                                FormBuilderValidators
-                                                    .minLength(10),
-                                                FormBuilderValidators
-                                                    .required()
-                                              ],
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                            child: FormBuilderTextField(
-                                             // focusNode: workPhoneNoNode,
-                                              textInputAction:
-                                              TextInputAction.next,
-                                              autofocus: true,
-                                              onFieldSubmitted: (value) {
-                                              //  streetAddressNode.requestFocus();
-                                                return focusNode.nextFocus();
-                                              },
-                                              style: TextStyle(
-                                                color: Color(0xff222222),
-                                                fontFamily: "Montserrat",
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                              child: FormBuilderTextField(
+                                               // focusNode: workPhoneNoNode,
+                                                textInputAction:
+                                                TextInputAction.next,
+                                                autofocus: true,
+                                                onFieldSubmitted: (value) {
+                                                //  streetAddressNode.requestFocus();
+                                                  return focusNode.nextFocus();
+                                                },
+                                                style: TextStyle(
+                                                  color: Color(0xff222222),
+                                                  fontFamily: "Montserrat",
+                                                ),
+                                                attribute: "work_phone_no",
+                                                maxLength: 10,
+                                                inputFormatters: [
+                                                  WhitelistingTextInputFormatter
+                                                      .digitsOnly
+                                                ],
+                                                decoration:
+                                                buildInputDecoration(
+                                                    context,
+                                                    "Ph Work",
+                                                    "Phone Number(Work)"),
+                                                keyboardType:
+                                                TextInputType.number,
+                                                validators: [
+                                                  FormBuilderValidators
+                                                      .numeric(),
+                                                  FormBuilderValidators
+                                                      .minLength(10),
+                                                  FormBuilderValidators
+                                                      .required()
+                                                ],
                                               ),
-                                              attribute: "work_phone_no",
-                                              maxLength: 10,
-                                              inputFormatters: [
-                                                WhitelistingTextInputFormatter
-                                                    .digitsOnly
-                                              ],
-                                              decoration:
-                                              buildInputDecoration(
-                                                  context,
-                                                  "Ph Work",
-                                                  "Phone Number(Work)"),
-                                              keyboardType:
-                                              TextInputType.number,
-                                              validators: [
-                                                FormBuilderValidators
-                                                    .numeric(),
-                                                FormBuilderValidators
-                                                    .minLength(10),
-                                                FormBuilderValidators
-                                                    .required()
-                                              ],
-                                            ),
-                                          )
-                                        ],
+                                            )
+                                          ],
+                                        ),
                                       ),
                                       SizedBox(height: 30),
                                       FormBuilderTextField(
@@ -814,64 +821,66 @@ class _EditProfileState extends State<EditProfile> {
                                         ],
                                       ),
                                       SizedBox(height: 30),
-                                      Row(
-                                        children: [
-                                          FormBuilderTextField(
-                                            textInputAction:
-                                            TextInputAction.next,
-                                            //focusNode: suburbNode,
-                                            autofocus: true,
-                                            onFieldSubmitted: (value) {
-                                            //  postCodeNode.requestFocus();
-                                              return focusNode.nextFocus();
-                                            },
-                                            style: TextStyle(
-                                              color: Color(0xff222222),
-                                              fontFamily: "Montserrat",
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            FormBuilderTextField(
+                                              textInputAction:
+                                              TextInputAction.next,
+                                              //focusNode: suburbNode,
+                                              autofocus: true,
+                                              onFieldSubmitted: (value) {
+                                              //  postCodeNode.requestFocus();
+                                                return focusNode.nextFocus();
+                                              },
+                                              style: TextStyle(
+                                                color: Color(0xff222222),
+                                                fontFamily: "Montserrat",
+                                              ),
+                                              attribute: "suburb",
+                                              decoration:
+                                              buildInputDecoration(
+                                                  context,
+                                                  "Suburb",
+                                                  "Enter Suburb"),
+                                              keyboardType:
+                                              TextInputType.text,
+                                              validators: [
+                                                FormBuilderValidators
+                                                    .maxLength(50),
+                                                FormBuilderValidators
+                                                    .required()
+                                              ],
                                             ),
-                                            attribute: "suburb",
-                                            decoration:
-                                            buildInputDecoration(
-                                                context,
-                                                "Suburb",
-                                                "Enter Suburb"),
-                                            keyboardType:
-                                            TextInputType.text,
-                                            validators: [
-                                              FormBuilderValidators
-                                                  .maxLength(50),
-                                              FormBuilderValidators
-                                                  .required()
-                                            ],
-                                          ),
-                                          FormBuilderTextField(
-                                            textInputAction:
-                                            TextInputAction.done,
-                                           // focusNode: postCodeNode,
-                                            autofocus: true,
-                                            onFieldSubmitted: (value) {
-                                              return focusNode.unfocus();
-                                            },
-                                            style: TextStyle(
-                                              color: Color(0xff222222),
-                                              fontFamily: "Montserrat",
+                                            FormBuilderTextField(
+                                              textInputAction:
+                                              TextInputAction.done,
+                                             // focusNode: postCodeNode,
+                                              autofocus: true,
+                                              onFieldSubmitted: (value) {
+                                                return focusNode.unfocus();
+                                              },
+                                              style: TextStyle(
+                                                color: Color(0xff222222),
+                                                fontFamily: "Montserrat",
+                                              ),
+                                              attribute: "post_code",
+                                              decoration:
+                                              buildInputDecoration(
+                                                  context,
+                                                  "Postcode",
+                                                  "Enter PostCode"),
+                                              keyboardType:
+                                              TextInputType.text,
+                                              validators: [
+                                                FormBuilderValidators
+                                                    .maxLength(50),
+                                                FormBuilderValidators
+                                                    .required()
+                                              ],
                                             ),
-                                            attribute: "post_code",
-                                            decoration:
-                                            buildInputDecoration(
-                                                context,
-                                                "Postcode",
-                                                "Enter PostCode"),
-                                            keyboardType:
-                                            TextInputType.text,
-                                            validators: [
-                                              FormBuilderValidators
-                                                  .maxLength(50),
-                                              FormBuilderValidators
-                                                  .required()
-                                            ],
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       )
                                     ],
                                   ),
@@ -934,8 +943,7 @@ class _EditProfileState extends State<EditProfile> {
                               )),
                         )),
                   ),
-                  height: double.infinity,
-                  width: double.infinity,
+
                 ),
               )
             ],
