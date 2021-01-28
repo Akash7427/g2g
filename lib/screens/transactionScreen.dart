@@ -300,9 +300,11 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                           }
                         }),
                   )
-                      : Container(
-                    child: Text('No Transaction Found'),
+                      : Expanded(
+                        child: Container(
+                    child: Center(child: Text('No Transaction Found')),
                   ),
+                      ),
                   SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
