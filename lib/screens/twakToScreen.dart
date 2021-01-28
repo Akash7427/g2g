@@ -124,8 +124,12 @@ class _TawkToScreenState extends State<TawkToScreen> {
           bottom: 0.0,
           right: 0.0,
           child: Container(
+            height: 400,
             padding: EdgeInsets.all(10),
             child: Tawk(
+              onLoad: (){
+
+              },
               directChatLink:
                   'https://tawk.to/chat/57f4447c8598f1538109cc15/default',
               visitor:

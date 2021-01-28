@@ -6,6 +6,7 @@ import 'package:g2g/utility/pref_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../responsive_ui.dart';
 import 'tawk_visitor.dart';
 
 /// [Tawk] Widget.
@@ -24,6 +25,7 @@ class Tawk extends StatefulWidget {
 
   /// Render your own loading widget.
   final Widget placeholder;
+  bool _isLarge;
 
   Tawk({
     @required this.directChatLink,
@@ -40,6 +42,11 @@ class Tawk extends StatefulWidget {
 class _TawkState extends State<Tawk> {
   WebViewController _controller;
   bool _isLoading = true;
+
+  double _width;
+  double _pixelRatio;
+  bool _isLarge;
+
 
   void _setUser(TawkVisitor visitor) {
     print(visitor);
@@ -78,35 +85,50 @@ class _TawkState extends State<Tawk> {
 
   @override
   Widget build(BuildContext context) {
+    _pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    _width = MediaQuery.of(context).size.width;
+    _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     return Stack(
       children: [
-        WebView(
-          initialUrl: widget.directChatLink,
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            setState(() {
-              _controller = webViewController;
-            });
-          },
-          navigationDelegate: (NavigationRequest request) {
-            if (widget.onLinkTap != null) {
-              widget.onLinkTap(request.url);
-            }
+        Align(
+          alignment: Alignment.center,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onPanDown: (_) {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Container(
+              height: MediaQuery.of(context).size.height *(_isLarge?0.4:0.6) ,
+              child: WebView(
+                initialUrl: widget.directChatLink,
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: (WebViewController webViewController) {
+                  setState(() {
+                    _controller = webViewController;
+                  });
+                },
+                navigationDelegate: (NavigationRequest request) {
+                  if (widget.onLinkTap != null) {
+                    widget.onLinkTap(request.url);
+                  }
 
-            return NavigationDecision.navigate;
-          },
-          onPageFinished: (_) {
-            if (widget.visitor != null) {
-              _setUser(widget.visitor);
-              _setClientID(widget.visitor);
-            }
-            if (widget.onLoad != null) {
-              widget.onLoad();
-            }
-            setState(() {
-              _isLoading = false;
-            });
-          },
+                  return NavigationDecision.navigate;
+                },
+                onPageFinished: (_) {
+                  if (widget.visitor != null) {
+                    _setUser(widget.visitor);
+                    _setClientID(widget.visitor);
+                  }
+                  if (widget.onLoad != null) {
+                    widget.onLoad();
+                  }
+                  setState(() {
+                    _isLoading = false;
+                  });
+                },
+              ),
+            ),
+          ),
         ),
         _isLoading
             ? widget.placeholder ??
