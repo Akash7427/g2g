@@ -3,9 +3,9 @@ class UpdatePassword {
   String PasswordResetSuccess;
 
   UpdatePassword.fromJson(Map<String, dynamic> json)
-      : ClientID = json['PasswordReset']['ClientID'],
-        PasswordResetSuccess = json['PasswordReset']['PasswordResetSuccess'],
-        Message = json['PasswordReset']['Message'];
+      : ClientID = json['ValidateClient']['ClientID'],
+        PasswordResetSuccess = json['ValidateClient']['PasswordResetSuccess'],
+        Message = json['ValidateClient']['Message'];
 
   Map<String, dynamic> toJson() => {
         'ClientID': ClientID,

@@ -112,12 +112,9 @@ class _UpdatePasswordState extends State<UpdatePassword>
               elevation: 0.0,
             ),
           ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.15,
-            left: 0.0,
-            bottom: 0.0,
-            right: 0.0,
-            child: SafeArea(
+          SafeArea(
+              child: Align(
+                alignment: Alignment.center,
                 child: GestureDetector(
                   onPanDown: (_) {
                     FocusScope.of(context).requestFocus(FocusNode());
@@ -125,200 +122,211 @@ class _UpdatePasswordState extends State<UpdatePassword>
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.only(
-                          top: 60, bottom: 10, left: 20, right: 20.0),
+                          top: 10, bottom: 10, left: 20, right: 20.0),
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
                         color: Colors.white,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Image.asset(
-                              'images/logo2.png',
-                              height: _isLarge ? 400 : 150,
+                              _isLarge?'images/fulllogo.png':'images/logobig.png',
+                              height: _isLarge ? 200 : 150,
+                              width: _isLarge?500:150,
+                              fit: BoxFit.fitWidth,
                             ),
-                            Text(
-                              'Update Password',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 28,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 40),
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              child: Form(
-                                autovalidate: _autoValidate,
-                                key: _updatePasswordFormKey,
-                                child: Card(
-                                  elevation:0,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      // buildFormField(Icons.person_outline, userID,
-                                      //     'Login Username', userIDNode, emailIDNode),
-                                      // SizedBox(height: 15),
-                                      // buildFormField(Icons.person_outline, emailID,
-                                      //     'Email Address', emailIDNode, mobileNode),
-                                      // SizedBox(height: 15),
-                                      // buildFormField(Icons.call, mobileNumber,
-                                      //     'Mobile Number', mobileNode, pwdNode,
-                                      //     obscureText: false),
-                                      Container(
-                                        child: TextFormField(
-                                          cursorColor: kPrimaryColor,
-                                          inputFormatters: false ? null : [],
-                                          validator: (value) {
-                                            if (value.isEmpty)
-                                              return 'Password Required';
-                                            return null;
-                                          },
-                                          textInputAction:
-                                          mobileNode != null ? TextInputAction.next : TextInputAction.done,
-                                          // textCapitalization: obscureText
-                                          //     ? TextCapitalization.sentences
-                                          //     : TextCapitalization.characters,
-                                          obscureText: false,
-                                          focusNode: mobileNode,
-                                          keyboardType: TextInputType.phone,
-                                          decoration: InputDecoration(
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.black54),
-                                              ),
-                                              focusedErrorBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.redAccent),
-                                              ),
-                                              errorBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.redAccent),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.black),
-                                              ),
-                                              prefixIcon:
-                                              Icon(Icons.call, color: kPrimaryColor, size: _isLarge ? 30 : 24),
-                                              hintText: 'Mobile Number',
-                                              hintStyle:
-                                              TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
-                                          style: TextStyle(
-                                            fontSize: _isLarge ? 24 : 18,
-                                            color: Colors.black,
-                                          ),
-                                          onFieldSubmitted: (value) {
-                                            if (mobileNode != null) mobileNode.requestFocus();
-                                          },
-                                          controller: mobileNumber,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      buildFormField(Icons.lock, password,
-                                          'New Password', pwdNode, null,
-                                          obscureText: true),
-                                      SizedBox(height: 10),
-                                      Container(
-                                        child: FlatButton(
-                                          padding: EdgeInsets.all(10),
-                                          child: Text(
-                                            'Update Password'.toUpperCase(),
-                                            style: TextStyle(
-                                                fontSize: _isLarge ? 26 : 20,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
-                                          color: kPrimaryColor,
-                                          // padding: EdgeInsets.only(
-                                          //     top: 15, bottom: 15, left: 15, right: 15),
-                                          onPressed: () async {
-                                            if (_updatePasswordFormKey.currentState
-                                                .validate()) {
-                                              final pr = ProgressDialog(context,
-                                                  isLogin: true);
-                                              setState(() {
-                                                pr.show();
-                                              });
+                            SizedBox(height: 20,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
 
-                                              updatePasswordController
-                                                  .updatePassword(
-                                                // userID.text,
-                                                // emailID.text,
-                                                  mobileNumber.text,
-                                                  password.text)
-                                                  .then(
-                                                    (updatePassword) async {
-                                                  if (updatePassword
-                                                      .PasswordResetSuccess ==
-                                                      'FALSE') {
-                                                    pr.hide();
-                                                    Alert(
-                                                        context: context,
-                                                        title:
-                                                        '${updatePassword.Message}',
-                                                        type: AlertType.error,
-                                                        buttons: [
-                                                          DialogButton(
-                                                            child: Text(
-                                                              "Close",
-                                                              style: TextStyle(
-                                                                  color:
-                                                                  Colors.white,
+                                Text(
+                                  'Update Password',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 28,
+                                    color: Colors.black,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 40),
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  child: Form(
+                                    autovalidate: _autoValidate,
+                                    key: _updatePasswordFormKey,
+                                    child: Card(
+                                      elevation:0,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          // buildFormField(Icons.person_outline, userID,
+                                          //     'Login Username', userIDNode, emailIDNode),
+                                          // SizedBox(height: 15),
+                                          // buildFormField(Icons.person_outline, emailID,
+                                          //     'Email Address', emailIDNode, mobileNode),
+                                          // SizedBox(height: 15),
+                                          // buildFormField(Icons.call, mobileNumber,
+                                          //     'Mobile Number', mobileNode, pwdNode,
+                                          //     obscureText: false),
+                                          Container(
+                                            child: TextFormField(
+                                              cursorColor: kPrimaryColor,
+                                              inputFormatters: false ? null : [],
+                                              validator: (value) {
+                                                if (value.isEmpty)
+                                                  return 'Password Required';
+                                                return null;
+                                              },
+                                              textInputAction:
+                                              mobileNode != null ? TextInputAction.next : TextInputAction.done,
+                                              // textCapitalization: obscureText
+                                              //     ? TextCapitalization.sentences
+                                              //     : TextCapitalization.characters,
+                                              obscureText: false,
+                                              focusNode: mobileNode,
+                                              keyboardType: TextInputType.phone,
+                                              decoration: InputDecoration(
+                                                  enabledBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.black54),
+                                                  ),
+                                                  focusedErrorBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.redAccent),
+                                                  ),
+                                                  errorBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.redAccent),
+                                                  ),
+                                                  focusedBorder: OutlineInputBorder(
+                                                    borderSide: BorderSide(color: Colors.black),
+                                                  ),
+                                                  prefixIcon:
+                                                  Icon(Icons.call, color: kPrimaryColor, size: _isLarge ? 30 : 24),
+                                                  hintText: 'Mobile Number',
+                                                  hintStyle:
+                                                  TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
+                                              style: TextStyle(
+                                                fontSize: _isLarge ? 24 : 18,
+                                                color: Colors.black,
+                                              ),
+                                              onFieldSubmitted: (value) {
+                                                if (mobileNode != null) mobileNode.requestFocus();
+                                              },
+                                              controller: mobileNumber,
+                                            ),
+                                          ),
+                                          SizedBox(height: 10),
+                                          buildFormField(Icons.lock, password,
+                                              'New Password', pwdNode, null,
+                                              obscureText: true),
+                                          SizedBox(height: 20),
+                                          Container(
+                                            child: FlatButton(
+                                              padding: EdgeInsets.all(10),
+                                              child: Text(
+                                                'Update Password'.toUpperCase(),
+                                                style: TextStyle(
+                                                    fontSize: _isLarge ? 26 : 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'Montserrat',
+
+                                                    color: Colors.white),
+                                              ),
+                                              color: kPrimaryColor,
+                                              // padding: EdgeInsets.only(
+                                              //     top: 15, bottom: 15, left: 15, right: 15),
+                                              onPressed: () async {
+                                                if (_updatePasswordFormKey.currentState
+                                                    .validate()) {
+                                                  final pr = ProgressDialog(context,
+                                                      isLogin: true);
+                                                  setState(() {
+                                                    pr.show();
+                                                  });
+
+                                                  updatePasswordController
+                                                      .updatePassword(
+                                                    // userID.text,
+                                                    // emailID.text,
+                                                      mobileNumber.text,
+                                                      password.text)
+                                                      .then(
+                                                        (updatePassword) async {
+                                                      if (updatePassword
+                                                          .PasswordResetSuccess ==
+                                                          'FALSE') {
+                                                        pr.hide();
+                                                        Alert(
+                                                            context: context,
+                                                            title:
+                                                            '${updatePassword.Message}',
+                                                            type: AlertType.error,
+                                                            buttons: [
+                                                              DialogButton(
+                                                                child: Text(
+                                                                  "Close",
+                                                                  style: TextStyle(
+                                                                      color:
+                                                                      Colors.white,
+                                                                      fontSize: _isLarge
+                                                                          ? 24
+                                                                          : 18),
+                                                                ),
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context),
+                                                                color: kPrimaryColor,
+                                                                radius: BorderRadius
+                                                                    .circular(0.0),
+                                                              ),
+                                                            ],
+                                                            style: AlertStyle(
+                                                              animationType:
+                                                              AnimationType.fromTop,
+                                                              isCloseButton: false,
+                                                              isOverlayTapDismiss:
+                                                              false,
+                                                              titleStyle: TextStyle(
+                                                                  fontWeight:
+                                                                  FontWeight.bold,
                                                                   fontSize: _isLarge
                                                                       ? 24
                                                                       : 18),
-                                                            ),
-                                                            onPressed: () =>
-                                                                Navigator.pop(
-                                                                    context),
-                                                            color: kPrimaryColor,
-                                                            radius: BorderRadius
-                                                                .circular(0.0),
-                                                          ),
-                                                        ],
-                                                        style: AlertStyle(
-                                                          animationType:
-                                                          AnimationType.fromTop,
-                                                          isCloseButton: false,
-                                                          isOverlayTapDismiss:
-                                                          false,
-                                                          titleStyle: TextStyle(
-                                                              fontWeight:
-                                                              FontWeight.bold,
-                                                              fontSize: _isLarge
-                                                                  ? 24
-                                                                  : 18),
-                                                        )).show();
-                                                  } else {
-                                                    pr.hide();
-                                                    // Navigator.pushAndRemoveUntil(
-                                                    //     context,
-                                                    //     MaterialPageRoute(
-                                                    //         builder: (context) =>
-                                                    //             SplashScreen()),
-                                                    //     (route) => false);
-                                                  }
-                                                },
-                                              );
-                                            } else {
-                                              setState(() {
-                                                _autoValidate = true;
-                                              });
-                                            }
-                                          },
-                                        ),
+                                                            )).show();
+                                                      } else {
+                                                        pr.hide();
+                                                        // Navigator.pushAndRemoveUntil(
+                                                        //     context,
+                                                        //     MaterialPageRoute(
+                                                        //         builder: (context) =>
+                                                        //             SplashScreen()),
+                                                        //     (route) => false);
+                                                      }
+                                                    },
+                                                  );
+                                                } else {
+                                                  setState(() {
+                                                    _autoValidate = true;
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
+                                SizedBox(height: 20),
+                              ],
                             ),
-                            SizedBox(height: 20),
                           ],
                         ),
                       ),
                     ),
                   ),
-                )),
-          ),
+                ),
+              )),
         ],
       ),
     );

@@ -41,46 +41,45 @@ class _HomeScreenState extends State<HomeScreen>
   int bottomNavIndex = 0;
   Client client;
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
   var accProvider;
 
-  void _onRefresh() async{
+  void _onRefresh() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
     accounts = accProvider.getAccountsList();
-    if(mounted)
-      setState(() {
-
-      });
+    if (mounted) setState(() {});
     _refreshController.loadComplete();
   }
 
-
   @override
   void afterFirstLayout(BuildContext context) {
-  int  flag =  ModalRoute.of(context).settings.arguments;
-  print('navFlag'+ flag.toString());
-  if(flag==1)
-        _showDialog();
-
-
+    int flag = ModalRoute.of(context).settings.arguments;
+    print('navFlag' + flag.toString());
+    if (flag == 1) _showDialog();
   }
 
   bool isOverdue() {
     try {
       for (Account account in accounts) {
-        if ((account.balanceOverdue??0.0) > 0.0 && account.status == "Open")
+        print("Balance OverDue"+account.balanceOverdue.toString());
+        if ((account.balanceOverdue) > 0.0 && account.status == "Open") {
           return true;
+        }
+        else{
+          return false;
+        }
       }
-    }catch(error){
+
+    } catch (error) {
       print(error.toString());
     }
     return false;
@@ -88,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   bool isElligible() {
     for (Account account in accounts)
-      if (((account.balanceOverdue??0.0) > 0.0 || account.balance > 0) &&
+      if (((account.balanceOverdue ?? 0.0) > 0.0 || account.balance > 0) &&
           account.status == "Open") return false;
     return true;
   }
@@ -104,7 +103,8 @@ class _HomeScreenState extends State<HomeScreen>
 
     try {
       String url =
-          'https://www.goodtogoloans.com.au/payments/?fname=${fname[1].toString().trim()}&lname=${fname[0]}&email=${prefs.getString(PrefHelper.PREF_EMAIL_ID)}&account_id=${account.accountID}&client_id=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&amount=${account.balance}';
+          'https://www.goodtogoloans.com.au/payments/?fname=${fname[1].toString().trim()}&lname=${fname[0]}&email=${prefs.getString(PrefHelper.PREF_EMAIL_ID)}&account_id=${account.accountID}&client_id=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&amount=${account.balance}'
+              .replaceAll(' ', '%20');
       print(url);
       await launch(url);
     } on Exception catch (e) {
@@ -172,27 +172,16 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    _pixelRatio = MediaQuery
-        .of(context)
-        .devicePixelRatio;
-    _width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    _height = MediaQuery.of(context).size.height;
+    _pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
 
     accProvider = Provider.of<AccountsController>(context, listen: false);
     var clientProvider = Provider.of<ClientController>(context, listen: false);
 
-
     client = clientProvider.getClient();
     accounts = accProvider.getAccountsList();
-
-
 
     return Scaffold(
       key: _homeScreenScaffold,
@@ -200,43 +189,43 @@ class _HomeScreenState extends State<HomeScreen>
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 0, // this will be set when a new tab is tapped
-        onTap: (value) =>
-            setState(() {
-              switch (value) {
-                case 0:
-                  break; // Create this function, it should return your first page as a widget
-                case 1:
-                // Navigator.pushAndRemoveUntil(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => ApplyNowScreen()),
-                //         (r) => r.isFirst);
-                  launch('https://www.goodtogoloans.com.au/');
-                  break; // Create this function, it should return your second page as a widget
-                case 2:
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => TawkToScreen()),
-                          (r) => r.isFirst);
-                  break; // Create this function, it should return your third page as a widget
-              // Create this function, it should return your fourth page as a widget
-              }
-            }),
+        onTap: (value) => setState(() {
+          switch (value) {
+            case 0:
+              break; // Create this function, it should return your first page as a widget
+            case 1:
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ApplyNowScreen()),
+              //         (r) => r.isFirst);
+              launch('https://www.goodtogoloans.com.au/');
+              break; // Create this function, it should return your second page as a widget
+            case 2:
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => TawkToScreen()),
+                  (r) => r.isFirst);
+              break; // Create this function, it should return your third page as a widget
+            // Create this function, it should return your fourth page as a widget
+          }
+        }),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/loan.png'),
-                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+                  size: _isLarge ? 35 : 24, color: kSecondaryColor),
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
               child: Text(
                 'My Loans',
                 style: TextStyle(
-                  fontSize: _isLarge ? 22 : 18,
-                  color: kSecondaryColor,
-                ),
+                    fontSize: _isLarge ? 22 : 18,
+                    fontFamily: 'Montserrat',
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -244,14 +233,16 @@ class _HomeScreenState extends State<HomeScreen>
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/apply_now.png'),
-                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+                  size: _isLarge ? 35 : 24, color: kSecondaryColor),
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
               child: Text(
                 'Apply Now',
                 style: TextStyle(
+                  fontFamily: 'Montserrat',
                   fontSize: _isLarge ? 22 : 18,
+                  fontWeight: FontWeight.bold,
                   color: kSecondaryColor,
                 ),
               ),
@@ -261,16 +252,17 @@ class _HomeScreenState extends State<HomeScreen>
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/connect.png'),
-                  size: _isLarge ? 28 : 24, color: kSecondaryColor),
+                  size: _isLarge ? 40 : 25, color: kSecondaryColor),
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
               child: Text(
                 'Connect',
                 style: TextStyle(
-                  fontSize: _isLarge ? 22 : 18,
-                  color: kSecondaryColor,
-                ),
+                    fontFamily: 'Montserrat',
+                    fontSize: _isLarge ? 22 : 18,
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -281,26 +273,22 @@ class _HomeScreenState extends State<HomeScreen>
         enablePullUp: false,
         header: WaterDropHeader(),
         footer: CustomFooter(
-          builder: (BuildContext context,LoadStatus mode){
-            Widget body ;
-            if(mode==LoadStatus.idle){
-              body =  Text("pull up load");
-            }
-            else if(mode==LoadStatus.loading){
-              body =  CupertinoActivityIndicator();
-            }
-            else if(mode == LoadStatus.failed){
+          builder: (BuildContext context, LoadStatus mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = Text("pull up load");
+            } else if (mode == LoadStatus.loading) {
+              body = CupertinoActivityIndicator();
+            } else if (mode == LoadStatus.failed) {
               body = Text("Load Failed!Click retry!");
-            }
-            else if(mode == LoadStatus.canLoading){
+            } else if (mode == LoadStatus.canLoading) {
               body = Text("release to load more");
-            }
-            else{
+            } else {
               body = Text("No more Data");
             }
             return Container(
               height: 55.0,
-              child: Center(child:body),
+              child: Center(child: body),
             );
           },
         ),
@@ -316,7 +304,9 @@ class _HomeScreenState extends State<HomeScreen>
                       fit: BoxFit.cover)),
             ),
             Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 10, right: 10),
+                padding: _isLarge
+                    ? const EdgeInsets.all(20)
+                    : const EdgeInsets.only(top: 10.0, left: 10, right: 10),
                 child: AppBar(
                   leading: CircleAvatar(
                     radius: 25,
@@ -428,7 +418,7 @@ class _HomeScreenState extends State<HomeScreen>
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex:
-        bottomNavIndex, // this will be set when a new tab is tapped
+            bottomNavIndex, // this will be set when a new tab is tapped
         onTap: (value) => setState(() => bottomNavIndex = value),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -486,12 +476,12 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       body: new Stack(
         children: <Widget>[
-          new Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: const AssetImage('images/bg.jpg'),
-                    fit: BoxFit.cover)),
-          ),
+          // new Container(
+          //   decoration: BoxDecoration(
+          //       image: DecorationImage(
+          //           image: const AssetImage('images/bg.jpg'),
+          //           fit: BoxFit.cover)),
+          // ),
           Padding(
             padding: const EdgeInsets.only(
               top: 10.0,
@@ -542,7 +532,7 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           new Positioned(
-              top: 110.0,
+            top: 110.0,
             left: 0.0,
             bottom: 0.0,
             right: 0.0,
@@ -566,6 +556,7 @@ class _HomeScreenState extends State<HomeScreen>
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     return SingleChildScrollView(
+      padding: _isLarge ? EdgeInsets.all(20) : EdgeInsets.all(0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -603,7 +594,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     fontSize: _isLarge ? 25 : 18,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Montserrat',
-                                    color: Colors.black),
+                                    color: Colors.green),
                                 textAlign: TextAlign.start,
                               ),
                               SizedBox(height: 10),
@@ -611,8 +602,8 @@ class _HomeScreenState extends State<HomeScreen>
                                 account.accountTypeDescription,
                                 softWrap: true,
                                 style: TextStyle(
-                                    fontSize: _isLarge ? 50 : 24,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: _isLarge ? 48 : 24,
+                                    fontWeight: FontWeight.w700,
                                     fontFamily: 'Montserrat',
                                     color: Colors.black),
                               ),
@@ -839,43 +830,67 @@ class _HomeScreenState extends State<HomeScreen>
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
+                                        Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              '\$${account.balanceOverdue}',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: kPrimaryColor),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            Text(
                                               'Overdue',
                                               style: TextStyle(
                                                   fontSize: 20,
-                                                  color: Colors.black45
-                                                  ),
+                                                  color: Colors.black87),
                                               textAlign: TextAlign.start,
                                             ),
                                           ],
                                         ),
-                                        IconButton(
-                                            icon: Icon(Icons.warning, size: 30),
-                                            onPressed: () {})
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '\$${account.balanceOverdue == null ? 0.00 : account.balanceOverdue}',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: kSecondaryColor),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            IconButton(
+                                                icon: Icon(Icons.info_outline,
+                                                    color: account
+                                                                .balanceOverdue !=
+                                                            null
+                                                        ? (account.balanceOverdue >
+                                                                0
+                                                            ? Colors.red
+                                                            : kPrimaryColor)
+                                                        : kSecondaryColor,
+                                                    size: 30),
+                                                onPressed: () {}),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      height: 10,
+                                    Divider(
+                                      color: Colors.grey[400],
                                     ),
+
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
+                                        Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Balance',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.black87),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
                                           children: [
                                             Text(
                                               '\$${account.balance}',
@@ -885,37 +900,80 @@ class _HomeScreenState extends State<HomeScreen>
                                                   color: Colors.black),
                                               textAlign: TextAlign.start,
                                             ),
-                                            Text(
-                                              'Balance',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.black45),
-                                              textAlign: TextAlign.start,
-                                            ),
+                                            IconButton(
+                                                icon: Icon(
+                                                    Icons
+                                                        .account_balance_wallet,
+                                                    size: 30),
+                                                onPressed: () {}),
                                           ],
-                                        ),
-                                        IconButton(
-                                            icon: Icon(
-                                                Icons.account_balance_wallet,
-                                                size: 30),
-                                            onPressed: () {})
+                                        )
                                       ],
                                     ),
+
+                                    Divider(
+                                      color: Colors.grey[400],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Row(
+                                        children: [
+                                          Text('How to make a payment? ',
+                                              style: TextStyle(
+                                                  fontSize: _isLarge ? 22 : 16,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontFamily: 'Montserrat',
+                                                  color: kSecondaryColor)),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            size: _isLarge ? 30 : 16,
+                                            color: kSecondaryColor,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+
+                                    // FlatButton(
+                                    //   onPressed: () {},
+                                    //   color: kSecondaryColor,
+                                    //   child: Padding(
+                                    //     padding: EdgeInsets.all(8.0),
+                                    //     child: Text('How to make a payment?',
+                                    //         style: TextStyle(
+                                    //             fontSize: _isLarge ? 25 : 20,
+                                    //             fontWeight: FontWeight.w600,
+                                    //             color: Colors.white)),
+                                    //   ),
+                                    // ),
                                     SizedBox(
                                       height: 10,
                                     ),
                                     FlatButton(
-                                      onPressed: () {},
-                                      color: kSecondaryColor,
-                                      child: Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text('How to make a payment?',
-                                            style: TextStyle(
-                                                fontSize: _isLarge ? 25 : 20,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white)),
+                                      color: kPrimaryColor,
+                                      onPressed: () {
+                                        payURL(account);
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(15),
+                                        child: Text(
+                                          'Pay ' +
+                                              '\$' +
+                                              '${account.balance.toString()}',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: _isLarge ? 24 : 20,
+                                            fontFamily: 'Montserrat',
+                                          ),
+                                        ),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ))
                           ],
@@ -1012,81 +1070,231 @@ class _HomeScreenState extends State<HomeScreen>
                       data: ThemeData(
                           dividerColor: Colors.transparent,
                           accentColor: Colors.black),
-                      child: ExpansionTile(
-                        leading: ImageIcon(AssetImage('images/loan.png'),
-                            size: _isLarge ? 32 : 24, color: kSecondaryColor),
-                        initiallyExpanded: true,
-                        title: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'Loan Details',
-                            style: TextStyle(
-                              fontSize: _isLarge ? 28 : 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(_isLarge ? 20 : 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Column(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    buildLoanDetail(
-                                        'Account Number', account.accountID),
-                                    SizedBox(height: _isLarge ? 30 : 15),
-                                    buildLoanDetail(
-                                        'Maturity Date',
-                                        account.openedDate.day.toString() +
-                                            "/" +
-                                            account.openedDate.month
-                                                .toString() +
-                                            "/" +
-                                            account.openedDate.year.toString()),
-                                  ],
+                      child: _isLarge
+                          ? ExpansionTile(
+                              leading: ImageIcon(AssetImage('images/loan.png'),
+                                  size: _isLarge ? 30 : 24,
+                                  color: kSecondaryColor),
+                              initiallyExpanded: true,
+                              title: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text(
+                                  'Loan Details',
+                                  style: TextStyle(
+                                    fontSize: _isLarge ? 22 : 18,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.black,
+                                  ),
                                 ),
-                                Column(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    buildLoanDetail(
-                                        'Open Date',
-                                        account.maturityDate.day.toString() +
-                                            "/" +
-                                            account.maturityDate.month
-                                                .toString() +
-                                            "/" +
-                                            account.maturityDate.year
-                                                .toString()),
-                                    //SizedBox(height: _isLarge ? 30 : 15),
-                                    // buildLoanDetail('Payments Remaining', '20'),
-                                  ],
+                              ),
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(_isLarge ? 20 : 10.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Account Number',
+                                            style: TextStyle(
+                                                fontSize: _isLarge ? 22 : 15,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'Montserrat',
+                                                color: Colors.black54),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                          Text(
+                                            'Maturity Date',
+                                            style: TextStyle(
+                                                fontSize: _isLarge ? 22 : 15,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'Montserrat',
+                                                color: Colors.black54),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                          Text(
+                                            'Open Date',
+                                            style: TextStyle(
+                                                fontSize: _isLarge ? 22 : 15,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'Montserrat',
+                                                color: Colors.black54),
+                                            textAlign: TextAlign.start,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Divider(
+                                        color: Colors.black,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              account.accountID.toString(),
+                                              style: TextStyle(
+                                                  fontSize: _isLarge ? 22 : 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: 'Montserrat',
+                                                  color: kSecondaryColor),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 80.0),
+                                              child: Text(
+                                                account.openedDate.day
+                                                        .toString() +
+                                                    "/" +
+                                                    account.openedDate.month
+                                                        .toString() +
+                                                    "/" +
+                                                    account.openedDate.year
+                                                        .toString(),
+                                                style: TextStyle(
+                                                    fontSize:
+                                                        _isLarge ? 22 : 15,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontFamily: 'Montserrat',
+                                                    color: kSecondaryColor),
+                                                textAlign: TextAlign.start,
+                                              ),
+                                            ),
+                                            Text(
+                                              account.maturityDate.day
+                                                      .toString() +
+                                                  "/" +
+                                                  account.maturityDate.month
+                                                      .toString() +
+                                                  "/" +
+                                                  account.maturityDate.year
+                                                      .toString(),
+                                              style: TextStyle(
+                                                  fontSize: _isLarge ? 22 : 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: 'Montserrat',
+                                                  color: kSecondaryColor),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                    ],
+                                  ),
                                 )
-
+                              ],
+                            )
+                          : ExpansionTile(
+                              leading: ImageIcon(AssetImage('images/loan.png'),
+                                  size: _isLarge ? 30 : 24,
+                                  color: kSecondaryColor),
+                              initiallyExpanded: true,
+                              title: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text(
+                                  'Loan Details',
+                                  style: TextStyle(
+                                    fontSize: _isLarge ? 22 : 18,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'Montserrat',
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(_isLarge ? 20 : 10.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Column(
+                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          buildLoanDetail('Account Number',
+                                              account.accountID),
+                                          SizedBox(height: _isLarge ? 30 : 15),
+                                          buildLoanDetail(
+                                              'Maturity Date',
+                                              account.openedDate.day
+                                                      .toString() +
+                                                  "/" +
+                                                  account.openedDate.month
+                                                      .toString() +
+                                                  "/" +
+                                                  account.openedDate.year
+                                                      .toString()),
+                                        ],
+                                      ),
+                                      Column(
+                                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          buildLoanDetail(
+                                              'Open Date',
+                                              account.maturityDate.day
+                                                      .toString() +
+                                                  "/" +
+                                                  account.maturityDate.month
+                                                      .toString() +
+                                                  "/" +
+                                                  account.maturityDate.year
+                                                      .toString()),
+                                          //SizedBox(height: _isLarge ? 30 : 15),
+                                          // buildLoanDetail('Payments Remaining', '20'),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
-                          )
-                        ],
-                      ),
                     ),
                   ),
                 ),
               ),
-              Divider(color: Colors.grey,height: 1,indent: 16,endIndent: 16,),
+              Divider(
+                color: Colors.grey,
+                height: 1,
+                indent: 16,
+                endIndent: 16,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Container(
-                  color:Colors.white,
+                  color: Colors.white,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: _isLarge ? 15.0 : 20,
+                      vertical: 5,
                     ),
                     child: ListTile(
                         onTap: () {
@@ -1101,17 +1309,23 @@ class _HomeScreenState extends State<HomeScreen>
                           size: _isLarge ? 32 : 24,
                         ),
                         leading: ImageIcon(AssetImage('images/documents.png'),
-                            size: _isLarge ? 32 : 24, color: kSecondaryColor),
+                            size: _isLarge ? 30 : 24, color: kSecondaryColor),
                         title: Text('Loan Documents',
                             style: TextStyle(
-                              fontSize: _isLarge ? 28 : 18,
+                              fontSize: _isLarge ? 22 : 18,
                               fontWeight: FontWeight.w700,
                               color: Colors.black,
+                              fontFamily: 'Montserrat',
                             ))),
                   ),
                 ),
               ),
-              Divider(color: Colors.grey,height: 1,indent: 16,endIndent: 16,),
+              Divider(
+                color: Colors.grey,
+                height: 1,
+                indent: 16,
+                endIndent: 16,
+              ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Container(
@@ -1119,6 +1333,7 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: _isLarge ? 15.0 : 20,
+                      vertical: 5,
                     ),
                     child: ListTile(
                       onTap: () async {
@@ -1127,17 +1342,17 @@ class _HomeScreenState extends State<HomeScreen>
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    TransactionsScreen(
-                                        account)));
+                                    TransactionsScreen(account)));
                       },
                       leading: ImageIcon(
                         AssetImage('images/transaction.png'),
-                        size: _isLarge ? 32 : 24,
+                        size: _isLarge ? 30 : 24,
                         color: kSecondaryColor,
                       ),
                       title: Text('Transactions',
                           style: TextStyle(
-                            fontSize: _isLarge ? 28 : 18,
+                            fontFamily: 'Montserrat',
+                            fontSize: _isLarge ? 22 : 18,
                             fontWeight: FontWeight.w700,
                             color: Colors.black,
                           )),
@@ -1164,16 +1379,18 @@ class _HomeScreenState extends State<HomeScreen>
           data,
           style: TextStyle(
               fontSize: _isLarge ? 22 : 15,
+              fontFamily: 'Montserrat',
               fontWeight: FontWeight.w600,
-              color: kSecondaryColor),
+              color: Colors.black54),
           textAlign: TextAlign.start,
         ),
         Text(
           title,
           style: TextStyle(
               fontSize: _isLarge ? 22 : 15,
-              // fontWeight: FontWeight.w600,
-              color: Colors.black54),
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Montserrat',
+              color: kSecondaryColor),
           textAlign: TextAlign.start,
         ),
       ],

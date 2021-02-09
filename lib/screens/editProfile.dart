@@ -35,7 +35,7 @@ class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     // monitor network fetch
@@ -190,7 +190,7 @@ class _EditProfileState extends State<EditProfile> {
         onRefresh: _onRefresh,
         onLoading: _onLoading,
         child: GestureDetector(
-          onTap: (){
+          onTap: () {
             FocusScope.of(context).unfocus();
           },
           child: Stack(
@@ -253,34 +253,44 @@ class _EditProfileState extends State<EditProfile> {
                 left: 0.0,
                 bottom: 0.0,
                 right: 0.0,
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4)),
-                        elevation: 10,
-                        shadowColor: kPrimaryColor,
-                        child: Padding(
-                            padding: EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: _isLarge ? EdgeInsets.all(20) : EdgeInsets.all(10),
+                    color: Colors.white,
+                    height: _isLarge ? _height * 0.65 : _height * 0.8,
+                    margin: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4)),
+                          elevation: 0,
+                          shadowColor: kPrimaryColor,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
                             child: GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               onPanDown: (_) {
-                                FocusScope.of(context).requestFocus(FocusNode());
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
                               },
                               child: FormBuilder(
                                   key: _fbKey,
                                   initialValue: {
-                                    'first_name': splitName(widget.data.name, '1'),
-                                    'last_name': splitName(widget.data.name, '2'),
+                                    'first_name':
+                                        splitName(widget.data.name, '1'),
+                                    'last_name':
+                                        splitName(widget.data.name, '2'),
                                     'email': widget.data.contactMethodEmail,
-                                    'mobile_no': widget.data.contactMethodMobile,
+                                    'mobile_no':
+                                        widget.data.contactMethodMobile,
                                     'home_phone_no':
-                                    widget.data.contactMethodPhoneHome,
+                                        widget.data.contactMethodPhoneHome,
                                     'work_phone_no':
-                                    widget.data.contactMethodPhoneWork,
-                                    'street_address': widget.data.streetAddressFull,
+                                        widget.data.contactMethodPhoneWork,
+                                    'street_address':
+                                        widget.data.streetAddressFull,
                                     'suburb': widget.data.suburb,
                                     'post_code': widget.data.postCode,
                                   },
@@ -909,7 +919,7 @@ class _EditProfileState extends State<EditProfile> {
                                               return focusNode.nextFocus();
                                             },
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             keyboardType: TextInputType.text,
                                             validators: [
                                               FormBuilderValidators.min(3),
@@ -938,7 +948,7 @@ class _EditProfileState extends State<EditProfile> {
                                             ),
                                             attribute: "last_name",
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             decoration: buildInputDecoration(
                                                 context,
                                                 "Last Name",
@@ -959,7 +969,7 @@ class _EditProfileState extends State<EditProfile> {
                                           ),
                                           FormBuilderTextField(
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             //focusNode: emailNode,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
@@ -976,7 +986,7 @@ class _EditProfileState extends State<EditProfile> {
                                                 "Email Address",
                                                 "Enter Email Address"),
                                             keyboardType:
-                                            TextInputType.emailAddress,
+                                                TextInputType.emailAddress,
                                             validators: [
                                               FormBuilderValidators.email(),
                                               FormBuilderValidators.required()
@@ -986,7 +996,7 @@ class _EditProfileState extends State<EditProfile> {
                                           FormBuilderTextField(
                                             // focusNode: mobileNoNode,
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
                                               //homePhoneNoNode.requestFocus();
@@ -1019,7 +1029,7 @@ class _EditProfileState extends State<EditProfile> {
                                           FormBuilderTextField(
                                             //  focusNode: homePhoneNoNode,
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
                                               // workPhoneNoNode.requestFocus();
@@ -1048,7 +1058,7 @@ class _EditProfileState extends State<EditProfile> {
                                           FormBuilderTextField(
                                             // focusNode: workPhoneNoNode,
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
                                               // streetAddressNode.requestFocus();
@@ -1080,7 +1090,7 @@ class _EditProfileState extends State<EditProfile> {
                                           ),
                                           FormBuilderTextField(
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             // focusNode: streetAddressNode,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
@@ -1106,7 +1116,7 @@ class _EditProfileState extends State<EditProfile> {
                                           SizedBox(height: 20),
                                           FormBuilderTextField(
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             //focusNode: suburbNode,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
@@ -1132,7 +1142,7 @@ class _EditProfileState extends State<EditProfile> {
                                           SizedBox(height: 20),
                                           FormBuilderTextField(
                                             textInputAction:
-                                            TextInputAction.done,
+                                                TextInputAction.done,
                                             //focusNode: postCodeNode,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
@@ -1157,66 +1167,155 @@ class _EditProfileState extends State<EditProfile> {
                                           SizedBox(height: 20),
                                         ],
                                       ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                      _isLarge?Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: FlatButton(
+                                                color: Colors.grey,
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                  const EdgeInsets.all(12.0),
+                                                  child: Text('Back'.toUpperCase(),
+                                                      style: TextStyle(
+                                                          fontFamily: 'Montserrat',
+
+                                                          fontSize:
+                                                          _isLarge ? 22 : 18,
+                                                          // fontWeight:
+                                                          // FontWeight.bold,
+                                                          color: Colors.white)),
+                                                )),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Expanded(
+                                            child: FlatButton(
+                                                color: kSecondaryColor,
+                                                onPressed: () {
+                                                  var pr =
+                                                  ProgressDialog(context);
+                                                  if (_fbKey.currentState
+                                                      .saveAndValidate()) {
+                                                    print(_fbKey
+                                                        .currentState.value);
+
+                                                    pr.show();
+                                                    Provider.of<ClientController>(
+                                                        context,
+                                                        listen: false)
+                                                        .postClientBasic(_fbKey
+                                                        .currentState.value)
+                                                        .then((value) {
+                                                      pr.hide();
+
+                                                      _editProfileKey.currentState
+                                                          .showSnackBar(SnackBar(
+                                                        content: Text(
+                                                            value['message']),
+                                                      ));
+                                                    });
+                                                  } else {
+                                                    print(_fbKey
+                                                        .currentState.value);
+                                                    print('validation failed');
+                                                    pr.hide();
+                                                  }
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(12.0),
+                                                  child: AutoSizeText(
+                                                      'Send Request'.toUpperCase(),
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                          _isLarge ? 22 : 18,
+                                                          fontFamily: 'Montserrat',
+
+                                                          // fontWeight:
+                                                          // FontWeight.bold,
+                                                          color: Colors.white)),
+                                                )),
+                                          ),
+                                        ],
+                                      ):Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
                                         children: [
                                           FlatButton(
-                                              color: Colors.grey[700],
+                                              color: Colors.grey,
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
                                               child: Padding(
-                                                padding: const EdgeInsets.all(12.0),
-                                                child: Text('Back',
+                                                padding:
+                                                const EdgeInsets.all(12.0),
+                                                child: Text('Back'.toUpperCase(),
                                                     style: TextStyle(
-                                                        fontSize: _isLarge ? 25 : 18,
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Colors.white)),
+                                                        fontSize:
+                                                        _isLarge ? 22 : 18,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        fontFamily: 'Montserrat',
+
+                                                        color: Colors.black)),
                                               )),
                                           SizedBox(width: 5),
                                           FlatButton(
                                               color: kSecondaryColor,
                                               onPressed: () {
-                                                var pr = ProgressDialog(context);
+                                                var pr =
+                                                ProgressDialog(context);
                                                 if (_fbKey.currentState
                                                     .saveAndValidate()) {
-                                                  print(_fbKey.currentState.value);
+                                                  print(_fbKey
+                                                      .currentState.value);
 
                                                   pr.show();
                                                   Provider.of<ClientController>(
                                                       context,
                                                       listen: false)
-                                                      .postClientBasic(
-                                                      _fbKey.currentState.value)
+                                                      .postClientBasic(_fbKey
+                                                      .currentState.value)
                                                       .then((value) {
                                                     pr.hide();
 
                                                     _editProfileKey.currentState
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(value['message']),
+                                                      content: Text(
+                                                          value['message']),
                                                     ));
                                                   });
                                                 } else {
-                                                  print(_fbKey.currentState.value);
+                                                  print(_fbKey
+                                                      .currentState.value);
                                                   print('validation failed');
                                                   pr.hide();
                                                 }
                                               },
                                               child: Padding(
                                                 padding: EdgeInsets.all(12.0),
-                                                child: AutoSizeText('Send Request',
+                                                child: AutoSizeText(
+                                                    'Send Request'.toUpperCase(),
                                                     style: TextStyle(
-                                                        fontSize: _isLarge ? 25 : 18,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontSize:
+                                                        _isLarge ? 22 : 18,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        fontFamily: 'Montserrat',
+
                                                         color: Colors.white)),
                                               )),
                                         ],
-                                      )
+                                      ),
                                     ],
                                   )),
-                            )),
-                      ),
-
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -1240,7 +1339,6 @@ class _EditProfileState extends State<EditProfile> {
         break;
     }
   }
-  removeFocus(){
 
-  }
+  removeFocus() {}
 }

@@ -16,11 +16,12 @@ InputDecoration buildInputDecoration(
           borderSide: BorderSide(color: Colors.black),
           borderRadius: BorderRadius.circular(4)),
       labelText: label,
-      labelStyle: TextStyle(color: Colors.blueGrey),
+      labelStyle: TextStyle(color: Color(0xFF17477A),fontWeight: FontWeight.bold),
       contentPadding: EdgeInsets.all(8),
       hintText: hint,
       hintStyle: TextStyle(
         color: Theme.of(context).focusColor.withOpacity(0.7),
+        fontWeight: FontWeight.bold
       ),
       errorMaxLines: 3);
 }

@@ -16,6 +16,7 @@ class ClientController with ChangeNotifier {
   Client client;
   String clientName = '';
   ClientBasicModel clientBasicModel;
+  var forcePassword;
 
   Future<String> authenticateUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -73,6 +74,8 @@ class ClientController with ChangeNotifier {
     myTransformer.parse(response.body);
     var json = myTransformer.toParker();
     print(json);
+     forcePassword=jsonDecode(json)['ClientAuthentication']['ForcePasswordChange'];
+    print('Force'+forcePassword.toString() +forcePassword.runtimeType.toString());
     var innerJson = jsonDecode(json)['ClientAuthentication']['SessionDetails'];
     print(innerJson);
     // print(response.body);
@@ -95,6 +98,13 @@ class ClientController with ChangeNotifier {
       //prefs.setString(PrefHelper.PREF_PASSWORD, ePass);
       prefs.setString(PrefHelper.PREF_FULLNAME, innerJson['FullName']);
       await storage.write(key: PrefHelper.PREF_PASSWORD, value: ePass);
+     if(forcePassword=='true'){
+       prefs.setString(PrefHelper.PREF_FORCE_PASSWORD, forcePassword.toString());
+
+       print('$forcePassword true');
+       prefs.getString(PrefHelper.PREF_FORCE_PASSWORD);
+       print('key '+       prefs.getString(PrefHelper.PREF_FORCE_PASSWORD).toString());
+     }
       // prefs.setString('user', response.body);
       client = Client.fromJson(innerJson);
 

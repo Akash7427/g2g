@@ -44,7 +44,7 @@ class _Good2GoAppState extends State<Good2GoApp> {
 
 
           // Define the default font family.
-          fontFamily: 'Montserrat-Light',
+          fontFamily: 'Montserrat',
 
           // Define the default TextTheme. Use this to specify the default
           // text styling for headlines, titles, bodies of text, and more.

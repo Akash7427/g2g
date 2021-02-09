@@ -77,6 +77,8 @@ class _SplashScreenState extends State<SplashScreen> {
           SharedPreferences prefs=await SharedPreferences.getInstance();
           final secureStorage= new FlutterSecureStorage();
           print(prefs.getBool('isLoggedIn'));
+          print('USer ID'+prefs.getString(PrefHelper.PREF_USER_ID).toString());
+
           if(prefs.getBool('isLoggedIn')??false)
           {
             await Provider.of<ClientController>(context,listen: false).authenticateUser();

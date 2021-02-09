@@ -10,4 +10,6 @@ class PrefHelper {
   static final String PREF_ACCOUNT_ID = 'pref_account_id';
   static final String PREF_EMAIL_ID = 'pref_email_id';
   static final String PREF_ACCOUNT_BALANCE = 'pref_account_balance';
+  static final String PREF_FORCE_PASSWORD = 'pref_force_password';
+
 }
