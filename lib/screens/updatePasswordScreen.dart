@@ -6,7 +6,9 @@ import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/updatePasswordController.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/utility/hashSha256.dart';
+import 'package:g2g/utility/pref_helper.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdatePassword extends StatefulWidget {
@@ -35,11 +37,22 @@ class _UpdatePasswordState extends State<UpdatePassword>
   double _width;
   double _pixelRatio;
   bool _isLarge;
+  bool isAllowed=true;
+
+
+  getNav()async{
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+     setState(() {
+       print('fp'+prefs.getString(PrefHelper.PREF_FORCE_PASSWORD).toString());
+       isAllowed=prefs.getString(PrefHelper.PREF_FORCE_PASSWORD)==null?true:false;
+       print('Is Allowed to navigate :'+isAllowed.toString());
+     });
+  }
 
   @override
   void initState() {
     super.initState();
-
+getNav();
     tripleDES();
     // animationController =
     //     AnimationController(vsync: this, duration: Duration(seconds: 1));
@@ -75,7 +88,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
               leading: CircleAvatar(
                 radius: 25,
                 backgroundColor: Color(0xffccebf2),
-                child: IconButton(
+                child: isAllowed?IconButton(
                   onPressed: () {
                     print('abc');
                     _updatePasswordScaffoldKey.currentState.openDrawer();
@@ -85,7 +98,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                     color: kSecondaryColor,
                     size: _isLarge ? 35 : 30,
                   ),
-                ),
+                ):Container(),
               ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

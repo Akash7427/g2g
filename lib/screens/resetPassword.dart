@@ -99,7 +99,7 @@ class _ResetPasswordState extends State<ResetPassword>
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Image.asset(
-                        'images/logo2.png',
+                        'images/logobig.png',
                         height: _isLarge ? 400 : 150,
                       ),
                       Text(

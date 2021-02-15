@@ -79,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
           print(prefs.getBool('isLoggedIn'));
           print('USer ID'+prefs.getString(PrefHelper.PREF_USER_ID).toString());
 
-          if(prefs.getBool('isLoggedIn')??false)
+          if((prefs.getBool('isLoggedIn')??false)&& (prefs.getString(PrefHelper.PREF_USER_ID))!=null)
           {
             await Provider.of<ClientController>(context,listen: false).authenticateUser();
             String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);

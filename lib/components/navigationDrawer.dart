@@ -59,16 +59,13 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                 children: <Widget>[
                   Column(
                     children: [
-                      Padding(
-                        padding:
-                        const EdgeInsets.only(top: 15, left: 20, right: 20),
-                        child: DrawerHeader(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            image: DecorationImage(
-                              image: AssetImage('images/logo2.png'),
-                              alignment: Alignment.bottomCenter,
-                            ),
+                      SafeArea(
+                        child: Padding(
+                          padding:
+                          const EdgeInsets.only(top: 20, left: 20, right: 20),
+                          child: Image.asset('images/logobig.png',
+                            height: _isLarge ? 200 : 150,
+                            width: _isLarge ? 500 : 150,
                           ),
                         ),
                       ),
@@ -81,7 +78,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 ConnectionState.waiting)
                               CircularProgressIndicator(),
                             Text(
-                              clientProvider.getClientName,
+                              clientProvider.getClientName
+                              ??'User',
                               style: TextStyle(
                               color: Colors.black,
                               fontSize: 25,
@@ -132,6 +130,29 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             ListTile(
+                              leading: ImageIcon(AssetImage('images/loan.png'),
+                                  size: _isLarge ? 28 : 24, color: kWhiteColor),
+                              title: Text(
+                                'My Loans',
+                                style: TextStyle(
+                                    fontSize: _isLarge ? 22 : 18,
+                                    color: kWhiteColor),
+                              ),
+                              onTap: () {
+                                // Navigator.pop(
+                                //     context, (route) => route.isFirst);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen(),
+                                        settings: RouteSettings(
+                                          arguments: 0,
+                                        )));
+                                // Update the state of the app.
+                                // ...
+                              },
+                            ),
+                            ListTile(
                               leading: Icon(Icons.settings,
                                   size: _isLarge ? 28 : 24, color: kWhiteColor),
                               title: Text(
@@ -176,29 +197,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                                 .getAccountsList()[0])));
                               },
                             ),
-                            ListTile(
-                              leading: ImageIcon(AssetImage('images/loan.png'),
-                                  size: _isLarge ? 28 : 24, color: kWhiteColor),
-                              title: Text(
-                                'My Loans',
-                                style: TextStyle(
-                                    fontSize: _isLarge ? 22 : 18,
-                                    color: kWhiteColor),
-                              ),
-                              onTap: () {
-                                // Navigator.pop(
-                                //     context, (route) => route.isFirst);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen(),
-                                        settings: RouteSettings(
-                                          arguments: 0,
-                                        )));
-                                // Update the state of the app.
-                                // ...
-                              },
-                            ),
+
                             ListTile(
                               leading: ImageIcon(
                                   AssetImage('images/connect.png'),
