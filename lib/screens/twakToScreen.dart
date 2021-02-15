@@ -47,7 +47,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
     });
   }
 
-  void _setClientID() async {
+   _setClientID() async {
     await ClientController().getClientBasic();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -55,7 +55,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
     print('onlink ' + json);
 
     final javascriptString =
-        'Tawk_API = Tawk_API || {};Tawk_API.onPrechatSubmit = function($json){return $json;};';
+        'document.getElementById("formSubmit").onclick = (){Tawk_API = Tawk_API || {};Tawk_API.onPrechatSubmit = function(data){return $json};};';
 
     print(javascriptString);
     await _controller.evaluateJavascript(javascriptString);
@@ -131,12 +131,10 @@ class _TawkToScreenState extends State<TawkToScreen> {
 
               },
               directChatLink:
-                  'https://tawk.to/chat/57f4447c8598f1538109cc15/default',
+              'https://tawk.to/chat/57f4447c8598f1538109cc15/default',
               visitor:
-                  TawkVisitor(name: name, email: email, ClientID: clientID),
-              onLinkTap: (s) {
-                _setClientID();
-
+              TawkVisitor(name: name, email: email, ClientID: clientID),
+              onLinkTap: (s) async{
                 print(s);
               },
             ),
