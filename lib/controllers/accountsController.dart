@@ -25,17 +25,26 @@ class AccountsController with ChangeNotifier {
         });
     print(clientID);
     print(response.body);
-    for (Map m in jsonDecode(response.body)) {
+   /* for (Map m in jsonDecode(response.body)) {
       prefs.setDouble(PrefHelper.PREF_ACCOUNT_BALANCE, m['Balance']);
       prefs.setString(PrefHelper.PREF_ACCOUNT_ID, m['AccountId'].toString());
-    }
+    }*/
+    Map m = jsonDecode(response.body);
+    m.forEach((key, value) {
+      _accounts.add(Account.fromJson(value));
+    });
+    _accounts.where((account) => account.status =='Open').toList();
+    _accounts.where((account) => account.status =='Quote').toList();
+    _accounts.where((account) => account.status == 'Closed').toList();
 
-    for (Map m in jsonDecode(response.body))
+
+
+    /*for (Map m in jsonDecode(response.body))
       if (m['Status'] == 'Open')
         _accounts.add(Account.fromJson(m));
       else if (m['Status'] == 'Quote')
         _accounts.add(Account.fromJson(m));
-      else if (m['Status'] == 'Closed') _accounts.add(Account.fromJson(m));
+      else if (m['Status'] == 'Closed') _accounts.add(Account.fromJson(m));*/
     notifyListeners();
     return _accounts;
   }
