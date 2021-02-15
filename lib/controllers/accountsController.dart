@@ -29,9 +29,9 @@ class AccountsController with ChangeNotifier {
       prefs.setDouble(PrefHelper.PREF_ACCOUNT_BALANCE, m['Balance']);
       prefs.setString(PrefHelper.PREF_ACCOUNT_ID, m['AccountId'].toString());
     }*/
-    Map m = jsonDecode(response.body);
-    m.forEach((key, value) {
-      _accounts.add(Account.fromJson(value));
+    List<dynamic> m = jsonDecode(response.body);
+    m.forEach((account) {
+      _accounts.add(Account.fromJson(account));
     });
     _accounts.where((account) => account.status =='Open').toList();
     _accounts.where((account) => account.status =='Quote').toList();
