@@ -59,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen>
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+    print('Pixel '+_pixelRatio.toString());
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -188,7 +189,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                       if (user.runtimeType !=
                                                           Client) {
                                                         var message =
-                                                            'Invalid session, Please try again!';
+                                                            'Invalid Password or Your account is temporarily locked!';
                                                         if (user
                                                             .toString()
                                                             .startsWith(
@@ -350,8 +351,8 @@ class _LoginScreenState extends State<LoginScreen>
                               SizedBox(height: 4),
 
                               Container(
-                                margin: EdgeInsets.all(10),
-                                padding: EdgeInsets.all(15),
+                                margin: EdgeInsets.all(_isLarge?10:5),
+                                padding: EdgeInsets.all(_isLarge?15:10),
                                 color: Colors.grey.shade300,
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -379,14 +380,14 @@ class _LoginScreenState extends State<LoginScreen>
                                         },
                                         child: Container(
                                           margin: EdgeInsets.symmetric(
-                                              horizontal: 4),
+                                              horizontal: _isLarge?4:0),
                                           decoration: BoxDecoration(
                                             // borderRadius: BorderRadius.all(Radius.circular(15)),
                                             color: Color(0xFF17477A),
                                           ),
                                           padding: EdgeInsets.symmetric(
                                               horizontal: _isLarge ? 10 : 5,
-                                              vertical: 16),
+                                              vertical: _isLarge?16:10),
                                           child: Text(
                                             'Apply Now'.toUpperCase(),
                                             textAlign: TextAlign.start,
