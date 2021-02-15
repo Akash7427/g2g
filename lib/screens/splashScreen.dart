@@ -93,7 +93,7 @@ class _SplashScreenState extends State<SplashScreen> {
               showAlert(message);
               return;
             }
-            accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionToken);
+            accounts=await Provider.of<AccountsController>(context,listen: false).getAccounts(prefs.getString(PrefHelper.Pref_CLIENT_ID), user.sessionDetails.sessionToken);
 
             Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => HomeScreen(),settings: RouteSettings(
               arguments: 1,

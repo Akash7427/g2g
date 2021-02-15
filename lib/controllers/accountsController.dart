@@ -7,6 +7,7 @@ import 'package:g2g/constants.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/utility/pref_helper.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountsController with ChangeNotifier {
@@ -34,10 +35,10 @@ class AccountsController with ChangeNotifier {
     m.forEach((account) {
       _accounts.add(Account.fromJson(account));
     });
-    _accounts.where((account) => account.status =='Open').toList();
+    /*_accounts.where((account) => account.status =='Open').toList();
     _accounts.where((account) => account.status =='Quote').toList();
     _accounts.where((account) => account.status == 'Closed').toList();
-
+*/
 
 
     /*for (Map m in jsonDecode(response.body))
@@ -51,6 +52,17 @@ class AccountsController with ChangeNotifier {
   }
 
   List<Account> getAccountsList() {
-    return [..._accounts.reversed];
+    return [..._accounts];
+  }
+
+  String formatCurrency(double price){
+   var dollarsInUSFormat = new NumberFormat.currency(locale: "en_US",
+        symbol: "\$");
+
+   var resultPrice = '0';
+   if(price !=null) {
+   resultPrice =  dollarsInUSFormat.format(double.tryParse(price.toString()));
+   }
+   return resultPrice;
   }
 }

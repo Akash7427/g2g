@@ -57,6 +57,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+   String isForcePassword = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       drawer: NavigationDrawer(),
       key: _updatePasswordScaffoldKey,
@@ -72,7 +73,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
           Padding(
             padding: const EdgeInsets.only(top: 10.0, left: 10.0),
             child: AppBar(
-              leading: CircleAvatar(
+              leading: isForcePassword !=null && isForcePassword!='true'?CircleAvatar(
                 radius: 25,
                 backgroundColor: Color(0xffccebf2),
                 child: IconButton(
@@ -86,7 +87,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                     size: _isLarge ? 35 : 30,
                   ),
                 ),
-              ),
+              ):Container(),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
