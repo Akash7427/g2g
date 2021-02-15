@@ -257,7 +257,7 @@ class _EditProfileState extends State<EditProfile> {
                   child: Container(
                     padding: _isLarge ? EdgeInsets.all(20) : EdgeInsets.all(10),
                     color: Colors.white,
-                    height: _isLarge ? _height * 0.65 : _height * 0.8,
+                    // height: _isLarge ? _height * 0.65 : _height * 1,
                     margin: EdgeInsets.all(20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

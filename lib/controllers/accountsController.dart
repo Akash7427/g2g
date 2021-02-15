@@ -24,6 +24,7 @@ class AccountsController with ChangeNotifier {
               'AuthFinWs token="${prefs.getString(PrefHelper.PREF_AUTH_TOKEN)}"'
         });
     print(clientID);
+    print('$apiBaseURL/Client/GetAccounts?clientId=$clientID&includeQuote=true&includeOpen=true&includeClosed=true');
     print(response.body);
    /* for (Map m in jsonDecode(response.body)) {
       prefs.setDouble(PrefHelper.PREF_ACCOUNT_BALANCE, m['Balance']);
@@ -50,6 +51,6 @@ class AccountsController with ChangeNotifier {
   }
 
   List<Account> getAccountsList() {
-    return [..._accounts];
+    return [..._accounts.reversed];
   }
 }
