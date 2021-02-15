@@ -48,8 +48,10 @@ class _EditProfileState extends State<EditProfile> {
 
   void _onLoading() async {
     // monitor network fetch
-
+await ClientController().getClientBasic();
+print('check');
     if (mounted) setState(() {});
+
     _refreshController.loadComplete();
   }
 

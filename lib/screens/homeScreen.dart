@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen>
       drawer: NavigationDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 0, // this will be set when a new tab is tapped
+        currentIndex: 2, // this will be set when a new tab is tapped
         onTap: (value) => setState(() {
           switch (value) {
             case 0:
@@ -229,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen>
                     fontSize: _isLarge ? 22 : 18,
                     fontFamily: 'Montserrat',
                     color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
             ),
           ),
@@ -246,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen>
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: _isLarge ? 22 : 18,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                   color: kSecondaryColor,
                 ),
               ),
@@ -256,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen>
             icon: Container(
               alignment: Alignment.center,
               child: ImageIcon(AssetImage('images/connect.png'),
-                  size: _isLarge ? 40 : 25, color: kSecondaryColor),
+                  size: _isLarge ? 35 : 24, color: kSecondaryColor),
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
@@ -266,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen>
                     fontFamily: 'Montserrat',
                     fontSize: _isLarge ? 22 : 18,
                     color: kSecondaryColor,
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.normal),
               ),
             ),
           ),
