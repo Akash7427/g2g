@@ -29,8 +29,6 @@ class ResetController {
         });
 
     myTransformer.parse(response.body); //xml parsed
-
-    print(myTransformer.xmlParserResult);
     var json = myTransformer.toParker();
     var data1 = jsonDecode(json);
     print(data1);

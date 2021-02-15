@@ -1,15 +1,33 @@
-class UpdatePassword {
-  String ClientID, Message;
-  String PasswordResetSuccess;
+// To parse this JSON data, do
+//
+//     final updatePassword = updatePasswordFromJson(jsonString);
 
-  UpdatePassword.fromJson(Map<String, dynamic> json)
-      : ClientID = json['ValidateClient']['ClientID'],
-        PasswordResetSuccess = json['ValidateClient']['PasswordResetSuccess'],
-        Message = json['ValidateClient']['Message'];
+import 'dart:convert';
+
+UpdatePassword updatePasswordFromJson(String str) => UpdatePassword.fromJson(json.decode(str));
+
+String updatePasswordToJson(UpdatePassword data) => json.encode(data.toJson());
+
+class UpdatePassword {
+  UpdatePassword({
+    this.clientId,
+    this.passwordResetSuccess,
+    this.message,
+  });
+
+  String clientId;
+  String passwordResetSuccess;
+  String message;
+
+  factory UpdatePassword.fromJson(Map<String, dynamic> json) => UpdatePassword(
+    clientId: json["ClientID"],
+    passwordResetSuccess: json["PasswordResetSuccess"],
+    message: json["Message"],
+  );
 
   Map<String, dynamic> toJson() => {
-        'ClientID': ClientID,
-        'PasswordResetSuccess': PasswordResetSuccess,
-        'Message': Message,
-      };
+    "ClientID": clientId,
+    "PasswordResetSuccess": passwordResetSuccess,
+    "Message": message,
+  };
 }

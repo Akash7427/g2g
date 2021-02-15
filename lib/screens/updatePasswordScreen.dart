@@ -253,14 +253,14 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                       password.text)
                                                       .then(
                                                         (updatePassword) async {
-                                                      if (updatePassword
-                                                          .PasswordResetSuccess ==
+                                                      if (updatePassword.passwordResetSuccess
+                                                           ==
                                                           'FALSE') {
                                                         pr.hide();
-                                                        Alert(
+                                                        /*Alert(
                                                             context: context,
                                                             title:
-                                                            '${updatePassword.Message}',
+                                                            '${updatePassword.message}',
                                                             type: AlertType.error,
                                                             buttons: [
                                                               DialogButton(
@@ -291,6 +291,75 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                                   fontWeight:
                                                                   FontWeight.bold,
                                                                   fontSize: _isLarge
+                                                                      ? 24
+                                                                      : 18),
+                                                            )).show();*/
+                                                        Alert(
+                                                            context: context,
+                                                            title: '',
+                                                            content: Container(
+                                                              child: Column(
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Image.asset(
+                                                                        'images/alert_icon.png'),
+                                                                    SizedBox(
+                                                                        height:
+                                                                        20),
+                                                                    Container(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 8),
+                                                                      child: Text(
+                                                                        '${updatePassword.message}',
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .black45,
+                                                                            fontWeight: FontWeight
+                                                                                .bold,
+                                                                            fontSize:
+                                                                            20),
+                                                                      ),
+                                                                    ),
+                                                                  ]),
+                                                            ),
+                                                            buttons: [
+                                                              DialogButton(
+                                                                child: Text(
+                                                                  "Close",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize: _isLarge
+                                                                          ? 24
+                                                                          : 18),
+                                                                ),
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context),
+                                                                color:
+                                                                kPrimaryColor,
+                                                                radius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    0.0),
+                                                              ),
+                                                            ],
+                                                            style: AlertStyle(
+                                                              animationType:
+                                                              AnimationType
+                                                                  .fromTop,
+                                                              isCloseButton:
+                                                              false,
+                                                              isOverlayTapDismiss:
+                                                              false,
+                                                              titleStyle: TextStyle(
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                                  fontSize:
+                                                                  _isLarge
                                                                       ? 24
                                                                       : 18),
                                                             )).show();

@@ -207,7 +207,7 @@ class _ResetPasswordState extends State<ResetPassword>
                                           (reset) async {
                                             if (reset.IsExisting == 'FALSE') {
                                               pr.hide();
-                                              Alert(
+                                            /*  Alert(
                                                   context: context,
                                                   title: '${reset.Message}',
                                                   type: AlertType.error,
@@ -240,18 +240,44 @@ class _ResetPasswordState extends State<ResetPassword>
                                                             FontWeight.bold,
                                                         fontSize:
                                                             _isLarge ? 24 : 18),
-                                                  )).show();
-                                            } else {
+                                                  )).show();*/
                                               Alert(
                                                   context: context,
-                                                  title: '${reset.Message}',
-                                                  type: AlertType.success,
+                                                  title: '',
+                                                  content: Container(
+                                                    child: Column(
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                        children: <
+                                                            Widget>[
+                                                          Image.asset(
+                                                              'images/alert_icon.png'),
+                                                          SizedBox(
+                                                              height:
+                                                              20),
+                                                          Container(
+                                                            padding: EdgeInsets.symmetric(horizontal: 8),
+                                                            child: Text(
+                                                              '${reset.Message}',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black45,
+                                                                  fontWeight: FontWeight
+                                                                      .bold,
+                                                                  fontSize:
+                                                                  20),
+                                                            ),
+                                                          ),
+                                                        ]),
+                                                  ),
                                                   buttons: [
                                                     DialogButton(
                                                       child: Text(
                                                         "Close",
                                                         style: TextStyle(
-                                                            color: Colors.white,
+                                                            color: Colors
+                                                                .white,
                                                             fontSize: _isLarge
                                                                 ? 24
                                                                 : 18),
@@ -259,22 +285,100 @@ class _ResetPasswordState extends State<ResetPassword>
                                                       onPressed: () =>
                                                           Navigator.pop(
                                                               context),
-                                                      color: kPrimaryColor,
+                                                      color:
+                                                      kPrimaryColor,
                                                       radius:
-                                                          BorderRadius.circular(
-                                                              0.0),
+                                                      BorderRadius
+                                                          .circular(
+                                                          0.0),
                                                     ),
                                                   ],
                                                   style: AlertStyle(
                                                     animationType:
-                                                        AnimationType.fromTop,
-                                                    isCloseButton: false,
-                                                    isOverlayTapDismiss: false,
+                                                    AnimationType
+                                                        .fromTop,
+                                                    isCloseButton:
+                                                    false,
+                                                    isOverlayTapDismiss:
+                                                    false,
                                                     titleStyle: TextStyle(
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight
+                                                            .bold,
                                                         fontSize:
-                                                            _isLarge ? 24 : 18),
+                                                        _isLarge
+                                                            ? 24
+                                                            : 18),
+                                                  )).show();
+                                            } else {
+                                              Alert(
+                                                  context: context,
+                                                  title: '',
+                                                  content: Container(
+                                                    child: Column(
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                        children: <
+                                                            Widget>[
+                                                          Image.asset(
+                                                              'images/success.png'),
+                                                          SizedBox(
+                                                              height:
+                                                              20),
+                                                          Container(
+                                                            padding: EdgeInsets.symmetric(horizontal: 8),
+                                                            child: Text(
+                                                              '${reset.Message}',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .black45,
+                                                                  fontWeight: FontWeight
+                                                                      .bold,
+                                                                  fontSize:
+                                                                  20),
+                                                            ),
+                                                          ),
+                                                        ]),
+                                                  ),
+                                                  buttons: [
+                                                    DialogButton(
+                                                      child: Text(
+                                                        "Close",
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .white,
+                                                            fontSize: _isLarge
+                                                                ? 24
+                                                                : 18),
+                                                      ),
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      color:
+                                                      kPrimaryColor,
+                                                      radius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          0.0),
+                                                    ),
+                                                  ],
+                                                  style: AlertStyle(
+                                                    animationType:
+                                                    AnimationType
+                                                        .fromTop,
+                                                    isCloseButton:
+                                                    false,
+                                                    isOverlayTapDismiss:
+                                                    false,
+                                                    titleStyle: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
+                                                        fontSize:
+                                                        _isLarge
+                                                            ? 24
+                                                            : 18),
                                                   )).show();
                                               pr.hide();
                                               Navigator.pushAndRemoveUntil(
