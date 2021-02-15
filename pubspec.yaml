@@ -51,6 +51,8 @@ dependencies:
   auto_size_text: ^2.1.0
   html: ^0.14.0+4
   responsive_framework: ^0.0.14
+  intl: ^0.16.1
+
 
 
 

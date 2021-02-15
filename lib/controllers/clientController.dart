@@ -106,7 +106,7 @@ class ClientController with ChangeNotifier {
        print('key '+       prefs.getString(PrefHelper.PREF_FORCE_PASSWORD).toString());
      }
       // prefs.setString('user', response.body);
-      client = Client.fromJson(innerJson);
+      client = Client.fromJson( jsonDecode(json)['ClientAuthentication']);
 
       notifyListeners();
       return client;

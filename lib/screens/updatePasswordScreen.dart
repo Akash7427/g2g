@@ -6,9 +6,7 @@ import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/updatePasswordController.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/utility/hashSha256.dart';
-import 'package:g2g/utility/pref_helper.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdatePassword extends StatefulWidget {
@@ -37,22 +35,11 @@ class _UpdatePasswordState extends State<UpdatePassword>
   double _width;
   double _pixelRatio;
   bool _isLarge;
-  bool isAllowed=true;
-
-
-  getNav()async{
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     setState(() {
-       print('fp'+prefs.getString(PrefHelper.PREF_FORCE_PASSWORD).toString());
-       isAllowed=prefs.getString(PrefHelper.PREF_FORCE_PASSWORD)==null?true:false;
-       print('Is Allowed to navigate :'+isAllowed.toString());
-     });
-  }
 
   @override
   void initState() {
     super.initState();
-getNav();
+
     tripleDES();
     // animationController =
     //     AnimationController(vsync: this, duration: Duration(seconds: 1));
@@ -70,6 +57,7 @@ getNav();
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
+   String isForcePassword = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       drawer: NavigationDrawer(),
       key: _updatePasswordScaffoldKey,
@@ -85,10 +73,10 @@ getNav();
           Padding(
             padding: const EdgeInsets.only(top: 10.0, left: 10.0),
             child: AppBar(
-              leading: CircleAvatar(
+              leading: isForcePassword !=null && isForcePassword!='true'?CircleAvatar(
                 radius: 25,
                 backgroundColor: Color(0xffccebf2),
-                child: isAllowed?IconButton(
+                child: IconButton(
                   onPressed: () {
                     print('abc');
                     _updatePasswordScaffoldKey.currentState.openDrawer();
@@ -98,8 +86,8 @@ getNav();
                     color: kSecondaryColor,
                     size: _isLarge ? 35 : 30,
                   ),
-                ):Container(),
-              ),
+                ),
+              ):Container(),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -265,14 +253,14 @@ getNav();
                                                       password.text)
                                                       .then(
                                                         (updatePassword) async {
-                                                      if (updatePassword
-                                                          .PasswordResetSuccess ==
+                                                      if (updatePassword.passwordResetSuccess
+                                                           ==
                                                           'FALSE') {
                                                         pr.hide();
-                                                        Alert(
+                                                        /*Alert(
                                                             context: context,
                                                             title:
-                                                            '${updatePassword.Message}',
+                                                            '${updatePassword.message}',
                                                             type: AlertType.error,
                                                             buttons: [
                                                               DialogButton(
@@ -303,6 +291,75 @@ getNav();
                                                                   fontWeight:
                                                                   FontWeight.bold,
                                                                   fontSize: _isLarge
+                                                                      ? 24
+                                                                      : 18),
+                                                            )).show();*/
+                                                        Alert(
+                                                            context: context,
+                                                            title: '',
+                                                            content: Container(
+                                                              child: Column(
+                                                                  crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Image.asset(
+                                                                        'images/alert_icon.png'),
+                                                                    SizedBox(
+                                                                        height:
+                                                                        20),
+                                                                    Container(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 8),
+                                                                      child: Text(
+                                                                        '${updatePassword.message}',
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .black45,
+                                                                            fontWeight: FontWeight
+                                                                                .bold,
+                                                                            fontSize:
+                                                                            20),
+                                                                      ),
+                                                                    ),
+                                                                  ]),
+                                                            ),
+                                                            buttons: [
+                                                              DialogButton(
+                                                                child: Text(
+                                                                  "Close",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize: _isLarge
+                                                                          ? 24
+                                                                          : 18),
+                                                                ),
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context),
+                                                                color:
+                                                                kPrimaryColor,
+                                                                radius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    0.0),
+                                                              ),
+                                                            ],
+                                                            style: AlertStyle(
+                                                              animationType:
+                                                              AnimationType
+                                                                  .fromTop,
+                                                              isCloseButton:
+                                                              false,
+                                                              isOverlayTapDismiss:
+                                                              false,
+                                                              titleStyle: TextStyle(
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                                  fontSize:
+                                                                  _isLarge
                                                                       ? 24
                                                                       : 18),
                                                             )).show();

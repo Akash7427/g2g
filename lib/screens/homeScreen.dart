@@ -87,10 +87,14 @@ class _HomeScreenState extends State<HomeScreen>
 
   bool isElligible() {
     for (Account account in accounts)
-      if (((account.balanceOverdue ?? 0.0) > 0.0 || account.balance > 0) &&
-          account.status == "Open") return false;
-    return true;
+      {
+      if (((account.balanceOverdue == null || account.balanceOverdue == 0.0) || account.balance >= 0.0) &&
+          account.status == "Closed") return true;}
+    return false;
+
+
   }
+
 
   payURL(Account account) async {
     await ClientController().getClientBasic();
@@ -135,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen>
                 children: [
                   Text(
                       '${isOverdue() ? 'Hi' : (isElligible() ? 'Welcome' : 'Well Done')}' +
-                          ', ${client.fullName.split(' ')[0]}',
+                          ', ${client.sessionDetails.fullName.split(' ')[0]}',
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
                           fontWeight: FontWeight.bold,
@@ -322,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                   ),
-                  title: Text('Hi ${(client.fullName.split(' ')[0])}',
+                  title: Text('Hi ${(client.sessionDetails.fullName.split(' ')[0])}',
                       //widget.client.fullName.split(' ')[0]
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
@@ -505,7 +509,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                   ),
-                  Text('Hi ${client.fullName.split(' ')[0]}',
+                  Text('Hi ${client.sessionDetails.fullName.split(' ')[0]}',
                       //widget.client.fullName.split(' ')[0]
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
@@ -716,15 +720,14 @@ class _HomeScreenState extends State<HomeScreen>
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  FlatButton(
+                                 account.balance <= 0?Container():FlatButton(
                                     color: kPrimaryColor,
                                     onPressed: () {
                                       payURL(account);
                                     },
                                     child: Text(
                                       'Pay ' +
-                                          '\$' +
-                                          '${account.balance.toString()}',
+                                          '${accProvider.formatCurrency(account.balance)}',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,

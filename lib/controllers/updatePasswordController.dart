@@ -26,10 +26,10 @@ class UpdatePasswordController {
 
 
     String data =
-        '<ValidateClient><UserID>$userID</UserID><EmailAddress>$emailID</EmailAddress><Mobile>$mobileNumber</Mobile><Password>${getEncryptPassword(password)}</Password></ValidateClient>';
+        '<PasswordReset><UserID>$userID</UserID><EmailAddress>$emailID</EmailAddress><Mobile>$mobileNumber</Mobile><Password>${getEncryptPassword(password)}</Password></PasswordReset>';
 print(data);
     http.Response response = await http.post(
-        'https://wstest.goodtogoloans.com.au/api/custom/AppResetPassword',
+        'https://wstest.goodtogoloans.com.au/api/custom/UpdatePassword',
         body: data,
         headers: {
           'content-Type': 'text/plain',
@@ -38,10 +38,8 @@ print(data);
         });
 
     myTransformer.parse(response.body); //xml parsed
-
-    print(myTransformer.xmlParserResult);
     var json = myTransformer.toParker();
-    var data1 = jsonDecode(json);
+    var data1 = jsonDecode(json)['PasswordReset'];
     print(data1);
     return UpdatePassword.fromJson(data1);
   }

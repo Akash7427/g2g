@@ -219,15 +219,18 @@ class _LoginScreenState extends State<LoginScreen>
                                                                     SizedBox(
                                                                         height:
                                                                             20),
-                                                                    Text(
-                                                                      message,
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .black45,
-                                                                          fontWeight: FontWeight
-                                                                              .bold,
-                                                                          fontSize:
-                                                                              20),
+                                                                    Container(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 8),
+                                                                      child: Text(
+                                                                        message,
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .black45,
+                                                                            fontWeight: FontWeight
+                                                                                .bold,
+                                                                            fontSize:
+                                                                                20),
+                                                                      ),
                                                                     ),
                                                                   ]),
                                                             ),
@@ -271,6 +274,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                                           : 18),
                                                             )).show();
                                                       } else {
+                                                       Client client = user as Client;
                                                         SharedPreferences prefs =
                                                         await SharedPreferences
                                                             .getInstance();
@@ -283,8 +287,8 @@ class _LoginScreenState extends State<LoginScreen>
                                                                 context,
                                                                 listen: false)
                                                             .getAccounts(
-                                                                user.userID,
-                                                                user.sessionToken)
+                                                                client.clientId,
+                                                                client.sessionDetails.sessionToken)
                                                             .then((accounts) {
                                                           pr.hide();
                                                           !fpscreen
@@ -310,7 +314,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                                   settings:
                                                                   RouteSettings(
                                                                     arguments:
-                                                                    1,
+                                                                    client?.forcePasswordChange,
                                                                   )),
                                                                   (route) =>
                                                               false);

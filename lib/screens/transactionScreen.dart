@@ -66,6 +66,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 0, // this will be set when a new tab is tapped
+        selectedItemColor: Colors.amber[800],
         onTap: (value) => setState(() {
           switch (value) {
             case 0:
