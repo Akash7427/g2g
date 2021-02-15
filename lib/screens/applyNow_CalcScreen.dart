@@ -184,8 +184,12 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
-                              'images/logo2.png',
-                              height: _isLarge ? 400 : 120,
+                              _isLarge
+                                  ? 'images/fulllogo.png'
+                                  : 'images/logobig.png',
+                              height: _isLarge ? 200 : 150,
+                              width: _isLarge ? 500 : 150,
+                              fit: BoxFit.fitWidth,
                             ),
                             SizedBox(
                               height: 30,
