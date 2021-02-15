@@ -7,7 +7,9 @@ import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/applyNow_WebView.dart';
 import 'package:g2g/screens/comparision_Rate_Screen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../constants.dart';
 
@@ -37,12 +39,66 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
   double _pixelRatio;
   bool _isLarge;
 
-
   double minSliderAmount = 500;
   double maxSliderAmount = 5000;
   double sliderDivision = 0;
-
-
+  void _showDialog(amount, term) {
+    Alert(
+            context: context,
+            onWillPopActive: true,
+            closeIcon: Icon(
+              Icons.close,
+              color: Colors.black,
+            ),
+            closeFunction: () {
+              Navigator.pop(context);
+            },
+            title: '',
+            buttons: [
+              DialogButton(
+                color: Colors.green,
+                child: Text(
+                  "Apply Now",
+                  style: TextStyle(
+                      color: Colors.white, fontSize: _isLarge ? 24 : 18),
+                ),
+                onPressed: () async {
+                  //https://www.goodtogoloans.com.au/application-form/?amount=${widget.amount}&term=${widget.term}
+                  try {
+                    String url =
+                        'https://www.goodtogoloans.com.au/application-form/?amount=${amount}&term=${term}'
+                            .replaceAll(' ', '%20');
+                    print(url);
+                    await launch(url);
+                  } on Exception catch (e) {
+                    print(e.toString());
+                  }
+                },
+              )
+            ],
+            content: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Container(
+                width: _width * 0.7,
+                height: _height * 0.6,
+                child: WebView(
+                  gestureNavigationEnabled: true,
+                  initialUrl:
+                      'https://www.goodtogoloans.com.au/warning-app.php',
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onWebViewCreated: (WebViewController c) {},
+                  onPageStarted: (String url) {
+                    if (url.startsWith('tel:')) launch("tel://1300197727");
+                  },
+                ),
+              ),
+            ),
+            style: AlertStyle(
+                isCloseButton: true,
+                isOverlayTapDismiss: true,
+                titleStyle: TextStyle(fontSize: 1)))
+        .show();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +111,9 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
         ? selected_duration
         : selected_duration_end;
 
-    sliderDivision =  (maxSliderAmount-minSliderAmount)/100;
+    sliderDivision = (maxSliderAmount - minSliderAmount) / 100;
 
     WeeklyRepayments();
-
-
 
     return SafeArea(
       child: Scaffold(
@@ -119,16 +173,15 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                 alignment: Alignment.center,
                 color: Colors.white,
                 margin: const EdgeInsets.only(
-                    top: 10.0,bottom: 20, right: 10.0, left: 10.0),
+                    top: 10.0, bottom: 20, right: 10.0, left: 10.0),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
-                            top: 20, left: 10.0, right: 10.0),
+                        padding:
+                            EdgeInsets.only(top: 20, left: 10.0, right: 10.0),
                         child: Column(
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
                               'images/logo2.png',
@@ -138,12 +191,10 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                               height: 30,
                             ),
                             Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  padding:
-                                  const EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 15),
                                   child: Text(
                                     'How much would you like to borrow?',
@@ -151,22 +202,19 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                         .textTheme
                                         .headline6
                                         .copyWith(
-                                        fontWeight:
-                                        FontWeight.bold,
-                                        fontSize: 19.5),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 19.5),
                                   ),
                                 ),
                                 SliderTheme(
                                   data: SliderThemeData(
                                       trackHeight: 4.0,
                                       valueIndicatorColor: Colors.blue,
-                                      showValueIndicator: ShowValueIndicator.always
-
-                                  ),
+                                      showValueIndicator:
+                                          ShowValueIndicator.always),
                                   child: Slider(
                                     activeColor: Color(0xFF64A000),
-                                    inactiveColor:
-                                    Color(0xFF64A000),
+                                    inactiveColor: Color(0xFF64A000),
                                     value: selected_amount,
                                     onChanged: (v) {
                                       setState(() {
@@ -176,21 +224,18 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                       });
                                     },
                                     label:
-                                    '\$ ${selected_amount.toStringAsFixed(0)}',
+                                        '\$ ${selected_amount.toStringAsFixed(0)}',
                                     min: minSliderAmount,
                                     max: maxSliderAmount,
                                     divisions: sliderDivision.toInt(),
-
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 15),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment
-                                        .spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         '\$ ${minSliderAmount.toInt()}',
@@ -213,8 +258,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                 Row(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets
-                                          .symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 15),
                                       child: Text(
                                         'For how long?',
@@ -222,10 +266,8 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                             .textTheme
                                             .headline6
                                             .copyWith(
-                                            fontWeight:
-                                            FontWeight
-                                                .bold,
-                                            fontSize: 19.5),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 19.5),
                                       ),
                                     ),
                                   ],
@@ -234,13 +276,11 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                   data: SliderTheme.of(context).copyWith(
                                       trackHeight: 4.0,
                                       valueIndicatorColor: Colors.blue,
-                                      showValueIndicator: ShowValueIndicator.always
-                                  ),
+                                      showValueIndicator:
+                                          ShowValueIndicator.always),
                                   child: Slider(
                                     activeColor: Color(0xFF64A000),
-                                    inactiveColor:
-                                    Color(0xFF64A000),
-
+                                    inactiveColor: Color(0xFF64A000),
                                     mouseCursor: MouseCursor.defer,
                                     value: progress,
                                     onChanged: (v) {
@@ -251,23 +291,19 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                         selected_duration = v;
                                       });
                                     },
-                                    label:
-                                    '${selected_duration.toInt()} Weeks',
+                                    label: '${selected_duration.toInt()} Weeks',
                                     min: 4,
                                     max: maxValue,
                                     divisions: 48,
                                     onChangeStart: (value) {
                                       setState(() {
-                                        if (selected_amount >=
-                                            2001) {
+                                        if (selected_amount >= 2001) {
                                           setState(() {
-                                            selected_duration_end =
-                                            104;
+                                            selected_duration_end = 104;
                                           });
                                         } else {
                                           setState(() {
-                                            selected_duration_end =
-                                            52;
+                                            selected_duration_end = 52;
                                           });
                                         }
                                         WeeklyRepayments();
@@ -276,13 +312,11 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 15),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment
-                                        .spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         '4 Weeks',
@@ -290,9 +324,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                             .textTheme
                                             .headline6
                                             .copyWith(
-                                            fontWeight:
-                                            FontWeight
-                                                .bold),
+                                                fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         '${selected_duration_end.toInt()} Weeks',
@@ -300,9 +332,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                             .textTheme
                                             .headline6
                                             .copyWith(
-                                            fontWeight:
-                                            FontWeight
-                                                .bold),
+                                                fontWeight: FontWeight.bold),
                                       )
                                     ],
                                   ),
@@ -311,11 +341,9 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                   height: 20,
                                 ),
                                 Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 15),
                                   child: Row(
-
                                     children: [
                                       Expanded(
                                         child: Text(
@@ -325,15 +353,12 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                               .textTheme
                                               .caption
                                               .copyWith(
-                                              fontWeight:
-                                              FontWeight
-                                                  .bold,
-                                              fontSize: 17,
-                                              color:
-                                              Colors.black),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 17,
+                                                  color: Colors.black),
                                         ),
                                       ),
-                                      SizedBox(width:10),
+                                      SizedBox(width: 10),
                                       Expanded(
                                         child: Text(
                                           'Total Repayments',
@@ -342,12 +367,9 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                               .textTheme
                                               .caption
                                               .copyWith(
-                                              fontWeight:
-                                              FontWeight
-                                                  .bold,
-                                              fontSize: 17,
-                                              color:
-                                              Colors.black),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 17,
+                                                  color: Colors.black),
                                         ),
                                       ),
                                     ],
@@ -357,18 +379,16 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                   height: 10,
                                 ),
                                 Padding(
-                                  padding:
-                                  const EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       horizontal: 15),
                                   child: Row(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Expanded(
                                         child: Container(
-                                          padding:
-                                          EdgeInsets.symmetric(vertical:15),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 15),
                                           color: Color(0xFFC2E8F7),
                                           child: Text(
                                             '\$ ${weekly?.toStringAsFixed(2) == '0.0' ? '155.0' : weekly?.toStringAsFixed(2)}',
@@ -376,31 +396,26 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                                 .textTheme
                                                 .headline6
                                                 .copyWith(
-                                                fontWeight:
-                                                FontWeight
-                                                    .w900),
+                                                    fontWeight:
+                                                        FontWeight.w900),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
                                       ),
-
-                                      SizedBox(width:100),
-
+                                      SizedBox(width: 100),
                                       Expanded(
                                         child: Container(
-                                          padding:
-                                          EdgeInsets.symmetric(vertical:15),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 15),
                                           color: Color(0xFFC2E8F7),
                                           child: Text(
-
                                             '\$ ${total?.toStringAsFixed(2) == '0.0' ? '620.0' : total?.toStringAsFixed(2)}',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .headline6
                                                 .copyWith(
-                                                fontWeight:
-                                                FontWeight
-                                                    .w900),
+                                                    fontWeight:
+                                                        FontWeight.w900),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
@@ -417,13 +432,11 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                         height: 5,
                       ),
                       Row(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Padding(
-                            padding:
-                            const EdgeInsets.only(right: 25),
+                            padding: const EdgeInsets.only(right: 25),
                             child: InkWell(
                               child: Text(
                                 'Comparison Rate',
@@ -431,10 +444,9 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                     .textTheme
                                     .caption
                                     .copyWith(
-                                    color: Color(0xFF27A1E1),
-                                    fontSize: 16,
-                                    fontWeight:
-                                    FontWeight.bold),
+                                        color: Color(0xFF27A1E1),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                               ),
                               onTap: () {
                                 Navigator.push(
@@ -452,28 +464,29 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                       ),
                       RaisedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ApplyLoansWebViewScreen(
-                                    amount: selected_amount
-                                        .toInt()
-                                        .toString(),
-                                    term: selected_duration
-                                        .toInt()
-                                        .toString() ??
-                                        '4',
-                                  ),
-                            ),
-                          );
+                          _showDialog(selected_amount.toInt().toString(),
+                              selected_duration.toInt().toString() ?? '4');
+                          //https://www.goodtogoloans.com.au/warning-app.php
+
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) =>
+                          //         ApplyLoansWebViewScreen(
+                          //           amount: selected_amount
+                          //               .toInt()
+                          //               .toString(),
+                          //           term: selected_duration
+                          //               .toInt()
+                          //               .toString() ??
+                          //               '4',
+                          //         ),
+                          //   ),
+                          // );
                         },
                         color: Color(0xFF17477A),
                         padding: EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                            left: 30,
-                            right: 30),
+                            top: 10, bottom: 10, left: 30, right: 30),
                         child: Container(
                           child: Text(
                             'Next'.toUpperCase(),
@@ -491,13 +504,12 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                         height: 20,
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 10,vertical:10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         color: Color(0xFFF2F2F2),
                         child: Text(
                           'NOTE: The figures represented in this calculator are an example only and may not represent actual repayments contractual or otherwise.',
-                          style:
-                          Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.caption,
                         ),
                       ),
                     ],
@@ -529,8 +541,8 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
         setState(() {
           interest_rate = 0.00907;
           payment_montly = ((selected_amount + loan_fees) *
-              interest_rate *
-              (pow((1 + interest_rate), selected_duration))) /
+                  interest_rate *
+                  (pow((1 + interest_rate), selected_duration))) /
               ((pow((1 + interest_rate), selected_duration)) - 1);
           total = payment_montly * selected_duration;
           weekly = payment_montly;
