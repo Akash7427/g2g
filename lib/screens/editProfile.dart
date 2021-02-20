@@ -1230,10 +1230,10 @@ print('check');
                                                 child: Padding(
                                                   padding: EdgeInsets.all(12.0),
                                                   child: AutoSizeText(
-                                                      'Send Request'.toUpperCase(),
+                                                      'UPDATE MY PROFILE'.toUpperCase(),
                                                       style: TextStyle(
                                                           fontSize:
-                                                          _isLarge ? 22 : 18,
+                                                          _isLarge ? 22 : 16,
                                                           fontFamily: 'Montserrat',
 
                                                           // fontWeight:
@@ -1300,10 +1300,10 @@ print('check');
                                               child: Padding(
                                                 padding: EdgeInsets.all(12.0),
                                                 child: AutoSizeText(
-                                                    'Send Request'.toUpperCase(),
+                                                    'UPDATE MY PROFILE'.toUpperCase(),
                                                     style: TextStyle(
                                                         fontSize:
-                                                        _isLarge ? 22 : 18,
+                                                        _isLarge ? 22 : 16,
                                                         fontWeight:
                                                         FontWeight.bold,
                                                         fontFamily: 'Montserrat',

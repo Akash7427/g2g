@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
 import 'package:g2g/constants.dart';
 import 'package:g2g/models/accountModel.dart';
@@ -27,13 +28,17 @@ class AccountsController with ChangeNotifier {
     print(clientID);
     print('$apiBaseURL/Client/GetAccounts?clientId=$clientID&includeQuote=true&includeOpen=true&includeClosed=true');
     print(response.body);
+
    /* for (Map m in jsonDecode(response.body)) {
       prefs.setDouble(PrefHelper.PREF_ACCOUNT_BALANCE, m['Balance']);
       prefs.setString(PrefHelper.PREF_ACCOUNT_ID, m['AccountId'].toString());
     }*/
     List<dynamic> m = jsonDecode(response.body);
     m.forEach((account) {
+
+
       _accounts.add(Account.fromJson(account));
+
     });
     /*_accounts.where((account) => account.status =='Open').toList();
     _accounts.where((account) => account.status =='Quote').toList();
@@ -51,7 +56,21 @@ class AccountsController with ChangeNotifier {
     return _accounts;
   }
 
+
+
+
   List<Account> getAccountsList() {
+      _accounts.sort((a,b) => -a.openedDate.compareTo(b.openedDate));
+      _accounts.forEach((element) {
+        // print('Dates sorted new to last : '+element.openedDate.toString());
+        // print('Account Status : '+element.status.toString());
+        // print('Balance OverDue : '+element.balanceOverdue.toString());
+
+        print('Check '+element.openedDate.toString()+' ' +element.status.toString()+' '  +element.balanceOverdue.toString());
+        // print('Balance OverDue : '+element.balanceOverdue.runtimeType.toString());
+
+      });
+
     return [..._accounts];
   }
 

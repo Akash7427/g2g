@@ -4,6 +4,8 @@ PODS:
     - Flutter
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
+  - flutter_restart (0.0.1):
+    - Flutter
   - flutter_secure_storage (3.3.1):
     - Flutter
   - image_picker (0.0.1):
@@ -27,6 +29,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_des (from `.symlinks/plugins/flutter_des/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - flutter_restart (from `.symlinks/plugins/flutter_restart/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - open_file (from `.symlinks/plugins/open_file/ios`)
@@ -47,6 +50,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_des/ios"
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  flutter_restart:
+    :path: ".symlinks/plugins/flutter_restart/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   image_picker:
@@ -68,6 +73,7 @@ SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_des: af0bb83f27f1468ad652d907958b1d42d5644544
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
+  flutter_restart: 11eea2413f4947979cf19e99e9347ca021071157
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   open_file: 02eb5cb6b21264bd3a696876f5afbfb7ca4f4b7d
