@@ -492,26 +492,26 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                         color: Colors.black)),
               ),
               SizedBox(width: 10),
-              Flexible(
-                flex: 1,
-                child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    color: widget.account.status.toUpperCase() == 'OPEN'
-                        ? kPrimaryColor
-                        : (widget.account.status.toUpperCase() == 'QUOTE'
-                        ? Colors.amber[300]
-                        : Colors.red),
-                    child: Padding(
-                      padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-                      child: AutoSizeText(widget.account.status.toUpperCase(),
-                          style: TextStyle(
-                              fontSize: _isLarge ? 16 : 12,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white)),
-                    )),
-              ),
+              // Flexible(
+              //   flex: 1,
+              //   child: Card(
+              //       shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(20.0)),
+              //       color: widget.account.status.toUpperCase() == 'OPEN'
+              //           ? kPrimaryColor
+              //           : (widget.account.status.toUpperCase() == 'QUOTE'
+              //           ? Colors.amber[300]
+              //           : Colors.red),
+              //       child: Padding(
+              //         padding:
+              //         EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+              //         child: AutoSizeText(widget.account.status.toUpperCase(),
+              //             style: TextStyle(
+              //                 fontSize: _isLarge ? 16 : 12,
+              //                 fontWeight: FontWeight.bold,
+              //                 color: Colors.white)),
+              //       )),
+              // ),
             ],
           ),
         ],

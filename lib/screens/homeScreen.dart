@@ -64,21 +64,22 @@ class _HomeScreenState extends State<HomeScreen>
   void afterFirstLayout(BuildContext context) {
     int flag = ModalRoute.of(context).settings.arguments;
     print('navFlag' + flag.toString());
-    if (flag == 1) _showDialog();
+    //if (flag == 1) _showDialog();
+    _showDialog();
   }
 
   bool isOverdue() {
     try {
       for (Account account in accounts) {
-        print("Balance OverDue"+account.balanceOverdue.toString());
+        //print("Balance OverDue"+account.balanceOverdue.toString());
+        // print('Status :'+account.status.toString());
+        // print('Balance OverDue :'+account.balanceOverdue.toString());
         if ((account.balanceOverdue) > 0.0 && account.status == "Open") {
           return true;
-        }
-        else{
+        } else {
           return false;
         }
       }
-
     } catch (error) {
       print(error.toString());
     }
@@ -86,13 +87,15 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   bool isElligible() {
-    for (Account account in accounts)
-      {
-      if (((account.balanceOverdue == null || account.balanceOverdue == 0.0) || account.balance >= 0.0) &&
-          account.status == "Closed") return true;}
+    for (Account account in accounts) {
+      // print('Status :'+account.status.toString());
+      // print('Balance OverDue :'+account.balanceOverdue.toString());
+
+      if (((account.balanceOverdue == null || account.balanceOverdue == 0.0) ||
+              account.balance >= 0.0) &&
+          account.status == "Closed") return true;
+    }
     return false;
-
-
   }
 
 
@@ -186,7 +189,98 @@ class _HomeScreenState extends State<HomeScreen>
 
     client = clientProvider.getClient();
     accounts = accProvider.getAccountsList();
-
+//bottomSheet: SafeArea(
+//         child: Row(
+// crossAxisAlignment: CrossAxisAlignment.end,
+//           children: [
+//             InkWell(
+//               child: Container(
+//                 child: Column(
+//                   children: [
+//                     Container(
+//                       alignment: Alignment.center,
+//                       child: ImageIcon(AssetImage('images/loan.png'),
+//                           size: _isLarge ? 35 : 24, color: kSecondaryColor),
+//                     ),
+//                     Padding(
+//                       padding: const EdgeInsets.all(3.0),
+//                       child: Text(
+//                         'My Loans',
+//                         style: TextStyle(
+//                             fontSize: _isLarge ? 22 : 18,
+//                             fontFamily: 'Montserrat',
+//                             color: kSecondaryColor,
+//                             fontWeight: FontWeight.normal),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//             InkWell(
+//               onTap: () {
+//                 Navigator.pushAndRemoveUntil(
+//                     context,
+//                     MaterialPageRoute(builder: (context) => ApplyNowScreen()),
+//                         (r) => r.isFirst);
+//                 launch('https://www.goodtogoloans.com.au/');
+//               },
+//               child: Container(
+//                 child: Column(
+//                   children: [
+//                     Container(
+//                       alignment: Alignment.center,
+//                       child: ImageIcon(AssetImage('images/apply_now.png'),
+//                           size: _isLarge ? 35 : 24, color: kSecondaryColor),
+//                     ),
+//                     Padding(
+//                       padding: const EdgeInsets.all(3.0),
+//                       child: Text(
+//                         'Apply Now',
+//                         style: TextStyle(
+//                             fontSize: _isLarge ? 22 : 18,
+//                             fontFamily: 'Montserrat',
+//                             color: kSecondaryColor,
+//                             fontWeight: FontWeight.normal),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//             InkWell(
+//               onTap: () {
+//                 Navigator.pushAndRemoveUntil(
+//                     context,
+//                     MaterialPageRoute(builder: (context) => TawkToScreen()),
+//                         (r) => r.isFirst);
+//               },
+//               child: Container(
+//                 child: Column(
+//                   children: [
+//                     Container(
+//                       alignment: Alignment.center,
+//                       child: ImageIcon(AssetImage('images/connect.png'),
+//                           size: _isLarge ? 35 : 24, color: kSecondaryColor),
+//                     ),
+//                     Padding(
+//                       padding: const EdgeInsets.all(3.0),
+//                       child: Text(
+//                         'Connect',
+//                         style: TextStyle(
+//                             fontSize: _isLarge ? 22 : 18,
+//                             fontFamily: 'Montserrat',
+//                             color: kSecondaryColor,
+//                             fontWeight: FontWeight.normal),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
     return Scaffold(
       key: _homeScreenScaffold,
       drawer: NavigationDrawer(),
@@ -326,7 +420,8 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                   ),
-                  title: Text('Hi ${(client.sessionDetails.fullName.split(' ')[0])}',
+                  title: Text(
+                      'Hi ${(client.sessionDetails.fullName.split(' ')[0])}',
                       //widget.client.fullName.split(' ')[0]
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
@@ -703,39 +798,44 @@ class _HomeScreenState extends State<HomeScreen>
                                   SizedBox(height: 10),
                                   Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Row(
-                                      children: [
-                                        Text('How to make a payment? ',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: kSecondaryColor)),
-                                        Icon(
-                                          Icons.arrow_forward,
-                                          color: kSecondaryColor,
-                                        ),
-                                      ],
-                                    ),
+                                    child: account.balance <= 0
+                                        ? Container()
+                                        : Row(
+                                            children: [
+                                              Text('How to make a payment? ',
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: kSecondaryColor)),
+                                              Icon(
+                                                Icons.arrow_forward,
+                                                color: kSecondaryColor,
+                                              ),
+                                            ],
+                                          ),
                                   ),
                                   SizedBox(
                                     height: 10,
                                   ),
-                                 account.balance <= 0?Container():FlatButton(
-                                    color: kPrimaryColor,
-                                    onPressed: () {
-                                      payURL(account);
-                                    },
-                                    child: Text(
-                                      'Pay ' +
-                                          '${accProvider.formatCurrency(account.balance)}',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        fontFamily: 'Montserrat',
-                                      ),
-                                    ),
-                                  ),
+                                  account.balance <= 0
+                                      ? Container()
+                                      : FlatButton(
+                                          color: kPrimaryColor,
+                                          onPressed: () {
+                                            payURL(account);
+                                          },
+                                          child: Text(
+                                            'Pay ' +
+                                                '${accProvider.formatCurrency(account.balance)}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              fontFamily: 'Montserrat',
+                                            ),
+                                          ),
+                                        ),
                                 ],
                               )
                             ],
