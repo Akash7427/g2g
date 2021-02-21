@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
         Duration(seconds: widget.seconds),
             () async{
-          Client user;
+          dynamic user;
           List<Account> accounts;
           SharedPreferences prefs=await SharedPreferences.getInstance();
           final secureStorage= new FlutterSecureStorage();
@@ -84,6 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
             await Provider.of<ClientController>(context,listen: false).authenticateUser();
             String ePass = await secureStorage.read(key: PrefHelper.PREF_PASSWORD);
             user=await Provider.of<ClientController>(context,listen: false).authenticateClient(prefs.getString(PrefHelper.PREF_USER_ID),ePass,true);
+
             if (user.runtimeType != Client) {
               var message = 'Invalid session, Please try again!';
               if (user.toString().startsWith('Client with web user Id of'))
@@ -130,7 +131,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Image.asset('images/logo.png', width: _width),
-              SpinKitThreeBounce(
+             SpinKitThreeBounce(
                 color: Colors.white,
                 size: _width * 0.14,
               )
@@ -143,6 +144,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<bool> showAlert(var message){
     return new Alert(
+
         context: context,
       title: '',
       content: Column(

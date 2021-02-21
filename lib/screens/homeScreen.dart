@@ -21,6 +21,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen();
@@ -64,22 +65,19 @@ class _HomeScreenState extends State<HomeScreen>
   void afterFirstLayout(BuildContext context) {
     int flag = ModalRoute.of(context).settings.arguments;
     print('navFlag' + flag.toString());
-    //if (flag == 1) _showDialog();
-    _showDialog();
+    if (flag == 1) _showDialog();
   }
 
   bool isOverdue() {
     try {
       for (Account account in accounts) {
-        //print("Balance OverDue"+account.balanceOverdue.toString());
-        // print('Status :'+account.status.toString());
-        // print('Balance OverDue :'+account.balanceOverdue.toString());
-        if ((account.balanceOverdue) > 0.0 && account.status == "Open") {
+        print("Balance OverDue"+account.balanceOverdue.toString());
+        if (account.status == "Open"  && (account.balanceOverdue) > 0.0 ) {
           return true;
-        } else {
-          return false;
         }
       }
+      return false;
+
     } catch (error) {
       print(error.toString());
     }
@@ -87,15 +85,14 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   bool isElligible() {
-    for (Account account in accounts) {
-      // print('Status :'+account.status.toString());
-      // print('Balance OverDue :'+account.balanceOverdue.toString());
-
-      if (((account.balanceOverdue == null || account.balanceOverdue == 0.0) ||
-              account.balance >= 0.0) &&
-          account.status == "Closed") return true;
-    }
+    for (Account account in accounts)
+      {
+      if (account.status == "Closed")
+        return true;
+      }
     return false;
+
+
   }
 
 
@@ -177,6 +174,64 @@ class _HomeScreenState extends State<HomeScreen>
         .show();
   }
 
+  void _showMakePaymentDialog() {
+    Alert(
+        context: context,
+        onWillPopActive: true,
+        closeIcon: Icon(
+          Icons.close,
+          color: Colors.black,
+        ),
+        closeFunction: () {
+          Navigator.pop(context);
+        },
+        title: '',
+        buttons: [
+          DialogButton(
+            color: Colors.green,
+            child: Text(
+              "Apply Now",
+              style: TextStyle(
+                  color: Colors.white, fontSize: _isLarge ? 24 : 18),
+            ),
+            onPressed: () async {
+              /*//https://www.goodtogoloans.com.au/application-form/?amount=${widget.amount}&term=${widget.term}
+              try {
+                String url =
+                'https://www.goodtogoloans.com.au/application-form/?amount=${amount}&term=${term}'
+                    .replaceAll(' ', '%20');
+                print(url);
+                await launch(url);
+              } on Exception catch (e) {
+                print(e.toString());
+              }*/
+            },
+          )
+        ],
+        content: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Container(
+            width: _width * 0.7,
+            height: _height * 0.6,
+            child: WebView(
+              gestureNavigationEnabled: true,
+              initialUrl:
+              'https://www.goodtogoloans.com.au/payment-details.php',
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: (WebViewController c) {},
+              onPageStarted: (String url) {
+                if (url.startsWith('tel:')) launch("tel://1300197727");
+              },
+            ),
+          ),
+        ),
+        style: AlertStyle(
+            isCloseButton: true,
+            isOverlayTapDismiss: true,
+            titleStyle: TextStyle(fontSize: 1)))
+        .show();
+  }
+
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
@@ -189,98 +244,7 @@ class _HomeScreenState extends State<HomeScreen>
 
     client = clientProvider.getClient();
     accounts = accProvider.getAccountsList();
-//bottomSheet: SafeArea(
-//         child: Row(
-// crossAxisAlignment: CrossAxisAlignment.end,
-//           children: [
-//             InkWell(
-//               child: Container(
-//                 child: Column(
-//                   children: [
-//                     Container(
-//                       alignment: Alignment.center,
-//                       child: ImageIcon(AssetImage('images/loan.png'),
-//                           size: _isLarge ? 35 : 24, color: kSecondaryColor),
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.all(3.0),
-//                       child: Text(
-//                         'My Loans',
-//                         style: TextStyle(
-//                             fontSize: _isLarge ? 22 : 18,
-//                             fontFamily: 'Montserrat',
-//                             color: kSecondaryColor,
-//                             fontWeight: FontWeight.normal),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             InkWell(
-//               onTap: () {
-//                 Navigator.pushAndRemoveUntil(
-//                     context,
-//                     MaterialPageRoute(builder: (context) => ApplyNowScreen()),
-//                         (r) => r.isFirst);
-//                 launch('https://www.goodtogoloans.com.au/');
-//               },
-//               child: Container(
-//                 child: Column(
-//                   children: [
-//                     Container(
-//                       alignment: Alignment.center,
-//                       child: ImageIcon(AssetImage('images/apply_now.png'),
-//                           size: _isLarge ? 35 : 24, color: kSecondaryColor),
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.all(3.0),
-//                       child: Text(
-//                         'Apply Now',
-//                         style: TextStyle(
-//                             fontSize: _isLarge ? 22 : 18,
-//                             fontFamily: 'Montserrat',
-//                             color: kSecondaryColor,
-//                             fontWeight: FontWeight.normal),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             InkWell(
-//               onTap: () {
-//                 Navigator.pushAndRemoveUntil(
-//                     context,
-//                     MaterialPageRoute(builder: (context) => TawkToScreen()),
-//                         (r) => r.isFirst);
-//               },
-//               child: Container(
-//                 child: Column(
-//                   children: [
-//                     Container(
-//                       alignment: Alignment.center,
-//                       child: ImageIcon(AssetImage('images/connect.png'),
-//                           size: _isLarge ? 35 : 24, color: kSecondaryColor),
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.all(3.0),
-//                       child: Text(
-//                         'Connect',
-//                         style: TextStyle(
-//                             fontSize: _isLarge ? 22 : 18,
-//                             fontFamily: 'Montserrat',
-//                             color: kSecondaryColor,
-//                             fontWeight: FontWeight.normal),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
+
     return Scaffold(
       key: _homeScreenScaffold,
       drawer: NavigationDrawer(),
@@ -420,8 +384,7 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                     ),
                   ),
-                  title: Text(
-                      'Hi ${(client.sessionDetails.fullName.split(' ')[0])}',
+                  title: Text('Hi ${(client.sessionDetails.fullName.split(' ')[0])}',
                       //widget.client.fullName.split(' ')[0]
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,
@@ -669,18 +632,6 @@ class _HomeScreenState extends State<HomeScreen>
                 child: Column(children: [
                   Row(
                     children: [
-                      // Card(
-                      //     color: account.status.toUpperCase() == 'OPEN'
-                      //         ? kPrimaryColor
-                      //         : (account.status.toUpperCase() == 'QUOTE'
-                      //             ? Colors.amberAccent
-                      //             : Colors.red),
-                      // Text(account.status.toUpperCase(),
-                      //     style: TextStyle(
-                      //         fontSize: _isLarge ? 25 : 16,
-                      //         fontWeight: FontWeight.bold,
-                      //         color: Colors.white)),
-                      // SizedBox(width: 6),
                       Flexible(
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -709,8 +660,25 @@ class _HomeScreenState extends State<HomeScreen>
                             ],
                           ),
                         ),
-                      )
-                    ],
+                      ),
+        Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        color: account.status.toUpperCase() == 'OPEN'
+                            ? kPrimaryColor
+                            : (account.status.toUpperCase() == 'QUOTE'
+                                ? Colors.amber[300]
+                                : Colors.red),
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                          child: Text(account.status.toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: _isLarge ? 16 : 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        ))
+                    ],mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
                   !_isLarge
                       ? Padding(
@@ -732,7 +700,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       Row(
                                         children: [
                                           Text(
-                                            '\$${account.balanceOverdue == null ? 0.00 : account.balanceOverdue}',
+                                            '${accProvider.formatCurrency(account.balanceOverdue??=0.00)}',
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -780,7 +748,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       Row(
                                         children: [
                                           Text(
-                                            '\$${account.balance}',
+                                            '${accProvider.formatCurrency(account?.balance)}',
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -796,46 +764,46 @@ class _HomeScreenState extends State<HomeScreen>
                                     ],
                                   ),
                                   SizedBox(height: 10),
-                                  Container(
+                                  account.balance <= 0?Container():Container(
                                     alignment: Alignment.centerLeft,
-                                    child: account.balance <= 0
-                                        ? Container()
-                                        : Row(
-                                            children: [
-                                              Text('How to make a payment? ',
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: kSecondaryColor)),
-                                              Icon(
-                                                Icons.arrow_forward,
-                                                color: kSecondaryColor,
-                                              ),
-                                            ],
+                                    child: InkWell(
+                                      onTap: (){
+                                        _showMakePaymentDialog();
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text('How to make a payment? ',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: kSecondaryColor)),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color: kSecondaryColor,
                                           ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  account.balance <= 0
-                                      ? Container()
-                                      : FlatButton(
-                                          color: kPrimaryColor,
-                                          onPressed: () {
-                                            payURL(account);
-                                          },
-                                          child: Text(
-                                            'Pay ' +
-                                                '${accProvider.formatCurrency(account.balance)}',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                              fontFamily: 'Montserrat',
-                                            ),
-                                          ),
-                                        ),
+                                 account.balance <= 0?Container():FlatButton(
+                                    color: kPrimaryColor,
+                                    onPressed: () {
+                                      payURL(account);
+                                    },
+                                    child: Text(
+                                      'Pay ' +
+                                          '${accProvider.formatCurrency(account?.balance)}',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        fontFamily: 'Montserrat',
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               )
                             ],
@@ -949,7 +917,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         Row(
                                           children: [
                                             Text(
-                                              '\$${account.balanceOverdue == null ? 0.00 : account.balanceOverdue}',
+                                              '${accProvider.formatCurrency(account.balanceOverdue??=0.00)}',
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w600,
@@ -996,7 +964,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         Row(
                                           children: [
                                             Text(
-                                              '\$${account.balance}',
+                                              '${accProvider.formatCurrency(account?.balance)}',
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
@@ -1020,22 +988,27 @@ class _HomeScreenState extends State<HomeScreen>
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    Container(
+                                    account.balance <= 0?Container():Container(
                                       alignment: Alignment.centerLeft,
-                                      child: Row(
-                                        children: [
-                                          Text('How to make a payment? ',
-                                              style: TextStyle(
-                                                  fontSize: _isLarge ? 22 : 16,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: 'Montserrat',
-                                                  color: kSecondaryColor)),
-                                          Icon(
-                                            Icons.arrow_forward,
-                                            size: _isLarge ? 30 : 16,
-                                            color: kSecondaryColor,
-                                          ),
-                                        ],
+                                      child: InkWell(
+                                        onTap: (){
+                                          _showMakePaymentDialog();
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text('How to make a payment? ',
+                                                style: TextStyle(
+                                                    fontSize: _isLarge ? 22 : 16,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: 'Montserrat',
+                                                    color: kSecondaryColor)),
+                                            Icon(
+                                              Icons.arrow_forward,
+                                              size: _isLarge ? 30 : 16,
+                                              color: kSecondaryColor,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     SizedBox(
@@ -1057,7 +1030,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     SizedBox(
                                       height: 10,
                                     ),
-                                    FlatButton(
+                                    account.balance <= 0?Container():FlatButton(
                                       color: kPrimaryColor,
                                       onPressed: () {
                                         payURL(account);
@@ -1066,8 +1039,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         padding: EdgeInsets.all(15),
                                         child: Text(
                                           'Pay ' +
-                                              '\$' +
-                                              '${account.balance.toString()}',
+                                              '${accProvider.formatCurrency(account.balance)}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w700,
