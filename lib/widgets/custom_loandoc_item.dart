@@ -56,7 +56,7 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
                           )),
                       AutoSizeText(widget.loanDocModel.docFileName,
                           style: TextStyle(
-                              fontSize: widget._isLarge ? 14 : 16,
+                              fontSize: widget._isLarge ? 10 : 12,
                               color: kSecondaryColor))
                     ],
                   ),

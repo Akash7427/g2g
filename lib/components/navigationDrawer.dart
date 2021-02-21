@@ -177,26 +177,26 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                 });
                               },
                             ),
-                            ListTile(
-                              leading: ImageIcon(
-                                  AssetImage('images/documents.png'),
-                                  size: _isLarge ? 28 : 24,
-                                  color: kWhiteColor),
-                              title: Text(
-                                'Documents',
-                                style: TextStyle(
-                                    fontSize: _isLarge ? 22 : 18,
-                                    color: kWhiteColor),
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoanDocuments(
-                                            accountProvider
-                                                .getAccountsList()[0])));
-                              },
-                            ),
+                            // ListTile(
+                            //   leading: ImageIcon(
+                            //       AssetImage('images/documents.png'),
+                            //       size: _isLarge ? 28 : 24,
+                            //       color: kWhiteColor),
+                            //   title: Text(
+                            //     'Documents',
+                            //     style: TextStyle(
+                            //         fontSize: _isLarge ? 22 : 18,
+                            //         color: kWhiteColor),
+                            //   ),
+                            //   onTap: () {
+                            //     Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //             builder: (context) => LoanDocuments(
+                            //                 accountProvider
+                            //                     .getAccountsList()[0])));
+                            //   },
+                            // ),
 
                             ListTile(
                               leading: ImageIcon(
