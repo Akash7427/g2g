@@ -7,8 +7,12 @@ import 'package:g2g/utility/pref_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xml2json/xml2json.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:g2g/screens/loginScreen.dart';
 
-class UpdatePasswordController {
+
+class UpdatePasswordController with ChangeNotifier{
   Future<UpdatePassword> updatePassword(
       // userID, emailID,
       mobileNumber,
@@ -41,6 +45,17 @@ print(data);
     var json = myTransformer.toParker();
     var data1 = jsonDecode(json)['PasswordReset'];
     print(data1);
-    return UpdatePassword.fromJson(data1);
+    UpdatePassword updatePassword = UpdatePassword.fromJson(data1);
+    return updatePassword;
+  }
+
+
+  Future<void> logout(BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final secureStorage = new FlutterSecureStorage();
+    await preferences.clear();
+    await secureStorage.deleteAll();
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
   }
 }

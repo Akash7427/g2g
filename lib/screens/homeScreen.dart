@@ -71,13 +71,11 @@ class _HomeScreenState extends State<HomeScreen>
     try {
       for (Account account in accounts) {
         print("Balance OverDue"+account.balanceOverdue.toString());
-        if ((account.balanceOverdue) > 0.0 && account.status == "Open") {
+        if (account.status == "Open"  && (account.balanceOverdue) > 0.0 ) {
           return true;
         }
-        else{
-          return false;
-        }
       }
+      return false;
 
     } catch (error) {
       print(error.toString());
@@ -88,8 +86,9 @@ class _HomeScreenState extends State<HomeScreen>
   bool isElligible() {
     for (Account account in accounts)
       {
-      if (((account.balanceOverdue == null || account.balanceOverdue == 0.0) || account.balance >= 0.0) &&
-          account.status == "Closed") return true;}
+      if (account.status == "Closed")
+        return true;
+      }
     return false;
 
 
@@ -637,7 +636,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       Row(
                                         children: [
                                           Text(
-                                            '\$${account.balanceOverdue == null ? 0.00 : account.balanceOverdue}',
+                                            '${accProvider.formatCurrency(account.balanceOverdue??=0.00)}',
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -685,7 +684,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       Row(
                                         children: [
                                           Text(
-                                            '\$${account.balance}',
+                                            '${accProvider.formatCurrency(account?.balance)}',
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -701,7 +700,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     ],
                                   ),
                                   SizedBox(height: 10),
-                                  Container(
+                                  account.balance <= 0?Container():Container(
                                     alignment: Alignment.centerLeft,
                                     child: Row(
                                       children: [
@@ -727,7 +726,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     },
                                     child: Text(
                                       'Pay ' +
-                                          '${accProvider.formatCurrency(account.balance)}',
+                                          '${accProvider.formatCurrency(account?.balance)}',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -849,7 +848,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         Row(
                                           children: [
                                             Text(
-                                              '\$${account.balanceOverdue == null ? 0.00 : account.balanceOverdue}',
+                                              '${accProvider.formatCurrency(account.balanceOverdue??=0.00)}',
                                               style: TextStyle(
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.w600,
@@ -896,7 +895,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         Row(
                                           children: [
                                             Text(
-                                              '\$${account.balance}',
+                                              '${accProvider.formatCurrency(account?.balance)}',
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600,
@@ -920,7 +919,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     SizedBox(
                                       height: 5,
                                     ),
-                                    Container(
+                                    account.balance <= 0?Container():Container(
                                       alignment: Alignment.centerLeft,
                                       child: Row(
                                         children: [
@@ -957,7 +956,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     SizedBox(
                                       height: 10,
                                     ),
-                                    FlatButton(
+                                    account.balance <= 0?Container():FlatButton(
                                       color: kPrimaryColor,
                                       onPressed: () {
                                         payURL(account);
@@ -966,8 +965,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         padding: EdgeInsets.all(15),
                                         child: Text(
                                           'Pay ' +
-                                              '\$' +
-                                              '${account.balance.toString()}',
+                                              '${accProvider.formatCurrency(account.balance)}',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w700,

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/controllers/transactionsController.dart';
+import 'package:g2g/controllers/updatePasswordController.dart';
 import 'package:g2g/screens/splashScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -31,7 +32,9 @@ class _Good2GoAppState extends State<Good2GoApp> {
         ChangeNotifierProvider(create: (ctx) => FileDocController()),
         ChangeNotifierProvider(create: (ctx) => ClientController()),
         ChangeNotifierProvider(create: (ctx) => AccountsController()),
-        ChangeNotifierProvider(create: (ctx) => TransactionsController())
+        ChangeNotifierProvider(create: (ctx) => TransactionsController()),
+        ChangeNotifierProvider(create: (ctx) => UpdatePasswordController())
+
       ],
       child: MaterialApp(
           builder: (context, widget) => ResponsiveWrapper.builder(

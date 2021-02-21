@@ -1198,39 +1198,12 @@ print('check');
                                             child: FlatButton(
                                                 color: kSecondaryColor,
                                                 onPressed: () {
-                                                  var pr =
-                                                  ProgressDialog(context);
-                                                  if (_fbKey.currentState
-                                                      .saveAndValidate()) {
-                                                    print(_fbKey
-                                                        .currentState.value);
-
-                                                    pr.show();
-                                                    Provider.of<ClientController>(
-                                                        context,
-                                                        listen: false)
-                                                        .postClientBasic(_fbKey
-                                                        .currentState.value)
-                                                        .then((value) {
-                                                      pr.hide();
-
-                                                      _editProfileKey.currentState
-                                                          .showSnackBar(SnackBar(
-                                                        content: Text(
-                                                            value['message']),
-                                                      ));
-                                                    });
-                                                  } else {
-                                                    print(_fbKey
-                                                        .currentState.value);
-                                                    print('validation failed');
-                                                    pr.hide();
-                                                  }
+                                                  updateProfile();
                                                 },
                                                 child: Padding(
                                                   padding: EdgeInsets.all(12.0),
                                                   child: AutoSizeText(
-                                                      'Send Request'.toUpperCase(),
+                                                      'Update My Profile'.toUpperCase(),
                                                       style: TextStyle(
                                                           fontSize:
                                                           _isLarge ? 22 : 18,
@@ -1268,39 +1241,11 @@ print('check');
                                           FlatButton(
                                               color: kSecondaryColor,
                                               onPressed: () {
-                                                var pr =
-                                                ProgressDialog(context);
-                                                if (_fbKey.currentState
-                                                    .saveAndValidate()) {
-                                                  print(_fbKey
-                                                      .currentState.value);
-
-                                                  pr.show();
-                                                  Provider.of<ClientController>(
-                                                      context,
-                                                      listen: false)
-                                                      .postClientBasic(_fbKey
-                                                      .currentState.value)
-                                                      .then((value) {
-                                                    pr.hide();
-
-                                                    _editProfileKey.currentState
-                                                        .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          value['message']),
-                                                    ));
-                                                  });
-                                                } else {
-                                                  print(_fbKey
-                                                      .currentState.value);
-                                                  print('validation failed');
-                                                  pr.hide();
-                                                }
-                                              },
+                                              updateProfile();                                              },
                                               child: Padding(
                                                 padding: EdgeInsets.all(12.0),
                                                 child: AutoSizeText(
-                                                    'Send Request'.toUpperCase(),
+                                                    'Update My Profile'.toUpperCase(),
                                                     style: TextStyle(
                                                         fontSize:
                                                         _isLarge ? 22 : 18,
@@ -1343,4 +1288,107 @@ print('check');
   }
 
   removeFocus() {}
+
+  Future<bool> showAlert(var message){
+    return new Alert(
+
+        context: context,
+        title: '',
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image.asset('images/success.png'),
+            SizedBox(
+                height: 20),
+            Text(
+              message,style: TextStyle(color: Colors.black45,fontWeight: FontWeight.bold,fontSize: 20),),
+
+          ],
+        ),
+
+        buttons: [
+          DialogButton(
+            child: Text(
+              "Close",
+              style: TextStyle(
+                  color:
+                  Colors.white,
+                  fontSize: _isLarge
+                      ? 24
+                      : 18),
+            ),
+            onPressed: () =>
+               Navigator.of(context).pop,
+            color: kPrimaryColor,
+            radius: BorderRadius
+                .circular(0.0),
+          ),
+          DialogButton(
+            child: Text(
+              "Retry",
+              style: TextStyle(
+                  color:
+                  Colors.white,
+                  fontSize: _isLarge
+                      ? 24
+                      : 18),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              updateProfile();
+
+            }
+            ,
+            color: kPrimaryColor,
+            radius: BorderRadius
+                .circular(0.0),
+          )
+        ],
+        style: AlertStyle(
+          animationType:
+          AnimationType.fromTop,
+          isCloseButton: false,
+
+          isOverlayTapDismiss:
+          false,
+          titleStyle: TextStyle(
+              fontWeight:
+              FontWeight.bold,
+              fontSize: _isLarge
+                  ? 24
+                  : 18),
+        )).show();
+  }
+
+  void updateProfile() {
+    var pr =
+    ProgressDialog(context);
+    if (_fbKey.currentState
+        .saveAndValidate()) {
+      print(_fbKey
+          .currentState.value);
+
+      pr.show();
+      Provider.of<ClientController>(
+          context,
+          listen: false)
+          .postClientBasic(_fbKey
+          .currentState.value)
+          .then((value) {
+        pr.hide();
+
+       /* _editProfileKey.currentState
+            .showSnackBar(SnackBar(
+          content: Text(
+              value['message']),
+        ));*/
+        showAlert( value['message']);
+      });
+    } else {
+      print(_fbKey
+          .currentState.value);
+      print('validation failed');
+      pr.hide();
+    }
+  }
 }
