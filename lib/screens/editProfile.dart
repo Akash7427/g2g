@@ -963,7 +963,7 @@ print('check');
                                                   3),
                                               FormBuilderValidators.maxLength(
                                                   20),
-                                              FormBuilderValidators.required()
+                                             FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(
@@ -1045,13 +1045,13 @@ print('check');
                                             // maxLength: 15,
                                             decoration: buildInputDecoration(
                                                 context,
-                                                "Ph Home",
+                                                "Phone Number(Home)",
                                                 "Phone Number(Home)"),
                                             keyboardType: TextInputType.number,
                                             validators: [
                                               // FormBuilderValidators.minLength(10),
                                               //  FormBuilderValidators.numeric(),
-                                              FormBuilderValidators.required()
+                                              //FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(
@@ -1078,13 +1078,13 @@ print('check');
                                             ],
                                             decoration: buildInputDecoration(
                                                 context,
-                                                "Ph Work",
+                                                "Phone Number(Work)",
                                                 "Phone Number(Work)"),
                                             keyboardType: TextInputType.number,
                                             validators: [
                                               // FormBuilderValidators.numeric(),
                                               // FormBuilderValidators.minLength(10),
-                                              FormBuilderValidators.required()
+                                             // FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(
@@ -1112,7 +1112,7 @@ print('check');
                                             validators: [
                                               FormBuilderValidators.maxLength(
                                                   50),
-                                              FormBuilderValidators.required()
+                                             // FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(height: 20),
@@ -1138,7 +1138,7 @@ print('check');
                                             validators: [
                                               FormBuilderValidators.maxLength(
                                                   50),
-                                              FormBuilderValidators.required()
+                                            //  FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(height: 20),
@@ -1163,7 +1163,7 @@ print('check');
                                             validators: [
                                               FormBuilderValidators.maxLength(
                                                   50),
-                                              FormBuilderValidators.required()
+                                             // FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(height: 20),
@@ -1187,7 +1187,7 @@ print('check');
                                                           fontFamily: 'Montserrat',
 
                                                           fontSize:
-                                                          _isLarge ? 22 : 18,
+                                                          _isLarge ? 18 : 16,
                                                           // fontWeight:
                                                           // FontWeight.bold,
                                                           color: Colors.white)),
@@ -1206,7 +1206,7 @@ print('check');
                                                       'Update My Profile'.toUpperCase(),
                                                       style: TextStyle(
                                                           fontSize:
-                                                          _isLarge ? 22 : 18,
+                                                          _isLarge ? 18 : 16,
                                                           fontFamily: 'Montserrat',
 
                                                           // fontWeight:
@@ -1230,7 +1230,7 @@ print('check');
                                                 child: Text('Back'.toUpperCase(),
                                                     style: TextStyle(
                                                         fontSize:
-                                                        _isLarge ? 22 : 18,
+                                                        _isLarge ? 18 : 16,
                                                         fontWeight:
                                                         FontWeight.bold,
                                                         fontFamily: 'Montserrat',
@@ -1248,7 +1248,7 @@ print('check');
                                                     'Update My Profile'.toUpperCase(),
                                                     style: TextStyle(
                                                         fontSize:
-                                                        _isLarge ? 22 : 18,
+                                                        _isLarge ? 18 : 16,
                                                         fontWeight:
                                                         FontWeight.bold,
                                                         fontFamily: 'Montserrat',
@@ -1289,72 +1289,77 @@ print('check');
 
   removeFocus() {}
 
-  Future<bool> showAlert(var message){
-    return new Alert(
-
+  Future<bool> showAlert(List error,var message){
+    Alert(
         context: context,
         title: '',
-        content: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('images/success.png'),
-            SizedBox(
-                height: 20),
-            Text(
-              message,style: TextStyle(color: Colors.black45,fontWeight: FontWeight.bold,fontSize: 20),),
-
-          ],
+        content: Container(
+          child: Column(
+              crossAxisAlignment:
+              CrossAxisAlignment
+                  .center,
+              children: <
+                  Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width *0.2,
+                  height:MediaQuery.of(context).size.width *0.2,
+                  child: Image.asset(error.isEmpty?
+                      'images/success.png':'images/alert_icon.png'),
+                ),
+                SizedBox(
+                    height:
+                    20),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    message,
+                    style: TextStyle(
+                        color: Colors
+                            .black45,
+                        fontWeight: FontWeight
+                            .bold,
+                        fontSize:
+                        20),
+                  ),
+                ),
+              ]),
         ),
-
         buttons: [
           DialogButton(
             child: Text(
               "Close",
               style: TextStyle(
-                  color:
-                  Colors.white,
+                  color: Colors
+                      .white,
                   fontSize: _isLarge
                       ? 24
                       : 18),
             ),
-            onPressed: () =>
-               Navigator.of(context).pop,
-            color: kPrimaryColor,
-            radius: BorderRadius
-                .circular(0.0),
+            onPressed: (){
+              Navigator.of(context).pop();
+            },
+            color:
+            kPrimaryColor,
+            radius:
+            BorderRadius
+                .circular(
+                0.0),
           ),
-          DialogButton(
-            child: Text(
-              "Retry",
-              style: TextStyle(
-                  color:
-                  Colors.white,
-                  fontSize: _isLarge
-                      ? 24
-                      : 18),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-              updateProfile();
-
-            }
-            ,
-            color: kPrimaryColor,
-            radius: BorderRadius
-                .circular(0.0),
-          )
         ],
         style: AlertStyle(
           animationType:
-          AnimationType.fromTop,
-          isCloseButton: false,
-
+          AnimationType
+              .fromTop,
+          isCloseButton:
+          false,
           isOverlayTapDismiss:
           false,
           titleStyle: TextStyle(
               fontWeight:
-              FontWeight.bold,
-              fontSize: _isLarge
+              FontWeight
+                  .bold,
+              fontSize:
+              _isLarge
                   ? 24
                   : 18),
         )).show();
@@ -1382,7 +1387,8 @@ print('check');
           content: Text(
               value['message']),
         ));*/
-        showAlert( value['message']);
+        List error = value['error'];
+        showAlert(error,value['message']);
       });
     } else {
       print(_fbKey

@@ -21,6 +21,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen();
@@ -170,6 +171,64 @@ class _HomeScreenState extends State<HomeScreen>
                 isCloseButton: false,
                 isOverlayTapDismiss: false,
                 titleStyle: TextStyle(fontSize: 1)))
+        .show();
+  }
+
+  void _showMakePaymentDialog() {
+    Alert(
+        context: context,
+        onWillPopActive: true,
+        closeIcon: Icon(
+          Icons.close,
+          color: Colors.black,
+        ),
+        closeFunction: () {
+          Navigator.pop(context);
+        },
+        title: '',
+        buttons: [
+          DialogButton(
+            color: Colors.green,
+            child: Text(
+              "Apply Now",
+              style: TextStyle(
+                  color: Colors.white, fontSize: _isLarge ? 24 : 18),
+            ),
+            onPressed: () async {
+              /*//https://www.goodtogoloans.com.au/application-form/?amount=${widget.amount}&term=${widget.term}
+              try {
+                String url =
+                'https://www.goodtogoloans.com.au/application-form/?amount=${amount}&term=${term}'
+                    .replaceAll(' ', '%20');
+                print(url);
+                await launch(url);
+              } on Exception catch (e) {
+                print(e.toString());
+              }*/
+            },
+          )
+        ],
+        content: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Container(
+            width: _width * 0.7,
+            height: _height * 0.6,
+            child: WebView(
+              gestureNavigationEnabled: true,
+              initialUrl:
+              'https://www.goodtogoloans.com.au/payment-details.php',
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: (WebViewController c) {},
+              onPageStarted: (String url) {
+                if (url.startsWith('tel:')) launch("tel://1300197727");
+              },
+            ),
+          ),
+        ),
+        style: AlertStyle(
+            isCloseButton: true,
+            isOverlayTapDismiss: true,
+            titleStyle: TextStyle(fontSize: 1)))
         .show();
   }
 
@@ -573,18 +632,6 @@ class _HomeScreenState extends State<HomeScreen>
                 child: Column(children: [
                   Row(
                     children: [
-                      // Card(
-                      //     color: account.status.toUpperCase() == 'OPEN'
-                      //         ? kPrimaryColor
-                      //         : (account.status.toUpperCase() == 'QUOTE'
-                      //             ? Colors.amberAccent
-                      //             : Colors.red),
-                      // Text(account.status.toUpperCase(),
-                      //     style: TextStyle(
-                      //         fontSize: _isLarge ? 25 : 16,
-                      //         fontWeight: FontWeight.bold,
-                      //         color: Colors.white)),
-                      // SizedBox(width: 6),
                       Flexible(
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -613,8 +660,25 @@ class _HomeScreenState extends State<HomeScreen>
                             ],
                           ),
                         ),
-                      )
-                    ],
+                      ),
+        Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        color: account.status.toUpperCase() == 'OPEN'
+                            ? kPrimaryColor
+                            : (account.status.toUpperCase() == 'QUOTE'
+                                ? Colors.amber[300]
+                                : Colors.red),
+                        child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                          child: Text(account.status.toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: _isLarge ? 16 : 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        ))
+                    ],mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   ),
                   !_isLarge
                       ? Padding(
@@ -702,18 +766,23 @@ class _HomeScreenState extends State<HomeScreen>
                                   SizedBox(height: 10),
                                   account.balance <= 0?Container():Container(
                                     alignment: Alignment.centerLeft,
-                                    child: Row(
-                                      children: [
-                                        Text('How to make a payment? ',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: kSecondaryColor)),
-                                        Icon(
-                                          Icons.arrow_forward,
-                                          color: kSecondaryColor,
-                                        ),
-                                      ],
+                                    child: InkWell(
+                                      onTap: (){
+                                        _showMakePaymentDialog();
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text('How to make a payment? ',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: kSecondaryColor)),
+                                          Icon(
+                                            Icons.arrow_forward,
+                                            color: kSecondaryColor,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
@@ -921,20 +990,25 @@ class _HomeScreenState extends State<HomeScreen>
                                     ),
                                     account.balance <= 0?Container():Container(
                                       alignment: Alignment.centerLeft,
-                                      child: Row(
-                                        children: [
-                                          Text('How to make a payment? ',
-                                              style: TextStyle(
-                                                  fontSize: _isLarge ? 22 : 16,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: 'Montserrat',
-                                                  color: kSecondaryColor)),
-                                          Icon(
-                                            Icons.arrow_forward,
-                                            size: _isLarge ? 30 : 16,
-                                            color: kSecondaryColor,
-                                          ),
-                                        ],
+                                      child: InkWell(
+                                        onTap: (){
+                                          _showMakePaymentDialog();
+                                        },
+                                        child: Row(
+                                          children: [
+                                            Text('How to make a payment? ',
+                                                style: TextStyle(
+                                                    fontSize: _isLarge ? 22 : 16,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: 'Montserrat',
+                                                    color: kSecondaryColor)),
+                                            Icon(
+                                              Icons.arrow_forward,
+                                              size: _isLarge ? 30 : 16,
+                                              color: kSecondaryColor,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     SizedBox(

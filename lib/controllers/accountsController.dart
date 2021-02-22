@@ -40,10 +40,9 @@ class AccountsController with ChangeNotifier {
       _accounts.add(Account.fromJson(account));
 
     });
-    /*_accounts.where((account) => account.status =='Open').toList();
+    _accounts.where((account) => account.status =='Open').toList();
     _accounts.where((account) => account.status =='Quote').toList();
     _accounts.where((account) => account.status == 'Closed').toList();
-*/
 
 
     /*for (Map m in jsonDecode(response.body))
