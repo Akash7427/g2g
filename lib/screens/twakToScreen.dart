@@ -11,6 +11,8 @@ import 'package:g2g/utility/pref_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+
 
 class TawkToScreen extends StatefulWidget {
   @override
@@ -97,6 +99,14 @@ class _TawkToScreenState extends State<TawkToScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                AutoSizeText(
+                  "Connect",
+                  style: TextStyle(
+                      fontSize: _isLarge ? 32 : 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                  textAlign: TextAlign.start,
+                ),
                 SizedBox(),
                 CircleAvatar(
                   radius: 25,

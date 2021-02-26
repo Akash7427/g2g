@@ -250,7 +250,7 @@ class _HomeScreenState extends State<HomeScreen>
       drawer: NavigationDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 2, // this will be set when a new tab is tapped
+        currentIndex: 0, // this will be set when a new tab is tapped
         onTap: (value) => setState(() {
           switch (value) {
             case 0:
@@ -638,21 +638,43 @@ class _HomeScreenState extends State<HomeScreen>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                account.accountID,
-                                style: TextStyle(
-                                    fontSize: _isLarge ? 25 : 18,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.green),
-                                textAlign: TextAlign.start,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    account.accountID,
+                                    style: TextStyle(
+                                        fontSize: _isLarge ? 25 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Montserrat',
+                                        color: Colors.green),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                  Card(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20.0)),
+                                      color: account.status.toUpperCase() == 'OPEN'
+                                          ? kPrimaryColor
+                                          : (account.status.toUpperCase() == 'QUOTE'
+                                          ? Colors.amber[300]
+                                          : Colors.red),
+                                      child: Padding(
+                                        padding:
+                                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                                        child: Text(account.status.toUpperCase(),
+                                            style: TextStyle(
+                                                fontSize: _isLarge ? 16 : 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ))
+                                ],
                               ),
                               SizedBox(height: 10),
                               Text(
                                 account.accountTypeDescription,
                                 softWrap: true,
                                 style: TextStyle(
-                                    fontSize: _isLarge ? 48 : 24,
+                                    fontSize: _isLarge ? 32 : 20,
                                     fontWeight: FontWeight.w700,
                                     fontFamily: 'Montserrat',
                                     color: Colors.black),
@@ -661,24 +683,8 @@ class _HomeScreenState extends State<HomeScreen>
                           ),
                         ),
                       ),
-        Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        color: account.status.toUpperCase() == 'OPEN'
-                            ? kPrimaryColor
-                            : (account.status.toUpperCase() == 'QUOTE'
-                                ? Colors.amber[300]
-                                : Colors.red),
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-                          child: Text(account.status.toUpperCase(),
-                              style: TextStyle(
-                                  fontSize: _isLarge ? 16 : 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        ))
-                    ],mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                    ]
                   ),
                   !_isLarge
                       ? Padding(

@@ -205,10 +205,19 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     ),
                   ),
                 ),
+
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    AutoSizeText(
+                      "Loan Documents",
+                      style: TextStyle(
+                          fontSize: _isLarge ? 32 : 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      textAlign: TextAlign.start,
+                    ),
                     SizedBox(),
                     CircleAvatar(
                       radius: 25,
@@ -234,7 +243,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               top: MediaQuery
                   .of(context)
                   .size
-                  .height * 0.18,
+                  .height * 0.12,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
@@ -279,7 +288,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     child: Column(children: [
                       buildHeader(),
                       SizedBox(
-                        height: 24,
+                        height: 4,
                       ),
                       buildListHeader(),
                       Expanded(
@@ -450,6 +459,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AutoSizeText(
                 widget.account.accountID,
@@ -459,14 +469,23 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     color: Colors.black),
                 textAlign: TextAlign.start,
               ),
-              AutoSizeText(
-                " - Loan Documents",
-                style: TextStyle(
-                    fontSize: _isLarge ? 25 : 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-                textAlign: TextAlign.start,
-              ),
+              Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  color: widget.account.status.toUpperCase() == 'OPEN'
+                      ? kPrimaryColor
+                      : (widget.account.status.toUpperCase() == 'QUOTE'
+                      ? Colors.amber[300]
+                      : Colors.red),
+                  child: Padding(
+                    padding:
+                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                    child: AutoSizeText(widget.account.status.toUpperCase(),
+                        style: TextStyle(
+                            fontSize: _isLarge ? 16 : 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                  )),
             ],
           ),
           SizedBox(
@@ -476,35 +495,11 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Expanded(
-                flex: 2,
-                child: AutoSizeText(widget.account.accountTypeDescription,
-                    style: TextStyle(
-                        fontSize: _isLarge ? 30 : 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-              ),
-              SizedBox(width: 10),
-              // Flexible(
-              //   flex: 1,
-              //   child: Card(
-              //       shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(20.0)),
-              //       color: widget.account.status.toUpperCase() == 'OPEN'
-              //           ? kPrimaryColor
-              //           : (widget.account.status.toUpperCase() == 'QUOTE'
-              //               ? Colors.amber[300]
-              //               : Colors.red),
-              //       child: Padding(
-              //         padding:
-              //             EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-              //         child: AutoSizeText(widget.account.status.toUpperCase(),
-              //             style: TextStyle(
-              //                 fontSize: _isLarge ? 16 : 12,
-              //                 fontWeight: FontWeight.bold,
-              //                 color: Colors.white)),
-              //       )),
-              // ),
+              AutoSizeText(widget.account.accountTypeDescription,
+                  style: TextStyle(
+                      fontSize: _isLarge ? 32 : 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
             ],
           ),
         ],
