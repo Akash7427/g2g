@@ -34,6 +34,7 @@ class AccountsController with ChangeNotifier {
       prefs.setString(PrefHelper.PREF_ACCOUNT_ID, m['AccountId'].toString());
     }*/
     List<dynamic> m = jsonDecode(response.body);
+    _accounts.clear();
     m.forEach((account) {
 
 
