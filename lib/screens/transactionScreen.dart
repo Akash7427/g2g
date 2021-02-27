@@ -7,6 +7,7 @@ import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
+import 'package:g2g/response_models/transaction_response_model.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:g2g/widgets/custom_trans_item.dart';
@@ -32,6 +33,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   double _width;
   double _pixelRatio;
   bool _isLarge;
+  Future<List<TransactionResponseModel>> transactionList;
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -41,16 +43,30 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
     // if failed,use refreshFailed()
 
-    if (mounted) setState(() {});
-
+    if (mounted)
+      getTransactions();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
     // monitor network fetch
 
-    if (mounted) setState(() {});
+    if (mounted)
     _refreshController.loadComplete();
+  }
+
+  getTransactions() async{
+    transactionList = Provider.of<TransactionsController>(
+        context,
+        listen: false)
+        .getTransactions(widget.account.accountID);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTransactions();
   }
 
   @override
@@ -225,13 +241,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     height: 4,
                   ),
                   buildListHeader(),
-                  widget.account.balance.toString() != '0.0'
-                      ? Expanded(
+                Expanded(
                           child: FutureBuilder(
-                              future: Provider.of<TransactionsController>(
-                                      context,
-                                      listen: false)
-                                  .getTransactions(widget.account.accountID),
+                              future: transactionList ,
                               builder: (ctx, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -241,12 +253,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                       size: _width * 0.14,
                                     ),
                                   );
-                                } else {
-                                  if (!snapshot.hasData) {
-                                    return Center(
-                                      child: Text('No Transaction Found'),
-                                    );
-                                  } else {
+                                }
+                                else if(snapshot.hasData) {
                                     return MediaQuery.removePadding(
                                       removeTop: true,
                                       context: ctx,
@@ -306,14 +314,13 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                       ),
                                     );
                                   }
+                                else{
+                                  return Center(child: Text('No Transactions Found'),);
                                 }
+
                               }),
-                        )
-                      : Expanded(
-                          child: Container(
-                            child: Center(child: Text('No Transaction Found')),
-                          ),
                         ),
+
                   SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -519,7 +526,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     );
   }
 
-  Widget buildTransactionCard(Transaction transaction) {
+  Widget buildTransactionCard(TransactionResponseModel transaction) {
     return CustomTransItem(transaction, _isLarge);
   }
 }

@@ -2,12 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
+import 'package:g2g/response_models/transaction_response_model.dart';
 import 'package:intl/intl.dart';
 
 import '../constants.dart';
 class CustomTransItem extends StatelessWidget {
 
-   final Transaction transaction;
+   final TransactionResponseModel transaction;
    final bool _isLarge;
 
   CustomTransItem(this.transaction,this._isLarge);
@@ -24,7 +25,7 @@ class CustomTransItem extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   flex: 2,
-                  child: AutoSizeText(DateFormat("dd MMM yy").format(transaction.date),
+                  child: AutoSizeText(DateFormat("dd MMM yy").format(DateTime.parse(transaction.date)),
                       style: TextStyle(
                       )),
                 ),
