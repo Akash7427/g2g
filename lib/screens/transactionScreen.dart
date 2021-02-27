@@ -7,6 +7,7 @@ import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/transactionsController.dart';
 import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/transactionModel.dart';
+import 'package:g2g/response_models/transaction_response_model.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:g2g/widgets/custom_trans_item.dart';
@@ -32,25 +33,40 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   double _width;
   double _pixelRatio;
   bool _isLarge;
+  Future<List<TransactionResponseModel>> transactionList;
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     // monitor network fetch
 
     // if failed,use refreshFailed()
 
-    if (mounted) setState(() {});
-
+    if (mounted)
+      getTransactions();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
     // monitor network fetch
 
-    if (mounted) setState(() {});
+    if (mounted)
     _refreshController.loadComplete();
+  }
+
+  getTransactions() async{
+    transactionList = Provider.of<TransactionsController>(
+        context,
+        listen: false)
+        .getTransactions(widget.account.accountID);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getTransactions();
   }
 
   @override
@@ -65,7 +81,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       key: _transactionScaffoldKey,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 0, // this will be set when a new tab is tapped
+        currentIndex: 0,
+        // this will be set when a new tab is tapped
         selectedItemColor: Colors.amber[800],
         onTap: (value) => setState(() {
           switch (value) {
@@ -79,22 +96,23 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                       )));
               break; // Create this function, it should return your first page as a widget
             case 1:
-            // Navigator.pushAndRemoveUntil(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => ApplyNowScreen()),
-            //         (r) => r.isFirst);
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ApplyNowScreen()),
+              //         (r) => r.isFirst);
               launch('https://www.goodtogoloans.com.au/');
               break; // Create this function, it should return your second page as a widget
             case 2:
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => TawkToScreen()),
-                      (r) => r.isFirst);
+                  (r) => r.isFirst);
               break; // Create this function, it should return your third page as a widget
-          // Create this function, it should return your fourth page as a widget
+            // Create this function, it should return your fourth page as a widget
           }
-        }), // this will be set when a new tab is tapped
+        }),
+        // this will be set when a new tab is tapped
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Container(
@@ -178,6 +196,14 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  AutoSizeText(
+                    "Transactions",
+                    style: TextStyle(
+                        fontSize: _isLarge ? 32 : 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                    textAlign: TextAlign.start,
+                  ),
                   SizedBox(),
                   CircleAvatar(
                     radius: 25,
@@ -200,9 +226,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             ),
           ),
           new Positioned(
-
-
-            top: MediaQuery.of(context).size.height * 0.15,
+            top: MediaQuery.of(context).size.height * 0.12,
 
             left: 0.0,
             bottom: 0.0,
@@ -214,98 +238,89 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 child: Column(children: [
                   buildHeader(),
                   SizedBox(
-                    height: 24,
+                    height: 4,
                   ),
                   buildListHeader(),
-                  widget.account.balance.toString() != '0.0'
-                      ? Expanded(
-                    child: FutureBuilder(
-                        future: Provider.of<TransactionsController>(
-                            context,
-                            listen: false)
-                            .getTransactions(widget.account.accountID),
-                        builder: (ctx, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(
-                              child: SpinKitThreeBounce(
-                                color: Theme.of(context).accentColor,
-                                size: _width * 0.14,
-                              ),
-                            );
-                          } else {
-                            if (!snapshot.hasData) {
-                              return Center(
-                                child: Text('No Transaction Found'),
-                              );
-                            } else {
-                              return MediaQuery.removePadding(
-                                removeTop: true,
-                                context: ctx,
-                                child: Consumer<TransactionsController>(
-                                  builder: (ctx, transactionData, _) =>
-                                      SmartRefresher(
-                                        enablePullDown: true,
-                                        enablePullUp: false,
-                                        header: WaterDropHeader(),
-                                        footer: CustomFooter(
-                                          builder: (BuildContext context,
-                                              LoadStatus mode) {
-                                            Widget body;
-                                            if (mode == LoadStatus.idle) {
-                                              body = Text("pull up load");
-                                            } else if (mode ==
-                                                LoadStatus.loading) {
-                                              body =
-                                                  CupertinoActivityIndicator();
-                                            } else if (mode ==
-                                                LoadStatus.failed) {
-                                              body = Text(
-                                                  "Load Failed!Click retry!");
-                                            } else if (mode ==
-                                                LoadStatus.canLoading) {
-                                              body = Text(
-                                                  "release to load more");
-                                            } else {
-                                              body = Text("No more Data");
-                                            }
-                                            return Container(
-                                              height: 55.0,
-                                              child: Center(child: body),
-                                            );
-                                          },
-                                        ),
-                                        controller: _refreshController,
-                                        onRefresh: _onRefresh,
-                                        onLoading: _onLoading,
-                                        child: ListView.builder(
-                                            itemCount: transactionData
-                                                .geTransactionList.length,
-                                            itemBuilder: (ctx, index) {
-                                              var transaction =
-                                              transactionData
-                                                  .geTransactionList[
-                                              index];
-
-                                              return Padding(
-                                                padding: const EdgeInsets
-                                                    .symmetric(vertical: 3.0),
-                                                child: buildTransactionCard(
-                                                    transaction),
+                Expanded(
+                          child: FutureBuilder(
+                              future: transactionList ,
+                              builder: (ctx, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: SpinKitThreeBounce(
+                                      color: Theme.of(context).accentColor,
+                                      size: _width * 0.14,
+                                    ),
+                                  );
+                                }
+                                else if(snapshot.hasData) {
+                                    return MediaQuery.removePadding(
+                                      removeTop: true,
+                                      context: ctx,
+                                      child: Consumer<TransactionsController>(
+                                        builder: (ctx, transactionData, _) =>
+                                            SmartRefresher(
+                                          enablePullDown: true,
+                                          enablePullUp: false,
+                                          header: WaterDropHeader(),
+                                          footer: CustomFooter(
+                                            builder: (BuildContext context,
+                                                LoadStatus mode) {
+                                              Widget body;
+                                              if (mode == LoadStatus.idle) {
+                                                body = Text("pull up load");
+                                              } else if (mode ==
+                                                  LoadStatus.loading) {
+                                                body =
+                                                    CupertinoActivityIndicator();
+                                              } else if (mode ==
+                                                  LoadStatus.failed) {
+                                                body = Text(
+                                                    "Load Failed!Click retry!");
+                                              } else if (mode ==
+                                                  LoadStatus.canLoading) {
+                                                body = Text(
+                                                    "release to load more");
+                                              } else {
+                                                body = Text("No more Data");
+                                              }
+                                              return Container(
+                                                height: 55.0,
+                                                child: Center(child: body),
                                               );
-                                            }),
+                                            },
+                                          ),
+                                          controller: _refreshController,
+                                          onRefresh: _onRefresh,
+                                          onLoading: _onLoading,
+                                          child: ListView.builder(
+                                              itemCount: transactionData
+                                                  .geTransactionList.length,
+                                              itemBuilder: (ctx, index) {
+                                                var transaction =
+                                                    transactionData
+                                                            .geTransactionList[
+                                                        index];
+
+                                                return Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 3.0),
+                                                  child: buildTransactionCard(
+                                                      transaction),
+                                                );
+                                              }),
+                                        ),
                                       ),
-                                ),
-                              );
-                            }
-                          }
-                        }),
-                  )
-                      : Expanded(
-                        child: Container(
-                    child: Center(child: Text('No Transaction Found')),
-                  ),
-                      ),
+                                    );
+                                  }
+                                else{
+                                  return Center(child: Text('No Transactions Found'),);
+                                }
+
+                              }),
+                        ),
+
                   SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -457,6 +472,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AutoSizeText(
                 widget.account.accountID,
@@ -466,14 +482,24 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                     color: Colors.black),
                 textAlign: TextAlign.start,
               ),
-              AutoSizeText(
-                " - Transactions",
-                style: TextStyle(
-                    fontSize: _isLarge ? 25 : 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-                textAlign: TextAlign.start,
-              ),
+              Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  color: widget.account.status.toUpperCase() == 'OPEN'
+                      ? kPrimaryColor
+                      : (widget.account.status.toUpperCase() == 'QUOTE'
+                      ? Colors.amber[300]
+                      : Colors.red),
+                  child: Padding(
+                    padding:
+                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                    child: AutoSizeText(widget.account.status.toUpperCase(),
+                        style: TextStyle(
+                            fontSize: _isLarge ? 16 : 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                  )),
+
             ],
           ),
           SizedBox(
@@ -487,31 +513,12 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 flex: 2,
                 child: AutoSizeText(widget.account.accountTypeDescription,
                     style: TextStyle(
-                        fontSize: _isLarge ? 30 : 28,
+                        fontSize: _isLarge ? 32 : 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.black)),
               ),
               SizedBox(width: 10),
-              // Flexible(
-              //   flex: 1,
-              //   child: Card(
-              //       shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(20.0)),
-              //       color: widget.account.status.toUpperCase() == 'OPEN'
-              //           ? kPrimaryColor
-              //           : (widget.account.status.toUpperCase() == 'QUOTE'
-              //           ? Colors.amber[300]
-              //           : Colors.red),
-              //       child: Padding(
-              //         padding:
-              //         EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-              //         child: AutoSizeText(widget.account.status.toUpperCase(),
-              //             style: TextStyle(
-              //                 fontSize: _isLarge ? 16 : 12,
-              //                 fontWeight: FontWeight.bold,
-              //                 color: Colors.white)),
-              //       )),
-              // ),
+
             ],
           ),
         ],
@@ -519,7 +526,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     );
   }
 
-  Widget buildTransactionCard(Transaction transaction) {
+  Widget buildTransactionCard(TransactionResponseModel transaction) {
     return CustomTransItem(transaction, _isLarge);
   }
 }

@@ -6,6 +6,7 @@ import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/loanDocController.dart';
 import 'package:g2g/models/accountModel.dart';
+import 'package:g2g/models/loanDocModel.dart';
 
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/twakToScreen.dart';
@@ -28,27 +29,39 @@ class LoanDocuments extends StatefulWidget {
 
 class _LoanDocumentsState extends State<LoanDocuments> {
   final _documentScaffoldKey = GlobalKey<ScaffoldState>();
+  Future<List<LoanDocModel>> _loanDocumentList;
   double _height;
   double _width;
   double _pixelRatio;
   bool _isLarge;
+
   RefreshController _refreshController =
   RefreshController(initialRefresh: false);
-
-  void _onRefresh() async {
+ _onRefresh() async {
     // monitor network fetch
 
     // if failed,use refreshFailed()
-    if (mounted) setState(() {});
-
+    if (mounted)
+      getLoanDocuments();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
     // monitor network fetch
 
-    if (mounted) setState(() {});
+    if (mounted)
     _refreshController.loadComplete();
+  }
+
+  getLoanDocuments() async{
+    _loanDocumentList= Provider.of<LoanDocController>(context, listen: false)
+        .fetchLoanDocList(widget.account.accountID,widget.account.status);
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLoanDocuments();
   }
 
   @override
@@ -205,10 +218,19 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     ),
                   ),
                 ),
+
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    AutoSizeText(
+                      "Loan Documents",
+                      style: TextStyle(
+                          fontSize: _isLarge ? 32 : 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      textAlign: TextAlign.start,
+                    ),
                     SizedBox(),
                     CircleAvatar(
                       radius: 25,
@@ -234,7 +256,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               top: MediaQuery
                   .of(context)
                   .size
-                  .height * 0.18,
+                  .height * 0.12,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
@@ -279,14 +301,12 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     child: Column(children: [
                       buildHeader(),
                       SizedBox(
-                        height: 24,
+                        height: 4,
                       ),
                       buildListHeader(),
                       Expanded(
                         child: FutureBuilder(
-                          future:
-                          Provider.of<LoanDocController>(context, listen: false)
-                              .fetchLoanDocList(widget.account.accountID),
+                          future:_loanDocumentList,
                           builder: (BuildContext context,
                               AsyncSnapshot<dynamic> snapshot) {
                             if (snapshot.connectionState ==
@@ -299,12 +319,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                                   size: _width * 0.14,
                                 ),
                               );
-                            } else {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: Text('No Documents Found'),
-                                );
-                              } else {
+                            } else if(snapshot.hasData) {
                                 return Consumer<LoanDocController>(
                                     builder: (ctx, docData, _) =>
                                         MediaQuery.removePadding(
@@ -357,8 +372,10 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                                           ),
                                         ));
                               }
+                            else{
+                              return Center(child: Text('No Documents Found'),);
                             }
-                          },
+                            }
                         ),
                       ),
                       SizedBox(height: 8),
@@ -450,6 +467,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
       child: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AutoSizeText(
                 widget.account.accountID,
@@ -459,14 +477,23 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                     color: Colors.black),
                 textAlign: TextAlign.start,
               ),
-              AutoSizeText(
-                " - Loan Documents",
-                style: TextStyle(
-                    fontSize: _isLarge ? 25 : 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-                textAlign: TextAlign.start,
-              ),
+              Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  color: widget.account.status.toUpperCase() == 'OPEN'
+                      ? kPrimaryColor
+                      : (widget.account.status.toUpperCase() == 'QUOTE'
+                      ? Colors.amber[300]
+                      : Colors.red),
+                  child: Padding(
+                    padding:
+                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                    child: AutoSizeText(widget.account.status.toUpperCase(),
+                        style: TextStyle(
+                            fontSize: _isLarge ? 16 : 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
+                  )),
             ],
           ),
           SizedBox(
@@ -476,35 +503,11 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Expanded(
-                flex: 2,
-                child: AutoSizeText(widget.account.accountTypeDescription,
-                    style: TextStyle(
-                        fontSize: _isLarge ? 30 : 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black)),
-              ),
-              SizedBox(width: 10),
-              // Flexible(
-              //   flex: 1,
-              //   child: Card(
-              //       shape: RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(20.0)),
-              //       color: widget.account.status.toUpperCase() == 'OPEN'
-              //           ? kPrimaryColor
-              //           : (widget.account.status.toUpperCase() == 'QUOTE'
-              //               ? Colors.amber[300]
-              //               : Colors.red),
-              //       child: Padding(
-              //         padding:
-              //             EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-              //         child: AutoSizeText(widget.account.status.toUpperCase(),
-              //             style: TextStyle(
-              //                 fontSize: _isLarge ? 16 : 12,
-              //                 fontWeight: FontWeight.bold,
-              //                 color: Colors.white)),
-              //       )),
-              // ),
+              AutoSizeText(widget.account.accountTypeDescription,
+                  style: TextStyle(
+                      fontSize: _isLarge ? 32 : 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
             ],
           ),
         ],

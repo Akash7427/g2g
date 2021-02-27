@@ -42,6 +42,7 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
                   child:
                       AutoSizeText(DateFormat("dd MMM yy").format(widget.loanDocModel.docDate),
                           style: TextStyle(
+                            fontSize: widget._isLarge ? 20 : 18,
                           )),
                 ),
                 Expanded(
