@@ -23,8 +23,8 @@ class LoanDocModel{
       : docName = json['DocName'],
         docFileName = json['DocFileName'],
         docDate = DateTime.parse(json['DocDate']),
-        docPk = json['DocPk']
-        ;
+        docPk = json['DocPk'];
+
 
   Map<String, dynamic> toJson() =>
     {

@@ -6,6 +6,7 @@ import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/loanDocController.dart';
 import 'package:g2g/models/accountModel.dart';
+import 'package:g2g/models/loanDocModel.dart';
 
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/twakToScreen.dart';
@@ -28,27 +29,39 @@ class LoanDocuments extends StatefulWidget {
 
 class _LoanDocumentsState extends State<LoanDocuments> {
   final _documentScaffoldKey = GlobalKey<ScaffoldState>();
+  Future<List<LoanDocModel>> _loanDocumentList;
   double _height;
   double _width;
   double _pixelRatio;
   bool _isLarge;
+
   RefreshController _refreshController =
   RefreshController(initialRefresh: false);
-
-  void _onRefresh() async {
+ _onRefresh() async {
     // monitor network fetch
 
     // if failed,use refreshFailed()
-    if (mounted) setState(() {});
-
+    if (mounted)
+      getLoanDocuments();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
     // monitor network fetch
 
-    if (mounted) setState(() {});
+    if (mounted)
     _refreshController.loadComplete();
+  }
+
+  getLoanDocuments() async{
+    _loanDocumentList= Provider.of<LoanDocController>(context, listen: false)
+        .fetchLoanDocList(widget.account.accountID,widget.account.status);
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLoanDocuments();
   }
 
   @override
@@ -293,9 +306,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                       buildListHeader(),
                       Expanded(
                         child: FutureBuilder(
-                          future:
-                          Provider.of<LoanDocController>(context, listen: false)
-                              .fetchLoanDocList(widget.account.accountID),
+                          future:_loanDocumentList,
                           builder: (BuildContext context,
                               AsyncSnapshot<dynamic> snapshot) {
                             if (snapshot.connectionState ==
@@ -308,12 +319,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                                   size: _width * 0.14,
                                 ),
                               );
-                            } else {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                  child: Text('No Documents Found'),
-                                );
-                              } else {
+                            } else if(snapshot.hasData) {
                                 return Consumer<LoanDocController>(
                                     builder: (ctx, docData, _) =>
                                         MediaQuery.removePadding(
@@ -366,8 +372,10 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                                           ),
                                         ));
                               }
+                            else{
+                              return Center(child: Text('No Documents Found'),);
                             }
-                          },
+                            }
                         ),
                       ),
                       SizedBox(height: 8),

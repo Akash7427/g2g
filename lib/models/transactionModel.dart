@@ -29,7 +29,8 @@ class Transaction {
   double value;
   bool canReverse;
 
-  factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
     balance: json["Balance"],
     date: DateTime.parse(json['Date']),
     elementId: json["ElementId"],
@@ -40,6 +41,7 @@ class Transaction {
     value: json["Value"],
     canReverse: json["CanReverse"],
   );
+  }
 
   Map<String, dynamic> toJson() => {
     "Balance": balance,
