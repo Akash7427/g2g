@@ -120,6 +120,7 @@ class ClientController with ChangeNotifier {
 
   Future<ClientBasicModel> getClientBasic() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print('$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}');
     http.Response response = await http.get(
         '$apiBaseURL/Client/GetClientBasic?clientId=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}',
         headers: {
