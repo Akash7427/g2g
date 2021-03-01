@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:g2g/controllers/clientController.dart';
-import 'package:g2g/utility/pref_helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'tawk_visitor.dart';
@@ -88,18 +86,19 @@ class _TawkState extends State<Tawk> {
               _controller = webViewController;
             });
           },
-          navigationDelegate: (NavigationRequest request)async {
-            if (widget.onLinkTap != null){
+          navigationDelegate: (NavigationRequest request) async {
+            if (widget.onLinkTap != null) {
               widget.onLinkTap(request.url);
               await setClientID(widget.visitor);
-
             }
 
             return NavigationDecision.navigate;
           },
           onPageFinished: (_) {
             if (widget.visitor != null) {
-              _setUser(widget.visitor);
+              setState(() {
+                _setUser(widget.visitor);
+              });
             }
             if (widget.onLoad != null) {
               widget.onLoad();
