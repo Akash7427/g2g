@@ -130,7 +130,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Image.asset('images/logo.png', width: _width),
+              Image.asset('images/fulllogo.png', width: _width*0.5),
              SpinKitThreeBounce(
                 color: Colors.white,
                 size: _width * 0.14,

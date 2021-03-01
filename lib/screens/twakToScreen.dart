@@ -95,35 +95,30 @@ class _TawkToScreenState extends State<TawkToScreen> {
                 ),
               ),
             ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AutoSizeText(
-                  "Connect",
-                  style: TextStyle(
-                      fontSize: _isLarge ? 32 : 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.start,
+            title: AutoSizeText(
+              "Connect",
+              style: TextStyle(
+                  fontSize: _isLarge ? 32 : 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
+              textAlign: TextAlign.start,
+            ),actions: [
+            CircleAvatar(
+              radius: 25,
+              backgroundColor: Color(0xffccebf2),
+              child: IconButton(
+                onPressed: () {
+                  launch("tel://1300197727");
+                },
+                icon: Icon(
+                  Icons.call,
+                  color: kSecondaryColor,
+                  size: _isLarge ? 35 : 30,
                 ),
-                SizedBox(),
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: Color(0xffccebf2),
-                  child: IconButton(
-                    onPressed: () {
-                      launch("tel://1300197727");
-                    },
-                    icon: Icon(
-                      Icons.call,
-                      color: kSecondaryColor,
-                      size: _isLarge ? 35 : 30,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
+          ],
+            centerTitle: true,
             backgroundColor: Colors.transparent,
             elevation: 0.0,
           ),

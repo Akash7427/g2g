@@ -35,7 +35,7 @@ class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
 
   RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     // monitor network fetch
@@ -48,8 +48,8 @@ class _EditProfileState extends State<EditProfile> {
 
   void _onLoading() async {
     // monitor network fetch
-await ClientController().getClientBasic();
-print('check');
+    await ClientController().getClientBasic();
+    print('check');
     if (mounted) setState(() {});
 
     _refreshController.loadComplete();
@@ -281,20 +281,20 @@ print('check');
                                   key: _fbKey,
                                   initialValue: {
                                     'first_name':
-                                        splitName(widget.data?.name, '1'),
+                                    splitName(widget.data?.name, '1'),
                                     'last_name':
-                                        splitName(widget.data?.name, '2'),
+                                    splitName(widget.data?.name, '2'),
                                     'email': widget.data?.contactMethodEmail,
                                     'mobile_no':
-                                        widget.data?.contactMethodMobile,
+                                    widget.data?.contactMethodMobile,
                                     'home_phone_no':
-                                        widget.data?.contactMethodPhoneHome,
+                                    widget.data?.contactMethodPhoneHome,
                                     'work_phone_no':
-                                        widget.data?.contactMethodPhoneWork,
+                                    widget.data?.contactMethodPhoneWork,
                                     'street_address':
-                                        widget.data?.addressPhysical,
-                                    'suburb': widget.data?.addressPhysicalFormatted,
-                                    'post_code': widget.data?.addressPostal,
+                                    widget.data?.addressPhysical?.streetAddressFull,
+                                    'suburb': widget.data?.addressPhysical?.suburb,
+                                    'post_code': widget.data?.addressPhysical?.postcode,
                                   },
                                   readOnly: false,
                                   child: Column(
@@ -921,7 +921,7 @@ print('check');
                                               return focusNode.nextFocus();
                                             },
                                             textInputAction:
-                                                TextInputAction.next,
+                                            TextInputAction.next,
                                             keyboardType: TextInputType.text,
                                             validators: [
                                               FormBuilderValidators.min(3),
@@ -950,7 +950,7 @@ print('check');
                                             ),
                                             attribute: "last_name",
                                             textInputAction:
-                                                TextInputAction.next,
+                                            TextInputAction.next,
                                             decoration: buildInputDecoration(
                                                 context,
                                                 "Last Name",
@@ -963,7 +963,7 @@ print('check');
                                                   3),
                                               FormBuilderValidators.maxLength(
                                                   20),
-                                             FormBuilderValidators.required()
+                                              FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(
@@ -971,7 +971,7 @@ print('check');
                                           ),
                                           FormBuilderTextField(
                                             textInputAction:
-                                                TextInputAction.next,
+                                            TextInputAction.next,
                                             //focusNode: emailNode,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
@@ -988,7 +988,7 @@ print('check');
                                                 "Email Address",
                                                 "Enter Email Address"),
                                             keyboardType:
-                                                TextInputType.emailAddress,
+                                            TextInputType.emailAddress,
                                             validators: [
                                               FormBuilderValidators.email(),
                                               FormBuilderValidators.required()
@@ -998,7 +998,7 @@ print('check');
                                           FormBuilderTextField(
                                             // focusNode: mobileNoNode,
                                             textInputAction:
-                                                TextInputAction.next,
+                                            TextInputAction.next,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
                                               //homePhoneNoNode.requestFocus();
@@ -1031,7 +1031,7 @@ print('check');
                                           FormBuilderTextField(
                                             //  focusNode: homePhoneNoNode,
                                             textInputAction:
-                                                TextInputAction.next,
+                                            TextInputAction.next,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
                                               // workPhoneNoNode.requestFocus();
@@ -1060,7 +1060,7 @@ print('check');
                                           FormBuilderTextField(
                                             // focusNode: workPhoneNoNode,
                                             textInputAction:
-                                                TextInputAction.next,
+                                            TextInputAction.next,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
                                               // streetAddressNode.requestFocus();
@@ -1084,7 +1084,7 @@ print('check');
                                             validators: [
                                               // FormBuilderValidators.numeric(),
                                               // FormBuilderValidators.minLength(10),
-                                             // FormBuilderValidators.required()
+                                              // FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(
@@ -1092,7 +1092,7 @@ print('check');
                                           ),
                                           FormBuilderTextField(
                                             textInputAction:
-                                                TextInputAction.next,
+                                            TextInputAction.next,
                                             // focusNode: streetAddressNode,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
@@ -1112,13 +1112,13 @@ print('check');
                                             validators: [
                                               FormBuilderValidators.maxLength(
                                                   50),
-                                             // FormBuilderValidators.required()
+                                              // FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(height: 20),
                                           FormBuilderTextField(
                                             textInputAction:
-                                                TextInputAction.next,
+                                            TextInputAction.next,
                                             //focusNode: suburbNode,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
@@ -1138,13 +1138,13 @@ print('check');
                                             validators: [
                                               FormBuilderValidators.maxLength(
                                                   50),
-                                            //  FormBuilderValidators.required()
+                                              //  FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(height: 20),
                                           FormBuilderTextField(
                                             textInputAction:
-                                                TextInputAction.done,
+                                            TextInputAction.done,
                                             //focusNode: postCodeNode,
                                             autofocus: true,
                                             onFieldSubmitted: (value) {
@@ -1163,7 +1163,7 @@ print('check');
                                             validators: [
                                               FormBuilderValidators.maxLength(
                                                   50),
-                                             // FormBuilderValidators.required()
+                                              // FormBuilderValidators.required()
                                             ],
                                           ),
                                           SizedBox(height: 20),
@@ -1241,7 +1241,7 @@ print('check');
                                           FlatButton(
                                               color: kSecondaryColor,
                                               onPressed: () {
-                                              updateProfile();                                              },
+                                                updateProfile();                                              },
                                               child: Padding(
                                                 padding: EdgeInsets.all(12.0),
                                                 child: AutoSizeText(
@@ -1276,16 +1276,16 @@ print('check');
 
   String splitName(String name, flag) {
     List<String> listName = name?.split(' ');
-if(listName != null) {
-  switch (flag) {
-    case '1':
-      return listName[listName?.length - 1];
-      break;
-    case '2':
-      return listName[0];
-      break;
-  }
-}
+    if(listName != null) {
+      switch (flag) {
+        case '1':
+          return listName[listName?.length - 1];
+          break;
+        case '2':
+          return listName[0];
+          break;
+      }
+    }
   }
 
   removeFocus() {}
@@ -1305,7 +1305,7 @@ if(listName != null) {
                   width: MediaQuery.of(context).size.width *0.2,
                   height:MediaQuery.of(context).size.width *0.2,
                   child: Image.asset(error.isEmpty?
-                      'images/success.png':'images/alert_icon.png'),
+                  'images/success.png':'images/alert_icon.png'),
                 ),
                 SizedBox(
                     height:
@@ -1383,7 +1383,7 @@ if(listName != null) {
           .then((value) {
         pr.hide();
 
-       /* _editProfileKey.currentState
+        /* _editProfileKey.currentState
             .showSnackBar(SnackBar(
           content: Text(
               value['message']),
