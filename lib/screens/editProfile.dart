@@ -281,20 +281,20 @@ print('check');
                                   key: _fbKey,
                                   initialValue: {
                                     'first_name':
-                                        splitName(widget.data.name, '1'),
+                                        splitName(widget.data?.name, '1'),
                                     'last_name':
-                                        splitName(widget.data.name, '2'),
-                                    'email': widget.data.contactMethodEmail,
+                                        splitName(widget.data?.name, '2'),
+                                    'email': widget.data?.contactMethodEmail,
                                     'mobile_no':
-                                        widget.data.contactMethodMobile,
+                                        widget.data?.contactMethodMobile,
                                     'home_phone_no':
-                                        widget.data.contactMethodPhoneHome,
+                                        widget.data?.contactMethodPhoneHome,
                                     'work_phone_no':
-                                        widget.data.contactMethodPhoneWork,
+                                        widget.data?.contactMethodPhoneWork,
                                     'street_address':
-                                        widget.data.streetAddressFull,
-                                    'suburb': widget.data.suburb,
-                                    'post_code': widget.data.postCode,
+                                        widget.data?.addressPhysical,
+                                    'suburb': widget.data?.addressPhysicalFormatted,
+                                    'post_code': widget.data?.addressPostal,
                                   },
                                   readOnly: false,
                                   child: Column(
@@ -1275,16 +1275,17 @@ print('check');
   }
 
   String splitName(String name, flag) {
-    List<String> listName = name.split(' ');
-
-    switch (flag) {
-      case '1':
-        return listName[listName.length - 1];
-        break;
-      case '2':
-        return listName[0];
-        break;
-    }
+    List<String> listName = name?.split(' ');
+if(listName != null) {
+  switch (flag) {
+    case '1':
+      return listName[listName?.length - 1];
+      break;
+    case '2':
+      return listName[0];
+      break;
+  }
+}
   }
 
   removeFocus() {}
