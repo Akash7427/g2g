@@ -219,38 +219,32 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                   ),
                 ),
 
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AutoSizeText(
-                      "Loan Documents",
-                      style: TextStyle(
-                          fontSize: _isLarge ? 32 : 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(),
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Color(0xffccebf2),
-                      child: IconButton(
-                        onPressed: () {
-                          launch("tel://1300197727");
-                        },
-                        icon: Icon(
-                          Icons.call,
-                          color: kSecondaryColor,
-                          size: _isLarge ? 35 : 30,
-                        ),
-                      ),
-                    ),
-                  ],
+                title: AutoSizeText(
+                  "Loan Documents",
+                  style: TextStyle(
+                      fontSize: _isLarge ? 32 : 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                  textAlign: TextAlign.start,
                 ),
+                actions: [     CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Color(0xffccebf2),
+                  child: IconButton(
+                    onPressed: () {
+                      launch("tel://1300197727");
+                    },
+                    icon: Icon(
+                      Icons.call,
+                      color: kSecondaryColor,
+                      size: _isLarge ? 35 : 30,
+                    ),
+                  ),
+                ),],
                 backgroundColor: Colors.transparent,
                 elevation: 0.0,
-              ),
+
+              centerTitle: true,),
             ),
             new Positioned(
               top: MediaQuery
@@ -474,7 +468,8 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                 style: TextStyle(
                     fontSize: _isLarge ? 25 : 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                    fontFamily: 'Montserrat',
+                    color: Colors.green),
                 textAlign: TextAlign.start,
               ),
               Card(

@@ -192,35 +192,31 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   ),
                 ),
               ),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  AutoSizeText(
-                    "Transactions",
-                    style: TextStyle(
-                        fontSize: _isLarge ? 32 : 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
-                    textAlign: TextAlign.start,
-                  ),
-                  SizedBox(),
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundColor: Color(0xffccebf2),
-                    child: IconButton(
-                      onPressed: () {
-                        launch("tel://1300197727");
-                      },
-                      icon: Icon(
-                        Icons.call,
-                        color: kSecondaryColor,
-                        size: _isLarge ? 35 : 30,
-                      ),
+              title: AutoSizeText(
+                "Transactions",
+                style: TextStyle(
+                    fontSize: _isLarge ? 32 : 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                textAlign: TextAlign.start,
+              ),
+              actions: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Color(0xffccebf2),
+                  child: IconButton(
+                    onPressed: () {
+                      launch("tel://1300197727");
+                    },
+                    icon: Icon(
+                      Icons.call,
+                      color: kSecondaryColor,
+                      size: _isLarge ? 35 : 30,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+              centerTitle: true,
               backgroundColor: Colors.transparent,
               elevation: 0.0,
             ),
@@ -479,7 +475,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 style: TextStyle(
                     fontSize: _isLarge ? 25 : 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black),
+                    fontFamily: 'Montserrat',
+                    color: Colors.green),
                 textAlign: TextAlign.start,
               ),
               Card(
