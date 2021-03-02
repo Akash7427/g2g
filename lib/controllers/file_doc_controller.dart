@@ -31,7 +31,7 @@ class FileDocController with ChangeNotifier {
     //       HttpHeaders.authorizationHeader:
     //           'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
     //     });
-
+print('$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&DocumentPk=$docPk');
     var url =
         '$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&DocumentPk=$docPk';
     var request = await HttpClient().getUrl(Uri.parse(url));
