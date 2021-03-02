@@ -292,9 +292,9 @@ print('check');
                                     'work_phone_no':
                                         widget.data?.contactMethodPhoneWork,
                                     'street_address':
-                                        widget.data?.addressPhysical,
-                                    'suburb': widget.data?.addressPhysicalFormatted,
-                                    'post_code': widget.data?.addressPostal,
+                                        widget.data?.addressPhysical?.streetAddressFull,
+                                    'suburb': widget.data?.addressPhysical?.suburb,
+                                    'post_code': widget.data?.addressPhysical?.postcode,
                                   },
                                   readOnly: false,
                                   child: Column(

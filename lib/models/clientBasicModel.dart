@@ -36,16 +36,16 @@ class ClientBasicModel {
   int contactMethodEmailPk;
   dynamic contactMethodPhoneHome;
   dynamic contactMethodPhoneHomePk;
-  String contactMethodPhoneWork;
-  int contactMethodPhoneWorkPk;
+  dynamic contactMethodPhoneWork;
+  dynamic contactMethodPhoneWorkPk;
   String contactMethodMobile;
   int contactMethodMobilePk;
-  dynamic addressPhysicalFormatted;
-  dynamic addressPhysical;
-  dynamic addressPhysicalPk;
-  dynamic addressPostalFormatted;
-  dynamic addressPostal;
-  dynamic addressPostalPk;
+  String addressPhysicalFormatted;
+  AddressP addressPhysical;
+  int addressPhysicalPk;
+  String addressPostalFormatted;
+  AddressP addressPostal;
+  int addressPostalPk;
   DateTime dateOfBirth;
   String gender;
 
@@ -61,10 +61,10 @@ class ClientBasicModel {
     contactMethodMobile: json["ContactMethodMobile"],
     contactMethodMobilePk: json["ContactMethodMobilePk"],
     addressPhysicalFormatted: json["AddressPhysicalFormatted"],
-    addressPhysical: json["AddressPhysical"],
+    addressPhysical: AddressP.fromJson(json["AddressPhysical"]),
     addressPhysicalPk: json["AddressPhysicalPk"],
     addressPostalFormatted: json["AddressPostalFormatted"],
-    addressPostal: json["AddressPostal"],
+    addressPostal: AddressP.fromJson(json["AddressPostal"]),
     addressPostalPk: json["AddressPostalPk"],
     dateOfBirth: DateTime.parse(json["DateOfBirth"]),
     gender: json["Gender"],
@@ -82,54 +82,46 @@ class ClientBasicModel {
     "ContactMethodMobile": contactMethodMobile,
     "ContactMethodMobilePk": contactMethodMobilePk,
     "AddressPhysicalFormatted": addressPhysicalFormatted,
-    "AddressPhysical": addressPhysical,
+    "AddressPhysical": addressPhysical.toJson(),
     "AddressPhysicalPk": addressPhysicalPk,
     "AddressPostalFormatted": addressPostalFormatted,
-    "AddressPostal": addressPostal,
+    "AddressPostal": addressPostal.toJson(),
     "AddressPostalPk": addressPostalPk,
     "DateOfBirth": dateOfBirth.toIso8601String(),
     "Gender": gender,
   };
+}
 
-  factory ClientBasicModel.fromMap(Map < String, dynamic > json) => ClientBasicModel(
-    clientId: json["ClientId"],
-    name: json["Name"],
-    contactMethodEmail: json["ContactMethodEmail"],
-    contactMethodEmailPk: json["ContactMethodEmailPk"],
-    contactMethodPhoneHome: json["ContactMethodPhoneHome"],
-    contactMethodPhoneHomePk: json["ContactMethodPhoneHomePk"],
-    contactMethodPhoneWork: json["ContactMethodPhoneWork"],
-    contactMethodPhoneWorkPk: json["ContactMethodPhoneWorkPk"],
-    contactMethodMobile: json["ContactMethodMobile"],
-    contactMethodMobilePk: json["ContactMethodMobilePk"],
-    addressPhysicalFormatted: json["AddressPhysicalFormatted"],
-    addressPhysical: json["AddressPhysical"],
-    addressPhysicalPk: json["AddressPhysicalPk"],
-    addressPostalFormatted: json["AddressPostalFormatted"],
-    addressPostal: json["AddressPostal"],
-    addressPostalPk: json["AddressPostalPk"],
-    dateOfBirth: DateTime.parse(json["DateOfBirth"]),
-    gender: json["Gender"],
+class AddressP {
+  AddressP({
+    this.streetAddressFull,
+    this.suburb,
+    this.state,
+    this.postcode,
+    this.country,
+  });
+
+  String streetAddressFull;
+  String suburb;
+  String state;
+  String postcode;
+  String country;
+
+  factory AddressP.fromJson(Map<String, dynamic> json) => AddressP(
+    streetAddressFull: json["StreetAddressFull"],
+    suburb: json["Suburb"],
+    state: json["State"],
+    postcode: json["Postcode"],
+    country: json["Country"],
   );
 
-  Map < String, dynamic > toMap() => {
-    "ClientId": clientId,
-    "Name": name,
-    "ContactMethodEmail": contactMethodEmail,
-    "ContactMethodEmailPk": contactMethodEmailPk,
-    "ContactMethodPhoneHome": contactMethodPhoneHome,
-    "ContactMethodPhoneHomePk": contactMethodPhoneHomePk,
-    "ContactMethodPhoneWork": contactMethodPhoneWork,
-    "ContactMethodPhoneWorkPk": contactMethodPhoneWorkPk,
-    "ContactMethodMobile": contactMethodMobile,
-    "ContactMethodMobilePk": contactMethodMobilePk,
-    "AddressPhysicalFormatted": addressPhysicalFormatted,
-    "AddressPhysical": addressPhysical,
-    "AddressPhysicalPk": addressPhysicalPk,
-    "AddressPostalFormatted": addressPostalFormatted,
-    "AddressPostal": addressPostal,
-    "AddressPostalPk": addressPostalPk,
-    "DateOfBirth": dateOfBirth.toIso8601String(),
-    "Gender": gender,
+  Map<String, dynamic> toJson() => {
+    "StreetAddressFull": streetAddressFull,
+    "Suburb": suburb,
+    "State": state,
+    "Postcode": postcode,
+    "Country": country,
   };
+
+
 }
