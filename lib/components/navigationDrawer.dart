@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:g2g/components/progressDialog.dart';
@@ -77,7 +78,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting)
                               CircularProgressIndicator(),
-                            Text(
+                            AutoSizeText(
                               clientProvider.getClientName
                               ??'User',
                               style: TextStyle(
@@ -95,7 +96,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
+                              AutoSizeText(
                                 'Logout ',
                                 style: TextStyle(
                                     fontSize: 20,
@@ -132,7 +133,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             ListTile(
                               leading: ImageIcon(AssetImage('images/loan.png'),
                                   size: _isLarge ? 28 : 24, color: kWhiteColor),
-                              title: Text(
+                              title: AutoSizeText(
                                 'My Loans',
                                 style: TextStyle(
                                     fontSize: _isLarge ? 22 : 18,
@@ -155,7 +156,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             ListTile(
                               leading: Icon(Icons.settings,
                                   size: _isLarge ? 28 : 24, color: kWhiteColor),
-                              title: Text(
+                              title: AutoSizeText(
                                 'Edit Profile',
                                 style: TextStyle(
                                     fontSize: _isLarge ? 22 : 18,
@@ -182,7 +183,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             //       AssetImage('images/documents.png'),
                             //       size: _isLarge ? 28 : 24,
                             //       color: kWhiteColor),
-                            //   title: Text(
+                            //   title: AutoSizeText(
                             //     'Documents',
                             //     style: TextStyle(
                             //         fontSize: _isLarge ? 22 : 18,
@@ -203,7 +204,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                   AssetImage('images/connect.png'),
                                   size: _isLarge ? 28 : 24,
                                   color: kWhiteColor),
-                              title: Text(
+                              title: AutoSizeText(
                                 'Connect',
                                 style: TextStyle(
                                     fontSize: _isLarge ? 22 : 18,
@@ -222,7 +223,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             ),
                             // ListTile(
                             //   leading: Icon(Icons.pin_drop),
-                            //   title: Text('Reset PIN',style: TextStyle(fontSize:18),),
+                            //   title: AutoSizeText('Reset PIN',style: TextStyle(fontSize:18),),
                             //   onTap: () {
                             //     // Update the state of the app.
                             //     // ...
@@ -231,7 +232,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             ListTile(
                               leading: ImageIcon(AssetImage('images/lock.png'),
                                   size: _isLarge ? 28 : 24, color: kWhiteColor),
-                              title: Text(
+                              title: AutoSizeText(
                                 'Update Password',
                                 style: TextStyle(
                                     fontSize: _isLarge ? 22 : 18,
@@ -264,7 +265,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             onPressed: () {
                               launch('https://www.goodtogoloans.com.au/');
                             },
-                            child: Text(
+                            child: AutoSizeText(
                               'Apply Now',
                               style: TextStyle(
                                   fontSize: _isLarge ? 24 : 20,

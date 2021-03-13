@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -238,7 +239,7 @@ class _BodyState extends State<_Body> {
                loader,
                      SizedBox(height: 8.0),
                     Center(
-        child: Text(
+        child: AutoSizeText(
           _isLogin?'Authenticating':'Loading',
           textAlign: _textAlign,
           style: _messageStyle.copyWith(fontSize: _isLogin?28:28.0),

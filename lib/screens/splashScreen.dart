@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,7 +20,7 @@ import 'package:g2g/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   final int seconds;
-  final Text title;
+  final AutoSizeText title;
   final Color backgroundColor;
   final TextStyle styleTextUnderTheLoader;
   final dynamic navigateAfterSeconds;
@@ -27,7 +28,7 @@ class SplashScreen extends StatefulWidget {
   final dynamic onClick;
   final Color loaderColor;
   final Image image;
-  final Text loadingText;
+  final AutoSizeText loadingText;
   final ImageProvider imageBackground;
   final Gradient gradientBackground;
 
@@ -37,12 +38,12 @@ class SplashScreen extends StatefulWidget {
       this.photoSize,
       this.onClick,
       this.navigateAfterSeconds,
-      this.title = const Text(''),
+      this.title = const AutoSizeText(''),
       this.backgroundColor = Colors.white,
       this.styleTextUnderTheLoader = const TextStyle(
           fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.black),
       this.image,
-      this.loadingText = const Text(""),
+      this.loadingText = const AutoSizeText(""),
       this.imageBackground,
       this.gradientBackground});
 
@@ -153,7 +154,7 @@ class _SplashScreenState extends State<SplashScreen> {
           Image.asset('images/alert_icon.png'),
           SizedBox(
               height: 20),
-          Text(
+          AutoSizeText(
             message,style: TextStyle(color: Colors.black45,fontWeight: FontWeight.bold,fontSize: 20),),
 
         ],

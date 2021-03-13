@@ -60,13 +60,13 @@ class AccountsController with ChangeNotifier {
 
 
   List<Account> getAccountsList() {
-      _accounts.sort((a,b) => -a.openedDate.compareTo(b.openedDate));
+      _accounts.sort((a,b) => -a.dateOpened.compareTo(b.dateOpened));
       _accounts.forEach((element) {
         // print('Dates sorted new to last : '+element.openedDate.toString());
         // print('Account Status : '+element.status.toString());
         // print('Balance OverDue : '+element.balanceOverdue.toString());
 
-        print('Check '+element.openedDate.toString()+' ' +element.status.toString()+' '  +element.balanceOverdue.toString());
+        print('Check '+element.dateOpened.toString()+' ' +element.status.toString()+' '  +element.balanceOverdue.toString());
         // print('Balance OverDue : '+element.balanceOverdue.runtimeType.toString());
 
       });

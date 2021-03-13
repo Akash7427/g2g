@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialog{
@@ -8,24 +9,24 @@ class CustomDialog{
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(alertMessage),
+          title: AutoSizeText(alertMessage),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text(alertTitle),
-                Text(alertMessage),
+                AutoSizeText(alertTitle),
+                AutoSizeText(alertMessage),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: AutoSizeText('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text(actionText),
+              child: AutoSizeText(actionText),
               onPressed:action,
             ),
           ],

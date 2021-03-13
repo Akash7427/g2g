@@ -9,6 +9,7 @@ import 'package:g2g/models/accountModel.dart';
 import 'package:g2g/models/loanDocModel.dart';
 
 import 'package:g2g/responsive_ui.dart';
+import 'package:g2g/screens/transactionScreen.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 
 import 'package:g2g/widgets/custom_loandoc_item.dart';
@@ -55,7 +56,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
 
   getLoanDocuments() async{
     _loanDocumentList= Provider.of<LoanDocController>(context, listen: false)
-        .fetchLoanDocList(widget.account.accountID,widget.account.status);
+        .fetchLoanDocList(widget.account.accountId,widget.account.status);
   }
   @override
   void initState() {
@@ -114,7 +115,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text(
+              child: AutoSizeText(
                 'My Loans',
                 style: TextStyle(
                   fontSize: _isLarge ? 22 : 18,
@@ -131,7 +132,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text(
+              child: AutoSizeText(
                 'Apply Now',
                 style: TextStyle(
                   fontSize: _isLarge ? 22 : 18,
@@ -148,7 +149,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text(
+              child: AutoSizeText(
                 'Connect',
                 style: TextStyle(
                   fontSize: _isLarge ? 22 : 18,
@@ -168,21 +169,21 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               LoadStatus mode) {
             Widget body;
             if (mode == LoadStatus.idle) {
-              body = Text("pull up load");
+              body = AutoSizeText("pull up load");
             } else if (mode ==
                 LoadStatus.loading) {
               body =
                   CupertinoActivityIndicator();
             } else if (mode ==
                 LoadStatus.failed) {
-              body = Text(
+              body = AutoSizeText(
                   "Load Failed!Click retry!");
             } else if (mode ==
                 LoadStatus.canLoading) {
               body =
-                  Text("release to load more");
+                  AutoSizeText("release to load more");
             } else {
-              body = Text("No more Data");
+              body = AutoSizeText("No more Data");
             }
             return Container(
               height: 55.0,
@@ -222,7 +223,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                 title: AutoSizeText(
                   "Loan Documents",
                   style: TextStyle(
-                      fontSize: _isLarge ? 32 : 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
                   textAlign: TextAlign.start,
@@ -250,160 +251,125 @@ class _LoanDocumentsState extends State<LoanDocuments> {
               top: MediaQuery
                   .of(context)
                   .size
-                  .height * 0.12,
+                  .height * 0.14,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
               //here the body
-              child: SmartRefresher(
-                enablePullDown: true,
-                enablePullUp: false,
-                header: WaterDropHeader(),
-                footer: CustomFooter(
-                  builder: (BuildContext context,
-                      LoadStatus mode) {
-                    Widget body;
-                    if (mode == LoadStatus.idle) {
-                      body = Text("pull up load");
-                    } else if (mode ==
-                        LoadStatus.loading) {
-                      body =
-                          CupertinoActivityIndicator();
-                    } else if (mode ==
-                        LoadStatus.failed) {
-                      body = Text(
-                          "Load Failed!Click retry!");
-                    } else if (mode ==
-                        LoadStatus.canLoading) {
-                      body =
-                          Text("release to load more");
-                    } else {
-                      body = Text("No more Data");
-                    }
-                    return Container(
-                      height: 55.0,
-                      child: Center(child: body),
-                    );
-                  },
-                ),
-                controller: _refreshController,
-                onRefresh: _onRefresh,
-                onLoading: _onLoading,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Card(
-                    child: Column(children: [
-                      buildHeader(),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      buildListHeader(),
-                      Expanded(
-                        child: FutureBuilder(
-                          future:_loanDocumentList,
-                          builder: (BuildContext context,
-                              AsyncSnapshot<dynamic> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(
-                                child: SpinKitThreeBounce(
-                                  color: Theme
-                                      .of(context)
-                                      .accentColor,
-                                  size: _width * 0.14,
-                                ),
-                              );
-                            } else if(snapshot.hasData) {
-                                return Consumer<LoanDocController>(
-                                    builder: (ctx, docData, _) =>
-                                        MediaQuery.removePadding(
-                                          context: ctx,
-                                          removeTop: true,
-                                          child: SmartRefresher(
-                                            enablePullDown: true,
-                                            enablePullUp: false,
-                                            header: WaterDropHeader(),
-                                            footer: CustomFooter(
-                                              builder: (BuildContext context,
-                                                  LoadStatus mode) {
-                                                Widget body;
-                                                if (mode == LoadStatus.idle) {
-                                                  body = Text("pull up load");
-                                                } else if (mode ==
-                                                    LoadStatus.loading) {
-                                                  body =
-                                                      CupertinoActivityIndicator();
-                                                } else if (mode ==
-                                                    LoadStatus.failed) {
-                                                  body = Text(
-                                                      "Load Failed!Click retry!");
-                                                } else if (mode ==
-                                                    LoadStatus.canLoading) {
-                                                  body =
-                                                      Text("release to load more");
-                                                } else {
-                                                  body = Text("No more Data");
-                                                }
-                                                return Container(
-                                                  height: 55.0,
-                                                  child: Center(child: body),
-                                                );
-                                              },
-                                            ),
-                                            controller: _refreshController,
-                                            onRefresh: _onRefresh,
-                                            onLoading: _onLoading,
-                                            child: ListView.builder(
-                                              itemBuilder: (ctx, index) {
-                                                return CustomLoandocItem(
-                                                    widget.account.accountID,
-                                                    docData.getLoanDocList[index],
-                                                    _isLarge);
-                                              },
-                                              itemCount:
-                                              docData.getLoanDocList.length,
-                                            ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Card(
+                  child: Column(children: [
+                    buildHeader(),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    buildListHeader(),
+                    Expanded(
+                      child: FutureBuilder(
+                        future:_loanDocumentList,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: SpinKitThreeBounce(
+                                color: Theme
+                                    .of(context)
+                                    .accentColor,
+                                size: _width * 0.14,
+                              ),
+                            );
+                          } else if(snapshot.hasData) {
+                              return Consumer<LoanDocController>(
+                                  builder: (ctx, docData, _) =>
+                                      MediaQuery.removePadding(
+                                        context: ctx,
+                                        removeTop: true,
+                                        child: SmartRefresher(
+                                          enablePullDown: true,
+                                          enablePullUp: false,
+                                          header: WaterDropHeader(),
+                                          footer: CustomFooter(
+                                            builder: (BuildContext context,
+                                                LoadStatus mode) {
+                                              Widget body;
+                                              if (mode == LoadStatus.idle) {
+                                                body = AutoSizeText("pull up load");
+                                              } else if (mode ==
+                                                  LoadStatus.loading) {
+                                                body =
+                                                    CupertinoActivityIndicator();
+                                              } else if (mode ==
+                                                  LoadStatus.failed) {
+                                                body = AutoSizeText(
+                                                    "Load Failed!Click retry!");
+                                              } else if (mode ==
+                                                  LoadStatus.canLoading) {
+                                                body =
+                                                    AutoSizeText("release to load more");
+                                              } else {
+                                                body = AutoSizeText("No more Data");
+                                              }
+                                              return Container(
+                                                height: 55.0,
+                                                child: Center(child: body),
+                                              );
+                                            },
                                           ),
-                                        ));
-                              }
-                            else{
-                              return Center(child: Text('No Documents Found'),);
+                                          controller: _refreshController,
+                                          onRefresh: _onRefresh,
+                                          onLoading: _onLoading,
+                                          child: ListView.builder(
+                                            itemBuilder: (ctx, index) {
+                                              return CustomLoandocItem(
+                                                  widget.account.accountId,
+                                                  docData.getLoanDocList[index],
+                                                  _isLarge);
+                                            },
+                                            itemCount:
+                                            docData.getLoanDocList.length,
+                                          ),
+                                        ),
+                                      ));
                             }
-                            }
+                          else{
+                            return Center(child: AutoSizeText('No Documents Found'),);
+                          }
+                          }
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                              color: kSecondaryColor,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.arrow_back, color: Colors.white),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    AutoSizeText('Back',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white),
+                                        textAlign: TextAlign.center),
+                                  ],
+                                ),
+                              )),
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                                color: kSecondaryColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.arrow_back, color: Colors.white),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Text('Back',
-                                          style: TextStyle(
-                                              fontSize: _isLarge ? 25 : 18,
-                                              color: Colors.white),
-                                          textAlign: TextAlign.center),
-                                    ],
-                                  ),
-                                )),
-                          ),
-                        ],
-                      ),
-                    ]),
-                  ),
+                      ],
+                    ),
+                  ]),
                 ),
               ),
             ),
@@ -463,32 +429,50 @@ class _LoanDocumentsState extends State<LoanDocuments> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AutoSizeText(
-                widget.account.accountID,
-                style: TextStyle(
-                    fontSize: _isLarge ? 25 : 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    color: Colors.green),
-                textAlign: TextAlign.start,
+              InkWell(
+          onTap: (){
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) =>
+    TransactionsScreen(widget.account)));
+    },
+                child: AutoSizeText(
+                  widget.account.accountId,
+                  style: TextStyle(
+                      fontSize:  20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat',
+                      color: Colors.green),
+                  textAlign: TextAlign.start,
+                ),
               ),
-              Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  color: widget.account.status.toUpperCase() == 'OPEN'
-                      ? kPrimaryColor
-                      : (widget.account.status.toUpperCase() == 'QUOTE'
-                      ? Colors.amber[300]
-                      : Colors.red),
-                  child: Padding(
-                    padding:
-                    EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-                    child: AutoSizeText(widget.account.status.toUpperCase(),
-                        style: TextStyle(
-                            fontSize: _isLarge ? 16 : 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
-                  )),
+              InkWell(
+              onTap: (){
+              Navigator.push(
+              context,
+              MaterialPageRoute(
+              builder: (context) =>
+              TransactionsScreen(widget.account)));
+              },
+                child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    color: widget.account.status.toUpperCase() == 'OPEN'
+                        ? (widget.account.balanceOverdue) > 0.0?Colors.red:kPrimaryColor
+                        : (widget.account.status.toUpperCase() == 'QUOTE'
+                        ? Colors.amber[300]
+                        : Colors.grey),
+                    child: Padding(
+                      padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                      child: AutoSizeText(widget.account.status.toUpperCase(),
+                          style: TextStyle(
+                              fontSize: _isLarge ? 16 : 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    )),
+              ),
             ],
           ),
           SizedBox(
@@ -500,7 +484,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
             children: [
               AutoSizeText(widget.account.accountTypeDescription,
                   style: TextStyle(
-                      fontSize: _isLarge ? 32 : 20,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.black)),
             ],

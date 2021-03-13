@@ -111,7 +111,7 @@ class _EditProfileState extends State<EditProfile> {
       //               buttons: [
       //                 DialogButton(
       //
-      //                   child: Text(
+      //                   child: AutoSizeText(
       //                     "Close",
       //                     style: TextStyle(
       //                         color: Colors.white,
@@ -123,7 +123,7 @@ class _EditProfileState extends State<EditProfile> {
       //                 ),
       //                 DialogButton(
       //                   radius:BorderRadius.circular(10),
-      //                   child: Text(
+      //                   child: AutoSizeText(
       //                     "Logout",
       //                     style: TextStyle(
       //                         color: Colors.white,
@@ -152,7 +152,7 @@ class _EditProfileState extends State<EditProfile> {
       //   ],
       //   backgroundColor: Colors.white,
       //   iconTheme: IconThemeData(color: kSecondaryColor, size: 30),
-      //   title: Text('Edit Profile',
+      //   title: AutoSizeText('Edit Profile',
       //       style: TextStyle(
       //           fontSize: _isLarge?28:22,
       //           fontWeight: FontWeight.bold,
@@ -172,15 +172,15 @@ class _EditProfileState extends State<EditProfile> {
           builder: (BuildContext context, LoadStatus mode) {
             Widget body;
             if (mode == LoadStatus.idle) {
-              body = Text("pull up load");
+              body = AutoSizeText("pull up load");
             } else if (mode == LoadStatus.loading) {
               body = CupertinoActivityIndicator();
             } else if (mode == LoadStatus.failed) {
-              body = Text("Load Failed!Click retry!");
+              body = AutoSizeText("Load Failed!Click retry!");
             } else if (mode == LoadStatus.canLoading) {
-              body = Text("release to load more");
+              body = AutoSizeText("release to load more");
             } else {
-              body = Text("No more Data");
+              body = AutoSizeText("No more Data");
             }
             return Container(
               height: 55.0,
@@ -222,7 +222,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                   ),
-                  title: Text(
+                  title: AutoSizeText(
                     'Edit Profile',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -1182,7 +1182,7 @@ class _EditProfileState extends State<EditProfile> {
                                                 child: Padding(
                                                   padding:
                                                   const EdgeInsets.all(12.0),
-                                                  child: Text('Back'.toUpperCase(),
+                                                  child: AutoSizeText('Back'.toUpperCase(),
                                                       style: TextStyle(
                                                           fontFamily: 'Montserrat',
 
@@ -1227,7 +1227,7 @@ class _EditProfileState extends State<EditProfile> {
                                               child: Padding(
                                                 padding:
                                                 const EdgeInsets.all(12.0),
-                                                child: Text('Back'.toUpperCase(),
+                                                child: AutoSizeText('Back'.toUpperCase(),
                                                     style: TextStyle(
                                                         fontSize:
                                                         _isLarge ? 18 : 16,
@@ -1378,14 +1378,14 @@ class _EditProfileState extends State<EditProfile> {
       Provider.of<ClientController>(
           context,
           listen: false)
-          .postClientBasic(_fbKey
+          .postClientBasic(widget.data,_fbKey
           .currentState.value)
           .then((value) {
         pr.hide();
 
         /* _editProfileKey.currentState
             .showSnackBar(SnackBar(
-          content: Text(
+          content: AutoSizeText(
               value['message']),
         ));*/
         List error = value['error'];

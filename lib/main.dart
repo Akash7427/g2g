@@ -42,13 +42,13 @@ class _Good2GoAppState extends State<Good2GoApp> {
             maxWidth: 1200,
             minWidth: 450,
             defaultScale: true,
-            breakpoints: [
-              ResponsiveBreakpoint.resize(450, name: MOBILE),
-              ResponsiveBreakpoint.autoScale(800, name: TABLET),
-              ResponsiveBreakpoint.autoScale(1000, name: TABLET),
-              ResponsiveBreakpoint.resize(1200, name: DESKTOP),
-              ResponsiveBreakpoint.autoScale(2460, name: "4K"),
-            ],
+              breakpoints: [
+                ResponsiveBreakpoint.resize(450, name: MOBILE),
+                ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                ResponsiveBreakpoint.autoScale(1000, name: TABLET),
+                ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+                ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+              ],
                 background: Container(
                   color: Color(0xFFF5F5F5),
                 ),

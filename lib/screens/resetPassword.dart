@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:g2g/components/progressDialog.dart';
@@ -102,7 +103,7 @@ class _ResetPasswordState extends State<ResetPassword>
                         'images/logobig.png',
                         height: _isLarge ? 400 : 150,
                       ),
-                      Text(
+                      AutoSizeText(
                         'Reset Password',
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -181,7 +182,7 @@ class _ResetPasswordState extends State<ResetPassword>
                                 Container(
                                   child: RaisedButton(
                                     padding: EdgeInsets.all(10),
-                                    child: Text(
+                                    child: AutoSizeText(
                                       'Reset'.toUpperCase(),
                                       style: TextStyle(
                                           fontSize: _isLarge ? 26 : 20,
@@ -206,14 +207,14 @@ class _ResetPasswordState extends State<ResetPassword>
                                             .then(
                                           (reset) async {
                                             if (reset.IsExisting == 'FALSE') {
-                                              pr.hide();
+                                             await pr.hide();
                                             /*  Alert(
                                                   context: context,
                                                   title: '${reset.Message}',
                                                   type: AlertType.error,
                                                   buttons: [
                                                     DialogButton(
-                                                      child: Text(
+                                                      child: AutoSizeText(
                                                         "Close",
                                                         style: TextStyle(
                                                             color: Colors.white,
@@ -245,6 +246,7 @@ class _ResetPasswordState extends State<ResetPassword>
                                                   context: context,
                                                   title: '',
                                                   content: Container(
+
                                                     child: Column(
                                                         crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -252,7 +254,9 @@ class _ResetPasswordState extends State<ResetPassword>
                                                         children: <
                                                             Widget>[
                                                           Image.asset(
-                                                              'images/alert_icon.png'),
+                                                              'images/alert_icon.png',
+                                                        width: MediaQuery.of(context).size.width *0.2,
+                                                    height:MediaQuery.of(context).size.width *0.2,),
                                                           SizedBox(
                                                               height:
                                                               20),
@@ -311,6 +315,7 @@ class _ResetPasswordState extends State<ResetPassword>
                                                             : 18),
                                                   )).show();
                                             } else {
+                                             await pr.hide();
                                               Alert(
                                                   context: context,
                                                   title: '',
@@ -322,14 +327,16 @@ class _ResetPasswordState extends State<ResetPassword>
                                                         children: <
                                                             Widget>[
                                                           Image.asset(
-                                                              'images/success.png'),
+                                                              'images/success.png',
+                                                        width: MediaQuery.of(context).size.width *0.2,
+                                                    height:MediaQuery.of(context).size.width *0.2,),
                                                           SizedBox(
                                                               height:
                                                               20),
                                                           Container(
                                                             padding: EdgeInsets.symmetric(horizontal: 8),
                                                             child: Text(
-                                                              '${reset.Message}',
+                                                              'Password has been successfully reset, you will recieve an email and sms with temporary password to login.',
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .black45,
@@ -352,9 +359,16 @@ class _ResetPasswordState extends State<ResetPassword>
                                                                 ? 24
                                                                 : 18),
                                                       ),
-                                                      onPressed: () =>
+                                                      onPressed: (){
                                                           Navigator.pop(
-                                                              context),
+                                                              context);
+                                                          Navigator.pushAndRemoveUntil(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      LoginScreen()),
+                                                                  (route) => false);
+                                                          },
                                                       color:
                                                       kPrimaryColor,
                                                       radius:
@@ -380,13 +394,8 @@ class _ResetPasswordState extends State<ResetPassword>
                                                             ? 24
                                                             : 18),
                                                   )).show();
-                                              pr.hide();
-                                              Navigator.pushAndRemoveUntil(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          LoginScreen()),
-                                                  (route) => false);
+
+
                                             }
                                           },
                                         );
@@ -413,7 +422,7 @@ class _ResetPasswordState extends State<ResetPassword>
               //   child: Row(
               //     mainAxisAlignment: MainAxisAlignment.center,
               //     children: [
-              //       RichText(
+              //       RichAutoSizeText(
               //         text: TextSpan(
               //           text: 'Don’t have an account? ',
               //           style: TextStyle(

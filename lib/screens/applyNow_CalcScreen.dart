@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -57,7 +58,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
             buttons: [
               DialogButton(
                 color: Colors.green,
-                child: Text(
+                child: AutoSizeText(
                   "Apply Now",
                   style: TextStyle(
                       color: Colors.white, fontSize: _isLarge ? 24 : 18),
@@ -205,7 +206,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                           Container(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 15),
-                                            child: Text(
+                                            child: AutoSizeText(
                                               'How much would you like to borrow?',
                                               style: Theme.of(context)
                                                   .textTheme
@@ -246,13 +247,13 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Text(
+                                                AutoSizeText(
                                                   '\$ ${minSliderAmount.toInt()}',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .headline6,
                                                 ),
-                                                Text(
+                                                AutoSizeText(
                                                   '\$ ${maxSliderAmount.toInt()}',
                                                   style: Theme.of(context)
                                                       .textTheme
@@ -269,7 +270,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                               Padding(
                                                 padding: const EdgeInsets.symmetric(
                                                     horizontal: 15),
-                                                child: Text(
+                                                child: AutoSizeText(
                                                   'For how long?',
                                                   style: Theme.of(context)
                                                       .textTheme
@@ -328,7 +329,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Text(
+                                                AutoSizeText(
                                                   '4 Weeks',
                                                   style: Theme.of(context)
                                                       .textTheme
@@ -337,7 +338,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                                           fontWeight:
                                                               FontWeight.bold),
                                                 ),
-                                                Text(
+                                                AutoSizeText(
                                                   '${selected_duration_end.toInt()} Weeks',
                                                   style: Theme.of(context)
                                                       .textTheme
@@ -358,7 +359,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                             child: Row(
                                               children: [
                                                 Expanded(
-                                                  child: Text(
+                                                  child: AutoSizeText(
                                                     'Weekly Repayments',
                                                     textAlign: TextAlign.start,
                                                     style: Theme.of(context)
@@ -373,7 +374,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                                 ),
                                                 SizedBox(width: 10),
                                                 Expanded(
-                                                  child: Text(
+                                                  child: AutoSizeText(
                                                     'Total Repayments',
                                                     textAlign: TextAlign.end,
                                                     style: Theme.of(context)
@@ -405,7 +406,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                                     padding: EdgeInsets.symmetric(
                                                         vertical: 15),
                                                     color: Color(0xFFC2E8F7),
-                                                    child: Text(
+                                                    child: AutoSizeText(
                                                       '\$ ${weekly?.toStringAsFixed(2) == '0.0' ? '155.0' : weekly?.toStringAsFixed(2)}',
                                                       style: Theme.of(context)
                                                           .textTheme
@@ -423,7 +424,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                                     padding: EdgeInsets.symmetric(
                                                         vertical: 15),
                                                     color: Color(0xFFC2E8F7),
-                                                    child: Text(
+                                                    child: AutoSizeText(
                                                       '\$ ${total?.toStringAsFixed(2) == '0.0' ? '620.0' : total?.toStringAsFixed(2)}',
                                                       style: Theme.of(context)
                                                           .textTheme
@@ -451,7 +452,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                         Padding(
                                           padding: const EdgeInsets.only(right: 25),
                                           child: InkWell(
-                                            child: Text(
+                                            child: AutoSizeText(
                                               'Comparison Rate',
                                               style: Theme.of(context)
                                                   .textTheme
@@ -503,7 +504,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                       padding: EdgeInsets.only(
                                           top: 10, bottom: 10, left: 20, right: 20),
                                       child: Container(
-                                        child: Text(
+                                        child: AutoSizeText(
                                           'Next'.toUpperCase(),
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
@@ -522,7 +523,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 10),
                                       color: Color(0xFFF2F2F2),
-                                      child: Text(
+                                      child: AutoSizeText(
                                         'NOTE: The figures represented in this calculator are an example only and may not represent actual repayments contractual or otherwise.',
                                         style: Theme.of(context).textTheme.caption,
                                       ),
