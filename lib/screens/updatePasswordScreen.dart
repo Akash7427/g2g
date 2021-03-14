@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:g2g/components/navigationDrawer.dart';
@@ -36,6 +37,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
   double _width;
   double _pixelRatio;
   bool _isLarge;
+  bool _obscurePass = true;
 
   @override
   void initState() {
@@ -141,7 +143,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
 
-                                Text(
+                                AutoSizeText(
                                   'Update Password',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -178,7 +180,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                               inputFormatters: false ? null : [],
                                               validator: (value) {
                                                 if (value.isEmpty)
-                                                  return 'Password Required';
+                                                  return 'Mobile Number Required';
                                                 return null;
                                               },
                                               textInputAction:
@@ -218,14 +220,14 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                             ),
                                           ),
                                           SizedBox(height: 10),
-                                          buildFormField(Icons.lock, password,
+                                          buildPassFormField(Icons.lock, password,
                                               'New Password', pwdNode, null,
                                               obscureText: true),
                                           SizedBox(height: 20),
                                           Container(
                                             child: FlatButton(
                                               padding: EdgeInsets.all(10),
-                                              child: Text(
+                                              child: AutoSizeText(
                                                 'Update Password'.toUpperCase(),
                                                 style: TextStyle(
                                                     fontSize: _isLarge ? 26 : 20,
@@ -265,7 +267,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                             type: AlertType.error,
                                                             buttons: [
                                                               DialogButton(
-                                                                child: Text(
+                                                                child: AutoSizeText(
                                                                   "Close",
                                                                   style: TextStyle(
                                                                       color:
@@ -312,7 +314,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                                         20),
                                                                     Container(
                                                                       padding: EdgeInsets.symmetric(horizontal: 8),
-                                                                      child: Text(
+                                                                      child: AutoSizeText(
                                                                         '${updatePassword.message}',
                                                                         style: TextStyle(
                                                                             color: Colors
@@ -327,7 +329,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                             ),
                                                             buttons: [
                                                               DialogButton(
-                                                                child: Text(
+                                                                child: AutoSizeText(
                                                                   "Close",
                                                                   style: TextStyle(
                                                                       color: Colors
@@ -383,7 +385,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                                         20),
                                                                     Container(
                                                                       padding: EdgeInsets.symmetric(horizontal: 8),
-                                                                      child: Text(
+                                                                      child: AutoSizeText(
                                                                         '${updatePassword.message}',
                                                                         style: TextStyle(
                                                                             color: Colors
@@ -398,7 +400,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                             ),
                                                             buttons: [
                                                               DialogButton(
-                                                                child: Text(
+                                                                child: AutoSizeText(
                                                                   "Close",
                                                                   style: TextStyle(
                                                                       color: Colors
@@ -467,7 +469,8 @@ class _UpdatePasswordState extends State<UpdatePassword>
     );
   }
 
-  Widget buildFormField(IconData icon, TextEditingController controller,
+
+  Widget buildPassFormField(IconData icon, TextEditingController controller,
       String labelText, FocusNode fNode, FocusNode nextNode,
       {bool obscureText = false}) {
     return Container(
@@ -476,15 +479,12 @@ class _UpdatePasswordState extends State<UpdatePassword>
         inputFormatters: obscureText ? null : [],
         validator: (value) {
           if (value.isEmpty)
-            return obscureText ? 'Password Required' : 'ID Required';
+            return 'Password Required';
           return null;
         },
         textInputAction:
         nextNode != null ? TextInputAction.next : TextInputAction.done,
-        textCapitalization: obscureText
-            ? TextCapitalization.sentences
-            : TextCapitalization.characters,
-        obscureText: obscureText,
+        obscureText: _obscurePass,
         focusNode: fNode,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -501,6 +501,20 @@ class _UpdatePasswordState extends State<UpdatePassword>
             ),
             prefixIcon:
             Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
+            suffixIcon:IconButton(
+              icon: Icon(
+                // Based on passwordVisible state choose the icon
+                _obscurePass
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                color: Colors.grey,
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscurePass = !_obscurePass;
+                });
+              },
+            ),
             hintText: labelText,
             hintStyle:
             TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
@@ -516,6 +530,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
     );
   }
 }
+
 
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
