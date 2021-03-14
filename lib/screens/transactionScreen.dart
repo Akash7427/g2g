@@ -303,8 +303,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                 if(transaction.elementId == "XPOA" || transaction.elementId == "XWDL"){
                                                   return Container();
                                                 }
-                                                if(transaction.reference.isEmpty)
-                                             {
+
                                                switch(transaction.elementId){
                                                  case "EST":{
                                                   transaction.reference = "Est fee";
@@ -318,15 +317,16 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                    transaction.reference = "Refinanced";
                                                  }
                                                  break;
+                                                 case "PAY":{
+                                                   transaction.reference = 'Payment (${formatCurrency(transaction.value.abs())})';
+
+                                                 }
+                                                 break;
                                                  default: {
 
                                                  }
                                                  break;
                                                }
-                                             }
-                                                else if(transaction.reference =='Pay'){
-                                                  transaction.reference = 'Payment (${formatCurrency(transaction.value.abs())})';
-                                                }
                                                   return Padding(
                                                     padding: const EdgeInsets
                                                         .symmetric(vertical: 3.0),
