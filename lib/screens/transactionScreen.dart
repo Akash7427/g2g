@@ -11,6 +11,7 @@ import 'package:g2g/response_models/transaction_response_model.dart';
 import 'package:g2g/responsive_ui.dart';
 import 'package:g2g/screens/twakToScreen.dart';
 import 'package:g2g/widgets/custom_trans_item.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -59,7 +60,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     transactionList = Provider.of<TransactionsController>(
         context,
         listen: false)
-        .getTransactions(widget.account.accountID);
+        .getTransactions(widget.account.accountId);
   }
 
   @override
@@ -122,7 +123,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text(
+              child: AutoSizeText(
                 'My Loans',
                 style: TextStyle(
                   fontSize: _isLarge ? 22 : 18,
@@ -139,7 +140,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text(
+              child: AutoSizeText(
                 'Apply Now',
                 style: TextStyle(
                   fontSize: _isLarge ? 22 : 18,
@@ -156,7 +157,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text(
+              child: AutoSizeText(
                 'Connect',
                 style: TextStyle(
                   fontSize: _isLarge ? 22 : 18,
@@ -195,7 +196,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               title: AutoSizeText(
                 "Transactions",
                 style: TextStyle(
-                    fontSize: _isLarge ? 32 : 20,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,
@@ -222,7 +223,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             ),
           ),
           new Positioned(
-            top: MediaQuery.of(context).size.height * 0.12,
+            top: MediaQuery.of(context).size.height * 0.14,
 
             left: 0.0,
             bottom: 0.0,
@@ -265,21 +266,21 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                 LoadStatus mode) {
                                               Widget body;
                                               if (mode == LoadStatus.idle) {
-                                                body = Text("pull up load");
+                                                body = AutoSizeText("pull up load");
                                               } else if (mode ==
                                                   LoadStatus.loading) {
                                                 body =
                                                     CupertinoActivityIndicator();
                                               } else if (mode ==
                                                   LoadStatus.failed) {
-                                                body = Text(
+                                                body = AutoSizeText(
                                                     "Load Failed!Click retry!");
                                               } else if (mode ==
                                                   LoadStatus.canLoading) {
-                                                body = Text(
+                                                body = AutoSizeText(
                                                     "release to load more");
                                               } else {
-                                                body = Text("No more Data");
+                                                body = AutoSizeText("No more Data");
                                               }
                                               return Container(
                                                 height: 55.0,
@@ -294,24 +295,52 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                               itemCount: transactionData
                                                   .geTransactionList.length,
                                               itemBuilder: (ctx, index) {
-                                                var transaction =
+                                                TransactionResponseModel transaction =
                                                     transactionData
                                                             .geTransactionList[
                                                         index];
 
-                                                return Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 3.0),
-                                                  child: buildTransactionCard(
-                                                      transaction),
-                                                );
+                                                if(transaction.elementId == "XPOA" || transaction.elementId == "XWDL"){
+                                                  return Container();
+                                                }
+                                                if(transaction.reference.isEmpty)
+                                             {
+                                               switch(transaction.elementId){
+                                                 case "EST":{
+                                                  transaction.reference = "Est fee";
+                                                 }
+                                                 break;
+                                                 case "ADV":{
+                                                   transaction.reference = "Loan Advance";
+                                                 }
+                                                 break;
+                                                 case "RFN":{
+                                                   transaction.reference = "Refinanced";
+                                                 }
+                                                 break;
+                                                 default: {
+
+                                                 }
+                                                 break;
+                                               }
+                                             }
+                                                else if(transaction.reference =='Pay'){
+                                                  transaction.reference = 'Payment (${formatCurrency(transaction.value.abs())})';
+                                                }
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 3.0),
+                                                    child: buildTransactionCard(
+                                                        transaction),
+                                                  );
+
                                               }),
                                         ),
                                       ),
                                     );
                                   }
                                 else{
-                                  return Center(child: Text('No Transactions Found'),);
+                                  return Center(child: AutoSizeText('No Transactions Found'),);
                                 }
 
                               }),
@@ -336,9 +365,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                   SizedBox(
                                     width: 4,
                                   ),
-                                  Text('BACK',
+                                  AutoSizeText('BACK',
                                       style: TextStyle(
-                                          fontSize: _isLarge ? 25 : 18,
+                                          fontSize: 20,
                                           color: Colors.white),
                                       textAlign: TextAlign.center),
                                 ],
@@ -408,7 +437,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     //     children: [
     //       Row(
     //         children: [
-    //           Text(
+    //           AutoSizeText(
     //             widget.account.accountID,
     //             style: TextStyle(
     //                 fontSize: _isLarge ? 25 : 15,
@@ -416,7 +445,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     //                 color: Colors.black),
     //             textAlign: TextAlign.start,
     //           ),
-    //           Text(
+    //           AutoSizeText(
     //             " - Transactions",
     //             style: TextStyle(
     //                 fontSize: _isLarge ? 25 : 15,
@@ -433,7 +462,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     //         crossAxisAlignment: CrossAxisAlignment.end,
     //         children: [
     //           Expanded(
-    //             child: Text(widget.account.accountTypeDescription,
+    //             child: AutoSizeText(widget.account.accountTypeDescription,
     //                 style: TextStyle(
     //                     fontSize: _isLarge ? 30 : 20,
     //                     fontWeight: FontWeight.bold,
@@ -451,7 +480,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     //               child: Padding(
     //                 padding:
     //                     EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-    //                 child: Text(widget.account.status.toUpperCase(),
+    //                 child: AutoSizeText(widget.account.status.toUpperCase(),
     //                     style: TextStyle(
     //                         fontSize: _isLarge ? 16 : 12,
     //                         fontWeight: FontWeight.bold,
@@ -471,9 +500,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AutoSizeText(
-                widget.account.accountID,
+                widget.account.accountId,
                 style: TextStyle(
-                    fontSize: _isLarge ? 25 : 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Montserrat',
                     color: Colors.green),
@@ -483,10 +512,10 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   color: widget.account.status.toUpperCase() == 'OPEN'
-                      ? kPrimaryColor
+                      ? (widget.account.balanceOverdue) > 0.0?Colors.red:kPrimaryColor
                       : (widget.account.status.toUpperCase() == 'QUOTE'
                       ? Colors.amber[300]
-                      : Colors.red),
+                      : Colors.grey),
                   child: Padding(
                     padding:
                     EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
@@ -510,7 +539,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                 flex: 2,
                 child: AutoSizeText(widget.account.accountTypeDescription,
                     style: TextStyle(
-                        fontSize: _isLarge ? 32 : 20,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.black)),
               ),
@@ -525,5 +554,16 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
   Widget buildTransactionCard(TransactionResponseModel transaction) {
     return CustomTransItem(transaction, _isLarge);
+  }
+
+  String formatCurrency(double price){
+    var dollarsInUSFormat = new NumberFormat.currency(locale: "en_US",
+        symbol: "\$");
+
+    var resultPrice = '0';
+    if(price !=null) {
+      resultPrice =  dollarsInUSFormat.format(double.tryParse(price.toString()));
+    }
+    return resultPrice;
   }
 }
