@@ -142,11 +142,39 @@ class ClientController with ChangeNotifier {
     return clientBasicModel;
   }
 
-  Future<Map> postClientBasic(Map<String, dynamic> data) async {
+  String splitName(String name, flag) {
+    try{
+      List<String> listName = name?.split(' ');
+      if(listName != null) {
+        switch (flag) {
+          case '1':
+            return listName[listName?.length - 1];
+            break;
+          case '2':
+            return listName[0];
+            break;
+        }
+      }
+    }catch(e){
+      print(e);
+
+    }
+  }
+
+  Future<Map> postClientBasic(ClientBasicModel oldData,Map<String, dynamic> data) async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     print('inputFormBody' +
         json.encode(
           {
+            "old_fName":  splitName(oldData?.name, '1'),
+            "old_lName":splitName(oldData?.name, '2'),
+            "old_ContactMethodEmail": oldData.contactMethodEmail,
+            "old_ContactMethodMobile": oldData.contactMethodMobile,
+            "old_ContactMethodPhoneHome": oldData.contactMethodPhoneHome,
+            "old_ContactMethodPhoneWork": oldData.contactMethodPhoneWork,
+            "old_StreetAddressFull": oldData?.addressPhysical?.streetAddressFull,
+            "old_Suburb": oldData?.addressPhysical?.suburb,
+            "old_Postcode": oldData?.addressPhysical?.postcode,
             "fName": data["first_name"],
             "lName": data["last_name"],
             "ContactMethodEmail": data["email"],
@@ -158,28 +186,62 @@ class ClientController with ChangeNotifier {
             "Postcode": data["post_code"]
           },
         ));
-    Map<String, String> bodyMap = {
-      "fName": data["first_name"],
-      "lName": data["last_name"],
-      "ContactMethodEmail": data["email"],
-      "ContactMethodMobile": data["mobile_no"],
-      "ContactMethodPhoneHome": data["home_phone_no"],
-      "ContactMethodPhoneWork": data["work_phone_no"],
-      "StreetAddressFull": data["street_address"],
-      "Suburb": data["suburb"],
-      "Postcode": data["post_code"]
+    String fName = splitName(oldData?.name, '1');
+    String lName = splitName(oldData?.name, '2');
+    Map<String, dynamic> bodyMap = {
+      "old_fName": fName,
+      "old_lName":lName,
+      "old_ContactMethodEmail": oldData.contactMethodEmail??='',
+      "old_ContactMethodMobile": oldData.contactMethodMobile??='',
+      "old_ContactMethodPhoneHome": oldData.contactMethodPhoneHome??='',
+      "old_ContactMethodPhoneWork": oldData.contactMethodPhoneWork??='',
+      "old_StreetAddressFull": oldData?.addressPhysical?.streetAddressFull??='',
+      "old_Suburb": oldData?.addressPhysical?.suburb??='',
+      "old_Postcode": oldData?.addressPhysical?.postcode??='',
+      "fName": data["first_name"]??='',
+      "lName": data["last_name"]??='',
+      "ContactMethodEmail": data["email"]??='',
+      "ContactMethodMobile": data["mobile_no"]??='',
+      "ContactMethodPhoneHome": data["home_phone_no"]??='',
+      "ContactMethodPhoneWork": data["work_phone_no"]??='',
+      "StreetAddressFull": data["street_address"]??='',
+      "Suburb": data["suburb"]??='',
+      "Postcode": data["post_code"]??=''
     };
-    http.Response response = await http.post(
-        'https://www.goodtogoloans.com.au/crons/mobile_app_email.php',
-        headers: {
-          'Accept': '*/*',
-        },
-        encoding: Encoding.getByName("utf-8"),
-        body: bodyMap);
 
-    print(response.body);
+    print(jsonEncode(bodyMap));
 
-    return jsonDecode(response.body);
+
+
+
+    try{
+      /*var request = http.Request('POST', Uri.parse('https://www.goodtogoloans.com.au/crons/mobile_app_email.php'));
+      request.bodyFields = bodyMap;
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        print(await response.stream.bytesToString());
+        return jsonDecode(await response.stream.bytesToString());
+      }
+      else {
+        print(response.reasonPhrase);
+      }*/
+      http.Response response = await http.post(
+          'https://www.goodtogoloans.com.au/crons/mobile_app_email.php',
+          headers: {
+            'Accept': '*/*',
+          },
+          encoding: Encoding.getByName("utf-8"),
+          body: bodyMap);
+
+      print(response.body);
+      return jsonDecode(response.body);
+    }
+    catch(e){
+      print(e);
+    }
+
   }
 
   Future<void> fetchClientNameofSharedP() async {

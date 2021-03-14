@@ -139,7 +139,7 @@ class _CustomLoandocItemState extends State<CustomLoandocItem> {
           } else {
             if (dataSnapShot.error != null) {
               return Center(
-                child: Text('Error occured'),
+                child: AutoSizeText('Error occured'),
               );
             } else {
               return Consumer<FileDocController>(

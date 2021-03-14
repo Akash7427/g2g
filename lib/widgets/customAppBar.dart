@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -41,7 +42,7 @@ class _customAppBarState extends State<customAppBar> {
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text(
+              child: AutoSizeText(
                 'My Loans',
                 style: TextStyle(
                     fontSize: _isLarge ? 22 : 18,
@@ -58,7 +59,7 @@ class _customAppBarState extends State<customAppBar> {
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text(
+              child: AutoSizeText(
                 'Apply Now',
                 style: TextStyle(
                     fontSize: _isLarge ? 22 : 18,
@@ -75,7 +76,7 @@ class _customAppBarState extends State<customAppBar> {
             ),
             title: Padding(
               padding: const EdgeInsets.all(3.0),
-              child: Text(
+              child: AutoSizeText(
                 'Connect',
                 style: TextStyle(
                     fontSize: _isLarge ? 22 : 18,
@@ -117,7 +118,7 @@ class _customAppBarState extends State<customAppBar> {
                       ),
                     ),
                   ),
-                  Text('Hi ${widget.name}',
+                  AutoSizeText('Hi ${widget.name}',
                       //widget.client.fullName.split(' ')[0]
                       style: TextStyle(
                           fontSize: _isLarge ? 28 : 22,

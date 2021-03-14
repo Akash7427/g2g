@@ -177,7 +177,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
     //     ],
     //     backgroundColor: Colors.white,
     //     iconTheme: IconThemeData(color: kSecondaryColor, size: 30),
-    //     title: Text('Connect',
+    //     title: AutoSizeText('Connect',
     //         style: TextStyle(
     //             fontSize: _isLarge ? 28 : 22,
     //             fontWeight: FontWeight.bold,
