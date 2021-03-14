@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:g2g/components/progressDialog.dart';
@@ -37,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen>
   double _pixelRatio;
   bool _isLarge;
   bool _loading = false;
+  bool _obscurePass = true;
 
   @override
   void initState() {
@@ -102,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen>
                               SizedBox(height: 8),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
+                                child: AutoSizeText(
                                   'Log in to your account',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -127,14 +129,14 @@ class _LoginScreenState extends State<LoginScreen>
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        buildFormField(
+                                        buildEmailFormField(
                                             Icons.person_outline,
                                             clientID,
                                             'Email',
                                             userIDNode,
                                             pwdNode),
                                         SizedBox(height: 15),
-                                        buildFormField(Icons.lock, password,
+                                        buildPasswordFormField(Icons.lock, password,
                                             'Password', pwdNode, null,
                                             obscureText: true),
                                         SizedBox(height: 40),
@@ -142,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen>
                                           child: RaisedButton(
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 10, vertical: 16),
-                                            child: Text(
+                                            child: AutoSizeText(
                                               'Login'.toUpperCase(),
                                               style: TextStyle(
                                                   fontSize: _isLarge ? 26 : 20,
@@ -172,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                   if (value == null) {
                                                     Scaffold.of(context)
                                                         .showSnackBar(SnackBar(
-                                                      content: Text(
+                                                      content: AutoSizeText(
                                                           'Something went wrong please try again!'),
                                                     ));
                                                     return;
@@ -343,7 +345,7 @@ class _LoginScreenState extends State<LoginScreen>
                                       builder: (BuildContext context) =>
                                           ResetPassword()));
                                 },
-                                child: Text(
+                                child: AutoSizeText(
                                   'Forgot Password?',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -362,47 +364,53 @@ class _LoginScreenState extends State<LoginScreen>
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      child: Text(
-                                        'Are you a new Customer?',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: _isLarge ? 20 : 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: AutoSizeText(
+                                          'Are you a new Customer?',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: _isLarge ? 20 : 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
                                       ),
                                     ),
-                                    InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ApplyNowForLoan()));
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: _isLarge?4:0),
-                                          decoration: BoxDecoration(
-                                            // borderRadius: BorderRadius.all(Radius.circular(15)),
-                                            color: Color(0xFF17477A),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: _isLarge ? 10 : 5,
-                                              vertical: _isLarge?16:10),
-                                          child: Text(
-                                            'Apply Now'.toUpperCase(),
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: _isLarge ? 20 : 12,
-                                              // letterSpacing: 1.0,
-                                              fontWeight: FontWeight.w900,
+                                    Expanded(
+                                        flex: 4,
+                                      child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ApplyNowForLoan()));
+                                          },
+                                          child: Container(
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal: _isLarge?4:0),
+                                            decoration: BoxDecoration(
+                                              // borderRadius: BorderRadius.all(Radius.circular(15)),
+                                              color: Color(0xFF17477A),
                                             ),
-                                          ),
-                                        )),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: _isLarge ? 10 : 5,
+                                                vertical: _isLarge?16:10),
+                                            child: AutoSizeText(
+                                              'Apply Now'.toUpperCase(),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: _isLarge ? 20 : 12,
+                                                // letterSpacing: 1.0,
+                                                fontWeight: FontWeight.w900,
+                                              ),
+                                            ),
+                                          )),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -422,21 +430,19 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  Widget buildFormField(IconData icon, TextEditingController controller,
+  Widget buildEmailFormField(IconData icon, TextEditingController controller,
       String labelText, FocusNode fNode, FocusNode nextNode,
       {bool obscureText = false}) {
     return Container(
       child: TextFormField(
         cursorColor: kPrimaryColor,
-        inputFormatters: obscureText
-            ? null
-            : [
+        inputFormatters: [
                 LowerCaseTextFormatter(),
               ],
 
         validator: (value) {
           if (value.isEmpty)
-            return obscureText ? 'Password Required' : 'Email ID Required';
+            return 'Email ID Required';
           return null;
         },
         textInputAction:
@@ -444,7 +450,7 @@ class _LoginScreenState extends State<LoginScreen>
         // textCapitalization: obscureText
         //     ? TextCapitalization.sentences
         //     : TextCapitalization.characters,
-        obscureText: obscureText,
+        obscureText: false,
         focusNode: fNode,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
@@ -464,6 +470,71 @@ class _LoginScreenState extends State<LoginScreen>
             hintText: labelText,
             hintStyle:
                 TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
+        style: TextStyle(
+          fontSize: _isLarge ? 24 : 18,
+          color: Colors.black,
+        ),
+        onFieldSubmitted: (value) {
+          if (nextNode != null) nextNode.requestFocus();
+        },
+        controller: controller,
+      ),
+    );
+  }
+
+  Widget buildPasswordFormField(IconData icon, TextEditingController controller,
+      String labelText, FocusNode fNode, FocusNode nextNode,
+      {bool obscureText = false}) {
+    return Container(
+      child: TextFormField(
+        cursorColor: kPrimaryColor,
+        inputFormatters: null
+        ,
+
+        validator: (value) {
+          if (value.isEmpty)
+            return 'Password Required';
+          return null;
+        },
+        textInputAction:
+        nextNode != null ? TextInputAction.next : TextInputAction.done,
+        // textCapitalization: obscureText
+        //     ? TextCapitalization.sentences
+        //     : TextCapitalization.characters,
+        obscureText: _obscurePass,
+        focusNode: fNode,
+        decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.redAccent),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.redAccent),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+            ),
+            prefixIcon:
+            Icon(icon, color: kPrimaryColor, size: _isLarge ? 30 : 24),
+            suffixIcon:IconButton(
+              icon: Icon(
+                // Based on passwordVisible state choose the icon
+                _obscurePass
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                color: Colors.grey,
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscurePass = !_obscurePass;
+                });
+              },
+            ),
+            hintText: labelText,
+            hintStyle:
+            TextStyle(fontSize: _isLarge ? 24 : 18, color: Colors.black54)),
         style: TextStyle(
           fontSize: _isLarge ? 24 : 18,
           color: Colors.black,
