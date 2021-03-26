@@ -459,9 +459,10 @@ class _HomeScreenState extends State<HomeScreen>
                         padding:EdgeInsets.all(4),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                           index>0? FlatButton.icon(icon: Icon(Icons.keyboard_arrow_left,size: 40),label: Text('Swipe Right'),):Container(),
-                            index<accounts.length -1?FlatButton.icon(icon: Text('Swipe Left'),label: Icon(Icons.keyboard_arrow_right,size: 40)):Container()
+                           index>0? FlatButton.icon(icon: Icon(Icons.keyboard_arrow_left,size: 40,color: Colors.black,),label: AutoSizeText('Previous Loan',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),):Container(),
+                            index<accounts.length -1?FlatButton.icon(icon: AutoSizeText('Next Loan',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize:16)),label: Icon(Icons.keyboard_arrow_right,size: 40,color: Colors.black,)):Container()
                           ],
                         ),
                       ),
@@ -763,7 +764,15 @@ class _HomeScreenState extends State<HomeScreen>
                                               : kPrimaryColor)
                                               : kSecondaryColor,
                                         ),
-                                        onPressed: () {}),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TransactionsScreen(
+                                                          account)));
+
+                                        }),
                                   ],
                                 ),
                               ],
@@ -795,8 +804,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       textAlign: TextAlign.start,
                                     ),
                                     IconButton(
-                                        icon: Icon(Icons
-                                            .account_balance_wallet),
+                                        icon: Icon(null),
                                         onPressed: () {}),
                                   ],
                                 ),

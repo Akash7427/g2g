@@ -15,6 +15,7 @@ import 'package:xml2json/xml2json.dart';
 class ClientController with ChangeNotifier {
   Client client;
   String clientName = '';
+  String clientId = '';
   ClientBasicModel clientBasicModel;
   var forcePassword;
 
@@ -244,9 +245,10 @@ class ClientController with ChangeNotifier {
 
   }
 
-  Future<void> fetchClientNameofSharedP() async {
+  Future<void> fetchClientDetailsSP() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     clientName = prefs.getString(PrefHelper.PREF_FULLNAME);
+    clientId = prefs.getString(PrefHelper.Pref_CLIENT_ID);
   }
 
   Client getClient() {
@@ -255,5 +257,8 @@ class ClientController with ChangeNotifier {
 
   String get getClientName {
     return clientName;
+  }
+  String get getClientId {
+    return clientId;
   }
 }

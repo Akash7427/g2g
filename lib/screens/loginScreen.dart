@@ -373,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen>
                                           'Are you a new Customer?',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              fontSize: _isLarge ? 20 : 14,
+                                              fontSize: 20,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black),
                                         ),
@@ -404,7 +404,7 @@ class _LoginScreenState extends State<LoginScreen>
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: _isLarge ? 20 : 12,
+                                                fontSize: 18,
                                                 // letterSpacing: 1.0,
                                                 fontWeight: FontWeight.w900,
                                               ),
