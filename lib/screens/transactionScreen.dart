@@ -305,8 +305,44 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                 }
 
                                                switch(transaction.elementId){
+                                                 case "BA":{
+                                                  transaction.reference = 'Balance Adjustment';
+                                                 }
+                                                 break;
                                                  case "EST":{
-                                                  transaction.reference = "Est fee";
+                                                  transaction.reference = "Establishment Fee";
+                                                 }
+                                                 break;
+                                                 case "ESTSACC":{
+                                                   transaction.reference = "Establishment Fee";
+                                                 }
+                                                 break;
+                                                 case "FDEF":{
+                                                   transaction.reference = "Default Admin Fee";
+                                                 }
+                                                 break;
+                                                 case "FDEF":{
+                                                   transaction.reference = "Default Admin Fee";
+                                                 }
+                                                 break;
+                                                 case "FLET":{
+                                                   transaction.reference = "Default Letter Fee";
+                                                 }
+                                                 break;
+                                                 case "MACCPAYFEE":{
+                                                   transaction.reference = "Direct Debit Fee";
+                                                 }
+                                                 break;
+                                                 case "OACCOAYFEE":{
+                                                   transaction.reference = "Direct Debit Fee";
+                                                 }
+                                                 break;
+                                                 case "BLPAYFEE":{
+                                                   transaction.reference = "Direct Debit Fee";
+                                                 }
+                                                 break;
+                                                 case "REF":{
+                                                   transaction.reference = "Refund";
                                                  }
                                                  break;
                                                  case "ADV":{
@@ -318,7 +354,15 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                  }
                                                  break;
                                                  case "PAY":{
-                                                   transaction.reference = 'Payment (${formatCurrency(transaction.value.abs())})';
+                                                   if(transaction.reference.isEmpty || transaction.reference == 'Payment Reversal')
+                                                     {
+                                                       transaction.reference = 'Reversal';
+                                                     }
+                                                   else{
+                                                   //  transaction.reference = 'Payment (${formatCurrency(transaction.value.abs())})';
+                                                     transaction.reference = 'Payment (${formatCurrency(transaction.value)})';
+                                                   }
+
 
                                                  }
                                                  break;

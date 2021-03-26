@@ -50,7 +50,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
 
     return Drawer(
       child: FutureBuilder(
-        future: clientProvider.fetchClientNameofSharedP(),
+        future: clientProvider.fetchClientDetailsSP(),
         builder: (context, snapshot) =>
             Container(
               color: Colors.white,
@@ -91,19 +91,19 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                         ),
                         InkWell(
                           onTap: () {
-                            logout();
+
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               AutoSizeText(
-                                'Logout ',
+                                '${clientProvider.clientId}',
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: kSecondaryColor),
                               ),
-                              Icon(Icons.arrow_forward, color: kSecondaryColor)
+                            /*  Icon(Icons.arrow_forward, color: kSecondaryColor)*/
                             ],
                           ),
                         ),
@@ -246,6 +246,37 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                                           builder: (context) =>
                                               UpdatePassword()));
                                 });
+                              },
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.logout,color: Colors.white,),
+                              title: AutoSizeText(
+                                'Logout',
+                                style: TextStyle(
+                                    fontSize: _isLarge ? 22 : 18,
+                                    color: kWhiteColor),
+                              ),
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Confirm Logout"),
+                                      content:
+                                      Text("Are you sure you want to logout?"),
+                                      actions: [
+                                        FlatButton(
+                                          child: Text('Logout'),
+                                          onPressed: () => logout(),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: Text('Cancel'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
                             ),
                           ],

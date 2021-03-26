@@ -63,89 +63,174 @@ class _TawkToScreenState extends State<TawkToScreen> {
     await _controller.evaluateJavascript(javascriptString);
   }
 
+
+  Future<bool> _onBack() async {
+
+    bool goBack;
+
+    var value = await _controller.canGoBack();  // check webview can go back
+
+    if (value) {
+
+      _controller.goBack(); // perform webview back operation
+
+      return false;
+    } else {
+      await showDialog(
+
+        context: context,
+
+        builder: (context) => new AlertDialog(
+
+          title: new Text('Confirmation ', style: TextStyle(color: Colors.purple)),
+
+          // Are you sure?
+
+          content: new Text('Do you want exit app ? '),
+
+          // Do you want to go back?
+
+          actions: <Widget>[
+
+            new FlatButton(
+
+              onPressed: () {
+
+                Navigator.of(context).pop(false);
+
+                setState(() {
+
+                  goBack = false;
+
+                });
+
+              },
+
+              child: new Text('Yes'), // No
+
+            ),
+
+            new FlatButton(
+
+              onPressed: () {
+
+                Navigator.of(context).pop();
+
+                setState(() {
+
+                  goBack = true;
+
+                });
+
+              },
+
+              child: new Text('No'), // Yes
+
+            ),
+
+          ],
+
+        ),
+
+      );
+
+
+      if (goBack) Navigator.pop(context);   // If user press Yes pop the page
+
+      return goBack;
+
+    }
+
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-    return Scaffold(
-      key: _connectScreenKey,
-      drawer: NavigationDrawer(),
-      body: Stack(children: [
-        new Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: const AssetImage('images/bg.jpg'), fit: BoxFit.cover)),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-          child: AppBar(
-            leading: CircleAvatar(
-              radius: 25,
-              backgroundColor: Color(0xffccebf2),
-              child: IconButton(
-                onPressed: () {
-                  print('abc');
-                  _connectScreenKey.currentState.openDrawer();
-                },
-                icon: Icon(
-                  Icons.menu,
-                  color: kSecondaryColor,
-                  size: _isLarge ? 35 : 30,
-                ),
-              ),
-            ),
-            title: AutoSizeText(
-              "Connect",
-              style: TextStyle(
-                  fontSize: _isLarge ? 32 : 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-              textAlign: TextAlign.start,
-            ),actions: [
-            CircleAvatar(
-              radius: 25,
-              backgroundColor: Color(0xffccebf2),
-              child: IconButton(
-                onPressed: () {
-                  launch("tel://1300197727");
-                },
-                icon: Icon(
-                  Icons.call,
-                  color: kSecondaryColor,
-                  size: _isLarge ? 35 : 30,
-                ),
-              ),
-            ),
-          ],
-            centerTitle: true,
-            backgroundColor: Colors.transparent,
-            elevation: 0.0,
+    return WillPopScope(
+      onWillPop: _onBack,
+      child: Scaffold(
+        key: _connectScreenKey,
+        drawer: NavigationDrawer(),
+        body: Stack(children: [
+          new Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: const AssetImage('images/bg.jpg'), fit: BoxFit.cover)),
           ),
-        ),
-        Positioned(
-          top: MediaQuery.of(context).size.height * 0.15,
-          left: 0.0,
-          bottom: 0.0,
-          right: 0.0,
-          child: Container(
-            height: 400,
-            padding: EdgeInsets.all(10),
-            child: Tawk(
-              onLoad: (){
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+            child: AppBar(
+              leading: CircleAvatar(
+                radius: 25,
+                backgroundColor: Color(0xffccebf2),
+                child: IconButton(
+                  onPressed: () {
+                    print('abc');
+                    _connectScreenKey.currentState.openDrawer();
+                  },
+                  icon: Icon(
+                    Icons.menu,
+                    color: kSecondaryColor,
+                    size: _isLarge ? 35 : 30,
+                  ),
+                ),
+              ),
+              title: AutoSizeText(
+                "Connect",
+                style: TextStyle(
+                    fontSize: _isLarge ? 32 : 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+                textAlign: TextAlign.start,
+              ),actions: [
+              CircleAvatar(
+                radius: 25,
+                backgroundColor: Color(0xffccebf2),
+                child: IconButton(
+                  onPressed: () {
+                    launch("tel://1300197727");
+                  },
+                  icon: Icon(
+                    Icons.call,
+                    color: kSecondaryColor,
+                    size: _isLarge ? 35 : 30,
+                  ),
+                ),
+              ),
+            ],
+              centerTitle: true,
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+            ),
+          ),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.15,
+            left: 0.0,
+            bottom: 0.0,
+            right: 0.0,
+            child: Container(
+              height: 400,
+              padding: EdgeInsets.all(10),
+              child: Tawk(
+                onLoad: (){
 
-              },
-              directChatLink:
-              'https://tawk.to/chat/57f4447c8598f1538109cc15/default',
-              visitor:
-              TawkVisitor(name: name, email: email, ClientID: clientID),
-              onLinkTap: (s) async{
-                print(s);
-              },
+                },
+                directChatLink:
+                'https://tawk.to/chat/57f4447c8598f1538109cc15/default',
+                visitor:
+                TawkVisitor(name: name, email: email, ClientID: clientID),
+                onLinkTap: (s) async{
+                  print(s);
+                },
+              ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
 
     // return WebviewScaffold(
