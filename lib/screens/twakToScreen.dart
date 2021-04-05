@@ -1,18 +1,18 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:g2g/components/navigationDrawer.dart';
 import 'package:g2g/constants.dart';
 import 'package:g2g/controllers/clientController.dart';
 import 'package:g2g/responsive_ui.dart';
+import 'package:g2g/screens/homeScreen.dart';
 import 'package:g2g/tawk/tawk_visitor.dart';
 import 'package:g2g/tawk/tawk_widget.dart';
 import 'package:g2g/utility/pref_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-
 
 class TawkToScreen extends StatefulWidget {
   @override
@@ -49,7 +49,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
     });
   }
 
-   _setClientID() async {
+  _setClientID() async {
     await ClientController().getClientBasic();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -63,95 +63,19 @@ class _TawkToScreenState extends State<TawkToScreen> {
     await _controller.evaluateJavascript(javascriptString);
   }
 
-
-  Future<bool> _onBack() async {
-
-    bool goBack;
-
-    var value = await _controller.canGoBack();  // check webview can go back
-
-    if (value) {
-
-      _controller.goBack(); // perform webview back operation
-
-      return false;
-    } else {
-      await showDialog(
-
-        context: context,
-
-        builder: (context) => new AlertDialog(
-
-          title: new Text('Confirmation ', style: TextStyle(color: Colors.purple)),
-
-          // Are you sure?
-
-          content: new Text('Do you want exit app ? '),
-
-          // Do you want to go back?
-
-          actions: <Widget>[
-
-            new FlatButton(
-
-              onPressed: () {
-
-                Navigator.of(context).pop(false);
-
-                setState(() {
-
-                  goBack = false;
-
-                });
-
-              },
-
-              child: new Text('Yes'), // No
-
-            ),
-
-            new FlatButton(
-
-              onPressed: () {
-
-                Navigator.of(context).pop();
-
-                setState(() {
-
-                  goBack = true;
-
-                });
-
-              },
-
-              child: new Text('No'), // Yes
-
-            ),
-
-          ],
-
-        ),
-
-      );
-
-
-      if (goBack) Navigator.pop(context);   // If user press Yes pop the page
-
-      return goBack;
-
-    }
-
-  }
-
-
-
   @override
   Widget build(BuildContext context) {
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
     return WillPopScope(
-      onWillPop: _onBack,
+      onWillPop: () async {
+        print('check112');
+        return Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (r) => r.isFirst);
+      },
       child: Scaffold(
         key: _connectScreenKey,
         drawer: NavigationDrawer(),
@@ -159,10 +83,11 @@ class _TawkToScreenState extends State<TawkToScreen> {
           new Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: const AssetImage('images/bg.jpg'), fit: BoxFit.cover)),
+                    image: const AssetImage('images/bg.jpg'),
+                    fit: BoxFit.cover)),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+            padding: const EdgeInsets.all(10),
             child: AppBar(
               leading: CircleAvatar(
                 radius: 25,
@@ -186,22 +111,23 @@ class _TawkToScreenState extends State<TawkToScreen> {
                     fontWeight: FontWeight.bold,
                     color: Colors.black),
                 textAlign: TextAlign.start,
-              ),actions: [
-              CircleAvatar(
-                radius: 25,
-                backgroundColor: Color(0xffccebf2),
-                child: IconButton(
-                  onPressed: () {
-                    launch("tel://1300197727");
-                  },
-                  icon: Icon(
-                    Icons.call,
-                    color: kSecondaryColor,
-                    size: _isLarge ? 35 : 30,
+              ),
+              actions: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Color(0xffccebf2),
+                  child: IconButton(
+                    onPressed: () {
+                      launch("tel://1300197727");
+                    },
+                    icon: Icon(
+                      Icons.call,
+                      color: kSecondaryColor,
+                      size: _isLarge ? 35 : 30,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
               centerTitle: true,
               backgroundColor: Colors.transparent,
               elevation: 0.0,
@@ -216,14 +142,12 @@ class _TawkToScreenState extends State<TawkToScreen> {
               height: 400,
               padding: EdgeInsets.all(10),
               child: Tawk(
-                onLoad: (){
-
-                },
+                onLoad: () {},
                 directChatLink:
-                'https://tawk.to/chat/57f4447c8598f1538109cc15/default',
+                    'https://tawk.to/chat/57f4447c8598f1538109cc15/default',
                 visitor:
-                TawkVisitor(name: name, email: email, ClientID: clientID),
-                onLinkTap: (s) async{
+                    TawkVisitor(name: name, email: email, ClientID: clientID),
+                onLinkTap: (s) async {
                   print(s);
                 },
               ),

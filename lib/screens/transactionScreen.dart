@@ -70,6 +70,19 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     getTransactions();
   }
 
+
+  Future<void> _launchInWebViewWithJavaScript(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        enableJavaScript: true,
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
@@ -102,7 +115,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
               //     MaterialPageRoute(
               //         builder: (context) => ApplyNowScreen()),
               //         (r) => r.isFirst);
-              launch('https://www.goodtogoloans.com.au/');
+              _launchInWebViewWithJavaScript('https://www.goodtogoloans.com.au/');
               break; // Create this function, it should return your second page as a widget
             case 2:
               Navigator.pushAndRemoveUntil(

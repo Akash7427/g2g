@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen>
   Client client;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  PageController pageViewController = PageController();
   var accProvider;
 
   void _onRefresh() async {
@@ -107,9 +108,23 @@ class _HomeScreenState extends State<HomeScreen>
           'https://www.goodtogoloans.com.au/payments/?fname=${fname[1].toString().trim()}&lname=${fname[0]}&email=${prefs.getString(PrefHelper.PREF_EMAIL_ID)}&account_id=${account.accountId}&client_id=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}'
               .replaceAll(' ', '%20');
       print(url);
-      await launch(url);
+   //   await launch(url);
+     await _launchInWebViewWithJavaScript(url);
+
     } on Exception catch (e) {
       print(e.toString());
+    }
+  }
+  Future<void> _launchInWebViewWithJavaScript(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        enableJavaScript: true,
+      );
+    } else {
+      throw 'Could not launch $url';
     }
   }
 
@@ -249,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen>
               //     MaterialPageRoute(
               //         builder: (context) => ApplyNowScreen()),
               //         (r) => r.isFirst);
-              launch('https://www.goodtogoloans.com.au/');
+              _launchInWebViewWithJavaScript('https://www.goodtogoloans.com.au/');
               break; // Create this function, it should return your second page as a widget
             case 2:
               Navigator.pushAndRemoveUntil(
@@ -451,6 +466,7 @@ class _HomeScreenState extends State<HomeScreen>
               right: 0.0,
               //here the body
               child: PageView.builder(
+                controller: pageViewController,
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Column(
@@ -461,8 +477,16 @@ class _HomeScreenState extends State<HomeScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                           index>0? FlatButton.icon(icon: Icon(Icons.keyboard_arrow_left,size: 40,color: Colors.black,),label: AutoSizeText('Previous Loan',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),):Container(),
-                            index<accounts.length -1?FlatButton.icon(icon: AutoSizeText('Next Loan',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize:16)),label: Icon(Icons.keyboard_arrow_right,size: 40,color: Colors.black,)):Container()
+                           index>0? FlatButton.icon(
+                             onPressed:(){
+                               pageViewController.jumpToPage(pageViewController.page.toInt()-1);
+                             },
+                             icon: Icon(Icons.keyboard_arrow_left,size: 40,color: Colors.black,),label: AutoSizeText('Previous Loan',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 16),),):Container(),
+                            index<accounts.length -1?FlatButton.icon(
+                              onPressed:(){
+                                pageViewController.jumpToPage(pageViewController.page.toInt()+1);
+                              },
+                                icon: AutoSizeText('Next Loan',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize:16)),label: Icon(Icons.keyboard_arrow_right,size: 40,color: Colors.black,)):Container()
                           ],
                         ),
                       ),
@@ -829,9 +853,19 @@ class _HomeScreenState extends State<HomeScreen>
                                             FontWeight.bold,
                                             color:
                                             kSecondaryColor)),
-                                    Icon(
-                                      Icons.info_outlined,
-                                      color: kSecondaryColor,
+                                    InkWell(
+                                      onTap: (){
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    TransactionsScreen(
+                                                        account)));
+                                      },
+                                      child: Icon(
+                                        Icons.info_outlined,
+                                        color: kSecondaryColor,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -919,7 +953,14 @@ class _HomeScreenState extends State<HomeScreen>
                                                   : kPrimaryColor)
                                                   : kSecondaryColor,
                                               size: 30),
-                                          onPressed: () {}),
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        TransactionsScreen(
+                                                            account)));
+                                          }),
                                     ],
                                   ),
                                 ],
@@ -958,8 +999,7 @@ class _HomeScreenState extends State<HomeScreen>
                                       ),
                                       IconButton(
                                           icon: Icon(
-                                              Icons
-                                                  .account_balance_wallet,
+                                             null,
                                               size: 30),
                                           onPressed: () {}),
                                     ],
@@ -994,11 +1034,21 @@ class _HomeScreenState extends State<HomeScreen>
                                               'Montserrat',
                                               color:
                                               kSecondaryColor)),
-                                      Icon(
-                                        Icons.info_outlined,
-                                        size:
-                                        _isLarge ? 30 : 16,
-                                        color: kSecondaryColor,
+                                      InkWell(
+                                        onTap: (){
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      TransactionsScreen(
+                                                          account)));
+                                        },
+                                        child: Icon(
+                                          Icons.info_outlined,
+                                          size:
+                                          _isLarge ? 30 : 16,
+                                          color: kSecondaryColor,
+                                        ),
                                       ),
                                     ],
                                   ),

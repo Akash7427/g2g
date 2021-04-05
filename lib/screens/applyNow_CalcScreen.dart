@@ -70,7 +70,7 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                         'https://www.goodtogoloans.com.au/application-form/?amount=${amount}&term=${term}'
                             .replaceAll(' ', '%20');
                     print(url);
-                    await launch(url);
+                    await _launchInWebViewWithJavaScript(url);
                   } on Exception catch (e) {
                     print(e.toString());
                   }
@@ -99,6 +99,19 @@ class _ApplyNowForLoanState extends State<ApplyNowForLoan> {
                 isOverlayTapDismiss: true,
                 titleStyle: TextStyle(fontSize: 1)))
         .show();
+  }
+
+  Future<void> _launchInWebViewWithJavaScript(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        enableJavaScript: true,
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override

@@ -97,7 +97,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               AutoSizeText(
-                                '${clientProvider.clientId}',
+                                'Client ID - ${clientProvider.clientId}',
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -294,7 +294,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
                           height: 100,
                           child: FlatButton(
                             onPressed: () {
-                              launch('https://www.goodtogoloans.com.au/');
+                              _launchInWebViewWithJavaScript('https://www.goodtogoloans.com.au/');
                             },
                             child: AutoSizeText(
                               'Apply Now',
@@ -316,6 +316,19 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
         ),
       ),
     );
+  }
+
+  Future<void> _launchInWebViewWithJavaScript(String url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+        enableJavaScript: true,
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Future<void> logout() async {
