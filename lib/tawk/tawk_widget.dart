@@ -74,7 +74,6 @@ class _TawkState extends State<Tawk> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Stack(
