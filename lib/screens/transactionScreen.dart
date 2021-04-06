@@ -334,12 +334,16 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                    transaction.reference = "Default Admin Fee";
                                                  }
                                                  break;
-                                                 case "FDEF":{
-                                                   transaction.reference = "Default Admin Fee";
-                                                 }
-                                                 break;
                                                  case "FLET":{
                                                    transaction.reference = "Default Letter Fee";
+                                                 }
+                                                 break;
+                                                 case "FPPSRS":{
+                                                   transaction.reference = "PPSR Search Fee";
+                                                 }
+                                                 break;
+                                                 case "FPYA":{
+                                                   transaction.reference = "Payment Alteration Fee";
                                                  }
                                                  break;
                                                  case "MACCPAYFEE":{
@@ -358,23 +362,33 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                    transaction.reference = "Refund";
                                                  }
                                                  break;
+                                                 case "CBDW":{
+                                                   transaction.reference = "Write Off";
+                                                 }
+                                                 break;
                                                  case "ADV":{
                                                    transaction.reference = "Loan Advance";
                                                  }
                                                  break;
                                                  case "RFN":{
-                                                   transaction.reference = "Refinanced";
+                                                   transaction.reference = "Refinance";
                                                  }
                                                  break;
                                                  case "PAY":{
-                                                   if(transaction.reference.isEmpty || transaction.reference == 'Payment Reversal')
+                                                   //print("before date - ${transaction.date} elementid ${transaction.elementId}, reference - ${transaction.reference}, ");
+                                                   if(transaction.reference.isEmpty || transaction.reference == null || transaction.reference == "" || transaction.reference.contains('Reversal'))
+
+                                                       //transaction.reference == 'Payment Reversal')
                                                      {
                                                        transaction.reference = 'Reversal';
                                                      }
                                                    else{
                                                    //  transaction.reference = 'Payment (${formatCurrency(transaction.value.abs())})';
-                                                     transaction.reference = 'Payment (${formatCurrency(transaction.value)})';
+                                                     transaction.reference = 'Payment\n(${formatCurrency(transaction.value)})';
                                                    }
+
+                                                   //print("after date - ${transaction.date} elementid ${transaction.elementId}, reference - ${transaction.reference}, ");
+
 
 
                                                  }
@@ -619,7 +633,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
 
     var resultPrice = '0';
     if(price !=null) {
-      resultPrice =  dollarsInUSFormat.format(double.tryParse(price.toString()));
+      resultPrice =  dollarsInUSFormat.format(double.tryParse(price.toString()) * (-1));
     }
     return resultPrice;
   }

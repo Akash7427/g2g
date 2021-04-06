@@ -27,7 +27,7 @@ class CustomTransItem extends StatelessWidget {
                       style: TextStyle()),
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -39,7 +39,7 @@ class CustomTransItem extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex:2,
                   child: AutoSizeText(
                     '\$${transaction.balance.toStringAsFixed(2)}',
                     style: TextStyle(
