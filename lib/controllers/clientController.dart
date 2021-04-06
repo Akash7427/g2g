@@ -75,7 +75,8 @@ class ClientController with ChangeNotifier {
     myTransformer.parse(response.body);
     var json = myTransformer.toParker();
     print(json);
-     forcePassword=jsonDecode(json)['ClientAuthentication']['ForcePasswordChange'];
+   var decodedJson = jsonDecode(json);
+     forcePassword=decodedJson['ClientAuthentication']['ForcePasswordChange'];
     print('Force'+forcePassword.toString() +forcePassword.runtimeType.toString());
     var innerJson = jsonDecode(json)['ClientAuthentication']['SessionDetails'];
     print(innerJson);
