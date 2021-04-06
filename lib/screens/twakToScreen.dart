@@ -58,7 +58,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
     print('onlink ' + json);
 
     final javascriptString =
-        'document.getElementById("formSubmit").onclick = (){Tawk_API = Tawk_API || {};Tawk_API.onPrechatSubmit = function(data){return $json};};';
+        '<script type=\"text/javascript\">document.getElementById("formSubmit").onclick = (){Tawk_API = Tawk_API || {};Tawk_API.onPrechatSubmit = function(data){return $json};};</script>';
 
     print(javascriptString);
     await _controller.evaluateJavascript(javascriptString);
@@ -145,7 +145,7 @@ class _TawkToScreenState extends State<TawkToScreen> {
               child: Tawk(
                 onLoad: () {},
                 directChatLink:
-                    'https://tawk.to/chat/57f4447c8598f1538109cc15/default',
+                chatURL,
                 visitor:
                     TawkVisitor(name: name, email: email, ClientID: clientID),
                 onLinkTap: (s) async {

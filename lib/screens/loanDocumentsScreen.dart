@@ -216,7 +216,7 @@ class _LoanDocumentsState extends State<LoanDocuments> {
                       fit: BoxFit.cover)),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+              padding: const EdgeInsets.only(top: 10.0, left: 10.0,right:10.0),
               child: AppBar(
                 leading: CircleAvatar(
                   radius: 25,

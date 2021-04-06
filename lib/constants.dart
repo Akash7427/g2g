@@ -9,3 +9,5 @@ const apiBaseURL = 'https://wstest.goodtogoloans.com.au/api';
 const kPrimaryColor = Color(0xff64a000);
 const kSecondaryColor = Color(0xff1E496C);
 const kWhiteColor = Color(0xFFFFFFFF);
+
+const String chatURL = 'https://tawk.to/chat/57f4447c8598f1538109cc15/default';

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:g2g/response_models/transaction_response_model.dart';
 import 'package:intl/intl.dart';
 
+import 'package:provider/provider.dart';
+import '../controllers/accountsController.dart';
+
 class CustomTransItem extends StatelessWidget {
   final TransactionResponseModel transaction;
   final bool _isLarge;
@@ -11,6 +14,7 @@ class CustomTransItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var accProvider = Provider.of<AccountsController>(context, listen: false);
     return Container(
       child: Column(
         children: [
@@ -41,7 +45,8 @@ class CustomTransItem extends StatelessWidget {
                 Expanded(
                   flex:2,
                   child: AutoSizeText(
-                    '\$${transaction.balance.toStringAsFixed(2)}',
+                    '${accProvider.formatCurrency(transaction.balance)}',
+                          // .toStringAsFixed(2)
                     style: TextStyle(
                         // fontSize: _isLarge ? 28 : 20,
                         ),

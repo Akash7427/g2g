@@ -853,20 +853,21 @@ class _HomeScreenState extends State<HomeScreen>
                                             FontWeight.bold,
                                             color:
                                             kSecondaryColor)),
-                                    InkWell(
-                                      onTap: (){
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    TransactionsScreen(
-                                                        account)));
-                                      },
-                                      child: Icon(
+                                    // InkWell(
+                                      // onTap: (){
+                                      //   Navigator.push(
+                                      //       context,
+                                      //       MaterialPageRoute(
+                                      //           builder: (context) =>
+                                      //               TransactionsScreen(
+                                      //                   account)));
+                                      // },
+                                      // child:
+                                            Icon(
                                         Icons.info_outlined,
                                         color: kSecondaryColor,
                                       ),
-                                    ),
+                                    // ),
                                   ],
                                 ),
                               ),
@@ -925,7 +926,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         'Overdue',
                                         style: TextStyle(
                                             fontSize: 20,
-                                            color: Colors.black87),
+                                            color: Colors.black87,fontFamily: 'Montserrat',),
                                         textAlign: TextAlign.start,
                                       ),
                                     ],
@@ -981,7 +982,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         'Balance',
                                         style: TextStyle(
                                             fontSize: 20,
-                                            color: Colors.black87),
+                                            color: Colors.black87,fontFamily: 'Montserrat',),
                                         textAlign: TextAlign.start,
                                       ),
                                     ],
@@ -1034,22 +1035,15 @@ class _HomeScreenState extends State<HomeScreen>
                                               'Montserrat',
                                               color:
                                               kSecondaryColor)),
-                                      InkWell(
-                                        onTap: (){
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TransactionsScreen(
-                                                          account)));
-                                        },
-                                        child: Icon(
+
+
+                                        Icon(
                                           Icons.info_outlined,
                                           size:
                                           _isLarge ? 30 : 16,
                                           color: kSecondaryColor,
                                         ),
-                                      ),
+
                                     ],
                                   ),
                                 ),
