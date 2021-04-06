@@ -44,11 +44,7 @@ class _TawkState extends State<Tawk> {
     final json = jsonEncode(visitor);
     print(json);
 
-    final javascriptString = 'Tawk_API.setAttributes($json);';
-    print(javascriptString);
-    final javascriptString1 =
-        'document.getElementById("Name").value ="${visitor.name ?? 'as'}";';
-
+    final javascriptString = 'Tawk_API = Tawk_API || {};Tawk_API.onLoad = function(){Tawk_API.setAttributes($json);}';
     print(javascriptString);
     _controller.evaluateJavascript(javascriptString);
   }
@@ -84,6 +80,7 @@ class _TawkState extends State<Tawk> {
           onWebViewCreated: (WebViewController webViewController) {
             setState(() {
               _controller = webViewController;
+              _setUser(widget.visitor);
             });
           },
           navigationDelegate: (NavigationRequest request) async {
