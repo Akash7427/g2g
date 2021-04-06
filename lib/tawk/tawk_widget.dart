@@ -6,6 +6,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'tawk_visitor.dart';
 
+import 'dart:io' show Platform;
 /// [Tawk] Widget.
 class Tawk extends StatefulWidget {
   /// Tawk direct chat link.
@@ -43,8 +44,16 @@ class _TawkState extends State<Tawk> {
     print(visitor);
     final json = jsonEncode(visitor);
     print(json);
+    var javascriptString;
 
-    final javascriptString = 'Tawk_API = Tawk_API || {};Tawk_API.onLoad = function(){Tawk_API.setAttributes($json);}';
+    if (Platform.isAndroid) {
+      javascriptString = 'Tawk_API = Tawk_API || {};Tawk_API.onLoad = function(){Tawk_API.setAttributes($json);}';
+    } else if (Platform.isIOS) {javascriptString = 'Tawk_API.setAttributes($json);';
+
+    // Theme.of(context).platform == TargetPlatform.iOS;
+    }
+
+
     print(javascriptString);
     _controller.evaluateJavascript(javascriptString);
   }
