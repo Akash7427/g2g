@@ -1279,10 +1279,10 @@ class _EditProfileState extends State<EditProfile> {
     if(listName != null) {
       switch (flag) {
         case '1':
-          return listName[listName?.length - 1];
+          return listName[listName?.length - 1].replaceAll(',', '');
           break;
         case '2':
-          return listName[0];
+          return listName[0].replaceAll(',', '');
           break;
       }
     }

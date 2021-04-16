@@ -90,7 +90,20 @@ class _UpdatePasswordState extends State<UpdatePassword>
                     size: _isLarge ? 35 : 30,
                   ),
                 ),
-              ):Container(),
+              ):CircleAvatar(
+                radius: 25,
+                backgroundColor: Color(0xffccebf2),
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: kSecondaryColor,
+                    size: _isLarge ? 35 : 30,
+                  ),
+                ),
+              ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
