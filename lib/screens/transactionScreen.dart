@@ -243,7 +243,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             right: 0.0,
             //here the body
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Card(
                 child: Column(children: [
                   buildHeader(),
@@ -384,7 +384,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                      }
                                                    else{
                                                    //  transaction.reference = 'Payment (${formatCurrency(transaction.value.abs())})';
-                                                     transaction.reference = 'Payment\n(${formatCurrency(transaction.value)})';
+                                                     transaction.reference = 'Payment';
                                                    }
 
                                                    //print("after date - ${transaction.date} elementid ${transaction.elementId}, reference - ${transaction.reference}, ");

@@ -38,7 +38,11 @@ class CustomTransItem extends StatelessWidget {
                       AutoSizeText('${transaction.reference}',
                           style: TextStyle(
                               // fontSize: _isLarge ? 28 : 20,
-                              ))
+                              )),
+                      if(transaction.value !=null)
+                    //  AutoSizeText(transaction.value.isNegative?'Credit '+'(${formatCurrency(transaction.value)})':'Debit '+'(${formatCurrency(transaction.value)})')
+                        AutoSizeText(transaction.value.isNegative?'${formatCurrency(transaction.value)}':'${formatCurrency(transaction.value)}',style: TextStyle(color: transaction.value.isNegative?Colors.green:Colors.red),)
+
                     ],
                   ),
                 ),
@@ -65,5 +69,17 @@ class CustomTransItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String formatCurrency(double price){
+    var dollarsInUSFormat = new NumberFormat.currency(locale: "en_US",
+        symbol: "\$");
+
+    var resultPrice = '0';
+    if(price !=null) {
+      //resultPrice =  dollarsInUSFormat.format(double.tryParse(price.toString()).abs());
+      resultPrice =  dollarsInUSFormat.format(double.tryParse(price.toString()));
+    }
+    return resultPrice;
   }
 }

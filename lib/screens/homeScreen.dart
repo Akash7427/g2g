@@ -460,7 +460,7 @@ class _HomeScreenState extends State<HomeScreen>
                 // ),
                 ),
             new Positioned(
-              top: MediaQuery.of(context).size.height * 0.15,
+              top: MediaQuery.of(context).size.height * 0.12,
               left: 0.0,
               bottom: 0.0,
               right: 0.0,
@@ -1233,7 +1233,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         CrossAxisAlignment.start,
                                         children: [
                                           buildLoanDetail(
-                                              'Account Number',
+                                              'Account ID',
                                               account.accountId),
                                           SizedBox(
                                               height:
@@ -1309,7 +1309,7 @@ class _HomeScreenState extends State<HomeScreen>
                                   crossAxisAlignment:
                                   CrossAxisAlignment.start,
                                   children: [
-                                    buildLoanDetail('Account Number',
+                                    buildLoanDetail('Account ID',
                                         account.accountId),
                                     SizedBox(
                                         height: _isLarge ? 30 : 15),
