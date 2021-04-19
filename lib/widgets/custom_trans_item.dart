@@ -41,7 +41,7 @@ class CustomTransItem extends StatelessWidget {
                               )),
                       if(transaction.value !=null)
                     //  AutoSizeText(transaction.value.isNegative?'Credit '+'(${formatCurrency(transaction.value)})':'Debit '+'(${formatCurrency(transaction.value)})')
-                        AutoSizeText(transaction.value.isNegative?'${formatCurrency(transaction.value)}':'${formatCurrency(transaction.value)}',style: TextStyle(color: transaction.value.isNegative?Colors.green:Colors.red),)
+                        AutoSizeText(transaction.value.isNegative?'Credit = '+'(${formatCurrency(transaction.value)})':'Debit = '+'(${formatCurrency(transaction.value)})',style: TextStyle(color: transaction.value.isNegative?Colors.green:Colors.red),)
 
                     ],
                   ),
