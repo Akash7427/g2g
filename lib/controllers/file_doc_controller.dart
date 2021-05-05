@@ -18,50 +18,50 @@ import '../constants.dart';
 class FileDocController with ChangeNotifier {
   File _docFile;
 
-  Future<File> fetchDoc(String accountId, String docPk, String fileName) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var result;
+    Future<File> fetchDoc(String accountId, String docPk, String fileName) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var result;
 
-    print(
-        '$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&DocumentPk=$docPk');
-    // http.Response response = await http.get(
-    //     '$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       HttpHeaders.authorizationHeader:
-    //           'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
-    //     });
-print('$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&DocumentPk=$docPk');
-    var url =
-        '$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&DocumentPk=$docPk';
-    var request = await HttpClient().getUrl(Uri.parse(url));
-     request.headers.add('Connection', 'keep-alive');
-      request.headers.add(HttpHeaders.authorizationHeader,
-          'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"');
-      
-
-    var response = await request.close();
-   _docFile = await createFileOfPdfUrl(response, fileName);
-   return _docFile;
-
-    // HttpClient client = new HttpClient();
-    // client.getUrl(Uri.parse(url)).then((HttpClientRequest request) {
-    //   request.headers.add('Connection', 'keep-alive');
-    //   request.headers.add(HttpHeaders.authorizationHeader,
-    //       'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"');
-    //   return request.close();
-    // }).then((HttpClientResponse response) {
-    //   // Process the response.
-    //   createFileOfPdfUrl(response, fileName).then((f) async {
-    //     _docFile = f;
-         
-    //     return _docFile;
+      print(
+          '$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&DocumentPk=$docPk');
+      // http.Response response = await http.get(
+      //     '$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       HttpHeaders.authorizationHeader:
+      //           'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"'
+      //     });
+  print('$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&DocumentPk=$docPk');
+      var url =
+          '$apiBaseURL/custom/GetAccountDocument?AccountID=$accountId&ClientID=${prefs.getString(PrefHelper.Pref_CLIENT_ID)}&DocumentPk=$docPk';
+      var request = await HttpClient().getUrl(Uri.parse(url));
+       request.headers.add('Connection', 'keep-alive');
+        request.headers.add(HttpHeaders.authorizationHeader,
+            'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"');
 
 
-    //   });
-    // });
-    
-  }
+      var response = await request.close();
+     _docFile = await createFileOfPdfUrl(response, fileName);
+     return _docFile;
+
+      // HttpClient client = new HttpClient();
+      // client.getUrl(Uri.parse(url)).then((HttpClientRequest request) {
+      //   request.headers.add('Connection', 'keep-alive');
+      //   request.headers.add(HttpHeaders.authorizationHeader,
+      //       'AuthFinWs token="${prefs.getString(PrefHelper.PREF_SESSION_TOKEN)}"');
+      //   return request.close();
+      // }).then((HttpClientResponse response) {
+      //   // Process the response.
+      //   createFileOfPdfUrl(response, fileName).then((f) async {
+      //     _docFile = f;
+
+      //     return _docFile;
+
+
+      //   });
+      // });
+
+    }
 
   Future<File> createFileOfPdfUrl(
       HttpClientResponse response, String fileName) async {

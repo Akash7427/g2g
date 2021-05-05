@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen>
                                         buildEmailFormField(
                                             Icons.person_outline,
                                             clientID,
-                                            'Email',
+                                            'Email/Username',
                                             userIDNode,
                                             pwdNode),
                                         SizedBox(height: 15),
@@ -191,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen>
                                                       if (user.runtimeType !=
                                                           Client) {
                                                         var message =
-                                                            'Invalid Password or Your account is temporarily locked!';
+                                                            'Invalid Password or Your account is temporarily locked!\n\nPlease try again.';
                                                         if (user
                                                             .toString()
                                                             .startsWith(
@@ -442,7 +442,7 @@ class _LoginScreenState extends State<LoginScreen>
 
         validator: (value) {
           if (value.isEmpty)
-            return 'Email ID Required';
+            return 'Email ID/Username Required';
           return null;
         },
         textInputAction:
