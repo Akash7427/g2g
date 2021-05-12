@@ -24,7 +24,10 @@ Map<String, String>  hashSHA256(){
 }
 void tripleDES(){
   //var key = "#finPOWERTesting@!@#\$###";
-  var key = "#finPOWERTesting@!@#\$##";
+  /* //Unccomment for test secret key
+  String key = "#finPOWERTesting@!@#\\\$##";*/
+  //Unccomment for live secret key
+  String key = "#finPOWEREnCrYPT@!5{^*!#";
   var blockCipher =  BlockCipher(TripleDESEngine(), key);
   var message = "Good2Go Loans";
   var ciphertext = blockCipher.encodeB64(message);
@@ -53,7 +56,10 @@ void tripleDES(){
 // }
 
 String getEncryptPassword(String password){
-  String key = "#finPOWERTesting@!@#\\\$##";
+ /* //Unccomment for test secret key
+  String key = "#finPOWERTesting@!@#\\\$##";*/
+   //Unccomment for live secret key
+  String key = "#finPOWEREnCrYPT@!5{^*!#";
   var blockCipher = BlockCipher(TripleDESEngine(), key);
   var ciphertext = blockCipher.encodeB64(password);
   print(ciphertext);

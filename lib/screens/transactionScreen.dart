@@ -304,7 +304,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                           controller: _refreshController,
                                           onRefresh: _onRefresh,
                                           onLoading: _onLoading,
-                                          child: ListView.builder(
+                                          child: transactionData.geTransactionList.length>0?ListView.builder(
                                               itemCount: transactionData
                                                   .geTransactionList.length,
                                               itemBuilder: (ctx, index) {
@@ -405,7 +405,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                                         transaction),
                                                   );
 
-                                              }),
+                                              }):Center(child: AutoSizeText('No Transactions Found'),),
                                         ),
                                       ),
                                     );
