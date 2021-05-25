@@ -60,7 +60,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
     _width = MediaQuery.of(context).size.width;
     _isLarge = ResponsiveWidget.isScreenLarge(_width, _pixelRatio);
-   String isForcePassword = ModalRoute.of(context).settings.arguments;
+    String isForcePassword = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       drawer: NavigationDrawer(),
       key: _updatePasswordScaffoldKey,
@@ -90,20 +90,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                     size: _isLarge ? 35 : 30,
                   ),
                 ),
-              ):CircleAvatar(
-                radius: 25,
-                backgroundColor: Color(0xffccebf2),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: kSecondaryColor,
-                    size: _isLarge ? 35 : 30,
-                  ),
-                ),
-              ),
+              ):Container(),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +143,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
 
-                                AutoSizeText(
+                                Text(
                                   'Update Password',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -240,7 +227,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                           Container(
                                             child: FlatButton(
                                               padding: EdgeInsets.all(10),
-                                              child: AutoSizeText(
+                                              child: Text(
                                                 'Update Password'.toUpperCase(),
                                                 style: TextStyle(
                                                     fontSize: _isLarge ? 26 : 20,
@@ -270,7 +257,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                       .then(
                                                         (updatePassword) async {
                                                       if (updatePassword.passwordResetSuccess
-                                                           ==
+                                                          ==
                                                           'FALSE') {
                                                         pr.hide();
                                                         /*Alert(
@@ -280,7 +267,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                             type: AlertType.error,
                                                             buttons: [
                                                               DialogButton(
-                                                                child: AutoSizeText(
+                                                                child: Text(
                                                                   "Close",
                                                                   style: TextStyle(
                                                                       color:
@@ -327,7 +314,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                                         20),
                                                                     Container(
                                                                       padding: EdgeInsets.symmetric(horizontal: 8),
-                                                                      child: AutoSizeText(
+                                                                      child: Text(
                                                                         '${updatePassword.message}',
                                                                         style: TextStyle(
                                                                             color: Colors
@@ -342,7 +329,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                             ),
                                                             buttons: [
                                                               DialogButton(
-                                                                child: AutoSizeText(
+                                                                child: Text(
                                                                   "Close",
                                                                   style: TextStyle(
                                                                       color: Colors
@@ -391,14 +378,16 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                                       .center,
                                                                   children: <
                                                                       Widget>[
-                                                                    Image.asset(
-                                                                        'images/success.png'),
+                                                              Image.asset(
+                                                              'images/success.png',
+                                                                width: MediaQuery.of(context).size.width *0.2,
+                                                                height:MediaQuery.of(context).size.width *0.2,),
                                                                     SizedBox(
                                                                         height:
                                                                         20),
                                                                     Container(
                                                                       padding: EdgeInsets.symmetric(horizontal: 8),
-                                                                      child: AutoSizeText(
+                                                                      child: Text(
                                                                         '${updatePassword.message}',
                                                                         style: TextStyle(
                                                                             color: Colors
@@ -413,7 +402,7 @@ class _UpdatePasswordState extends State<UpdatePassword>
                                                             ),
                                                             buttons: [
                                                               DialogButton(
-                                                                child: AutoSizeText(
+                                                                child: Text(
                                                                   "Close",
                                                                   style: TextStyle(
                                                                       color: Colors
