@@ -40,7 +40,7 @@ class _TawkState extends State<Tawk> {
   WebViewController _controller;
   bool _isLoading = true;
 
-  void _setUser(TawkVisitor visitor) {
+  Future<void> _setUser(TawkVisitor visitor) async {
     print(visitor);
     final json = jsonEncode(visitor);
     print(json);
@@ -55,7 +55,7 @@ class _TawkState extends State<Tawk> {
 
 
     print(javascriptString);
-    _controller.evaluateJavascript(javascriptString);
+   await _controller.evaluateJavascript(javascriptString);
   }
 
   setClientID(TawkVisitor visitor) async {
@@ -66,9 +66,11 @@ class _TawkState extends State<Tawk> {
 
     print('onlink ' + json);
 
+/*
     final javascriptString =
         'document.getElementById("formSubmit").onclick = (){Tawk_API = Tawk_API || {};Tawk_API.onPrechatSubmit = function(data){return $json};};';
-
+*/
+final javascriptString = 'Tawk_API.onLoad = function(){Tawk_API.setAttributes($json, function(error){});}';
     print(javascriptString);
     await _controller.evaluateJavascript(javascriptString);
   }

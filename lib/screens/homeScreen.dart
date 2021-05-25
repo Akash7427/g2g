@@ -465,7 +465,7 @@ class _HomeScreenState extends State<HomeScreen>
               bottom: 0.0,
               right: 0.0,
               //here the body
-              child: PageView.builder(
+              child:accounts.length>0? PageView.builder(
                 controller: pageViewController,
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
@@ -495,7 +495,14 @@ class _HomeScreenState extends State<HomeScreen>
                   );
                 },
                 itemCount: accounts.length,
-              ),
+              ):Center(child:Container(
+
+                  margin: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(20.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white, borderRadius: BorderRadius.circular(10),
+    border: Border.all(color: Theme.of(context).accentColor,width: 2)
+    ),child:Text('No Loan Accounts or\n Quotes found',textAlign: TextAlign.center,style:TextStyle(fontSize: 24,fontWeight: FontWeight.bold,color: Theme.of(context).accentColor)))),
             ),
           ],
         ),

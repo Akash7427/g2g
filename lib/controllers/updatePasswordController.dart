@@ -10,6 +10,7 @@ import 'package:xml2json/xml2json.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:g2g/screens/loginScreen.dart';
+import 'package:g2g/constants.dart';
 
 
 class UpdatePasswordController with ChangeNotifier{
@@ -33,7 +34,7 @@ class UpdatePasswordController with ChangeNotifier{
         '<PasswordReset><UserID>$userID</UserID><EmailAddress>$emailID</EmailAddress><Mobile>$mobileNumber</Mobile><Password>${getEncryptPassword(password)}</Password></PasswordReset>';
 print(data);
     http.Response response = await http.post(
-        'https://wstest.goodtogoloans.com.au/api/custom/UpdatePassword',
+        '$apiBaseURL/custom/UpdatePassword',
         body: data,
         headers: {
           'content-Type': 'text/plain',
